@@ -1,13 +1,7 @@
-package com.recruit.recruit11.service;
+package Likelion.service;
 
-import com.recruit.recruit11.model.Profile;
-import com.recruit.recruit11.model.Role;
-import com.recruit.recruit11.model.User;
-import com.recruit.recruit11.model.UserRepository;
-import com.recruit.recruit11.model.dto.ProfileDto;
+import Likelion.model.UserRepository;
 import lombok.RequiredArgsConstructor;
-
-import java.util.Optional;
 
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements ProfileService{

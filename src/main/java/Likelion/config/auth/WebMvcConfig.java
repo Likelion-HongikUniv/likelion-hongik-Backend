@@ -1,4 +1,4 @@
-package com.recruit.recruit11.config.auth;
+package Likelion.config.auth;
 
 import org.springframework.boot.web.servlet.view.MustacheViewResolver;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,8 @@
-package com.recruit.recruit11.model.dto;
+package Likelion.model.dto;
 
-import com.recruit.recruit11.model.Profile;
-import com.recruit.recruit11.model.User;
+import Likelion.model.Profile;
+import Likelion.model.User;
+
 import lombok.Builder;
 
 public class ProfileDto {

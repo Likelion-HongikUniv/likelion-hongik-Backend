@@ -1,4 +1,4 @@
-package com.recruit.recruit11.repository;
+package Likelion.repository;
 
 public class ProfileRepository {
 

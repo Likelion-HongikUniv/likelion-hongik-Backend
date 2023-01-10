@@ -1,21 +1,19 @@
-package com.recruit.recruit11.config.auth;
+package Likelion.config.auth;
 
-import com.recruit.recruit11.config.auth.dto.OAuthAttributes;
-import com.recruit.recruit11.config.auth.dto.SessionUser;
-import com.recruit.recruit11.model.User;
-import com.recruit.recruit11.model.UserRepository;
+
+import Likelion.config.auth.dto.OAuthAttributes;
+import Likelion.config.auth.dto.SessionUser;
+import Likelion.model.User;
+import Likelion.model.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.util.Collections;
 
 @RequiredArgsConstructor
 @Service
