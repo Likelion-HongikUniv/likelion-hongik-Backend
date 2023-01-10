@@ -1,6 +1,7 @@
-package com.recruit.recruit11.config.auth.dto;
+package Likelion.config.auth.dto;
 
-import com.recruit.recruit11.model.User;
+
+import Likelion.model.User;
 import lombok.Getter;
 
 import java.io.Serializable;

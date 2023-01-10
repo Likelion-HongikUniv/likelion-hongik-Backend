@@ -1,4 +1,4 @@
-package com.recruit.recruit11.model;
+package Likelion.model;
 
 import lombok.Builder;
 import lombok.Getter;

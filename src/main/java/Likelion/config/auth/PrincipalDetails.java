@@ -1,6 +1,7 @@
-package com.recruit.recruit11.config.auth;
+package Likelion.config.auth;
 
-import com.recruit.recruit11.model.User;
+
+import Likelion.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;

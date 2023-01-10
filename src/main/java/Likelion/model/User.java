@@ -1,4 +1,4 @@
-package com.recruit.recruit11.model;
+package Likelion.model;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -30,7 +30,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private com.recruit.recruit11.model.Role role;
+    private Role role;
 
 //    @Column
 //    private String provider;
