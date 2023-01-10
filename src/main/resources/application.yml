@@ -2,9 +2,9 @@
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql:/{host_name}:3306/{schema_name}?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
-        username: {username}
-        password: {password}
+        url: jdbc:mysql:/mutsa-recruiting-backend-database.cvsvqfeuqnjc.ap-northeast-2.rds.amazonaws.com:3306/mutsa-recruiting-backend-db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false
+        username: admin
+        password: Mutsadatabase2023!
 
     jpa:
         hibernate:
