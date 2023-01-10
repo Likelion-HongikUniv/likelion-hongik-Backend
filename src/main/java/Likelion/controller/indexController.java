@@ -1,13 +1,10 @@
-package com.recruit.recruit11.controller;
+package Likelion.controller;
 
-import com.recruit.recruit11.config.auth.PrincipalDetails;
-import com.recruit.recruit11.config.auth.dto.SessionUser;
-import com.recruit.recruit11.model.User;
-import com.recruit.recruit11.model.UserRepository;
-import com.recruit.recruit11.model.dto.ProfileDto;
-import lombok.Data;
+import Likelion.config.auth.dto.SessionUser;
+import Likelion.model.User;
+import Likelion.model.UserRepository;
+
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,12 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
-import java.security.Principal;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-
-import static java.util.stream.Collectors.toList;
 
 @RequiredArgsConstructor
 @Controller
@@ -54,8 +46,8 @@ public class indexController {
     }
 
     @GetMapping("/user")
-    public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails){
-        System.out.println("principalDetails = " + principalDetails.getUser().getUsername());
+    public @ResponseBody String user(){
+
         return "user";
     }
 
@@ -65,14 +57,8 @@ public class indexController {
     }
 
     @PostMapping("/accounts/detail_info/")
-    String detail(@AuthenticationPrincipal PrincipalDetails principalDetails, @RequestBody ProfileDto profileDto){
-        SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
-        User user = userRepository.findByUsername(principalDetails.getUser().getUsername());
+    public @ResponseBody String detail(){
 
-
-//        System.out.println("req = " + req);
-//        System.out.println("requestbody = " + requestbody);
-//        System.out.println("user = " + user);
         return "detail";
     }
 

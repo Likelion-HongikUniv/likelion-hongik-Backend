@@ -1,7 +1,8 @@
-package com.recruit.recruit11.config.auth.dto;
+package Likelion.config.auth.dto;
 
-import com.recruit.recruit11.model.Role;
-import com.recruit.recruit11.model.User;
+
+import Likelion.model.Role;
+import Likelion.model.User;
 import lombok.Builder;
 import lombok.Getter;
 

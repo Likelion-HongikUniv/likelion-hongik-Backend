@@ -1,7 +1,4 @@
-package com.recruit.recruit11.service;
-
-import com.recruit.recruit11.model.User;
-import com.recruit.recruit11.model.dto.ProfileDto;
+package Likelion.service;
 
 public interface ProfileService {
 

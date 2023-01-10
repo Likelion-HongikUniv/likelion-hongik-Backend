@@ -1,4 +1,4 @@
-package com.recruit.recruit11.config.auth;
+package Likelion.config.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
