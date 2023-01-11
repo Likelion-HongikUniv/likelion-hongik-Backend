@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="fragments/header :: header" />
 
@@ -46,9 +46,10 @@
                                     <td>이준영</td>
                                     <td>dlwnsdud980727@gmail.com</td>
                                 </tr>
-                                <tr th:each="member : ${members}">
-                                    <td th:text="${member.name}"></td>
-                                    <td th:text="${member.email}"></td>
+
+                                <tr th:each="user : ${users}">
+                                    <td th:text="${user?.name}"></td>
+                                    <td th:text="${user?.email}"></td>
                                 </tr>
                                 </tbody>
                             </table>
