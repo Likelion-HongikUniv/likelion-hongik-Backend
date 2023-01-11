@@ -17,7 +17,7 @@ public class Profile {
     private int id;
 
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY) // user와 추가정보는 cascade이고 지연로딩
+    @OneToOne(fetch = FetchType.LAZY) // user와 추가정보는 cascade이고 지연로딩
     @JoinColumn(name = "user_id")
     private User user;
 

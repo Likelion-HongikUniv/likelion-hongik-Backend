@@ -1,24 +1,26 @@
 package com.recruit.test.service;
 
+import com.recruit.test.model.Profile;
+import com.recruit.test.model.User;
 import com.recruit.test.model.UserRepository;
+import com.recruit.test.model.dto.ProfileDto;
+import com.recruit.test.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
+@Service
 public class ProfileServiceImpl implements ProfileService{
 
     private final UserRepository userRepository;
-
-//    @Override
-//    public void insertDetail(ProfileDto profileDto, User user, String nickname, String major, String studentId, String part, String phoneNum) {
-//        ProfileDto.builder()
-//                .user(user)
-//                .nickname(nickname)
-//                .major(major)
-//                .studentId(studentId)
-//                .part(part)
-//                .phoneNum(phoneNum)
-//                .build();
-//    }
+    private final ProfileRepository profileRepository;
 
 
+    @Override
+    public void insertDetail(User user, ProfileDto profileDto) {
+
+        Profile profile = profileDto.toEntity(user);
+        profileRepository.save(profile);
+        System.out.println("profile save 완료");
+    }
 }

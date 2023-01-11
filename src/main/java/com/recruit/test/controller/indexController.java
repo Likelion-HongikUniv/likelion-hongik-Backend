@@ -11,6 +11,7 @@ import com.recruit.test.model.UserRepository;
 import com.recruit.test.model.dto.ProfileDto;
 import com.recruit.test.repository.ProfileRepository;
 import com.recruit.test.security.UserDetailsImpl;
+import com.recruit.test.service.ProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,12 +31,12 @@ public class indexController {
 
     private final HttpSession httpSession;
     private final UserRepository userRepository;
-    private final ProfileRepository profileRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ProfileService profileService;
 
     @GetMapping("/")
     String index(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Model model){
-        SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
+//        SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
 
         System.out.println("userDetails = " + customOauthUser);
         if(customOauthUser != null){
@@ -57,24 +58,6 @@ public class indexController {
 //        }
 
         return "index2";
-    }
-
-    // 여기서 JWT를 돌려줄 것이다.
-    @GetMapping("/test/oauth/login")
-    public String testOAuthLogin(@AuthenticationPrincipal OAuth2User userDetails, HttpServletResponse response){
-
-        Optional<User> user = userRepository.findByEmail(userDetails.getAttributes().get("email").toString());
-        CustomOauthUserImpl customOauthUser = new CustomOauthUserImpl(user.get(), userDetails.getAttributes());
-
-        String email = customOauthUser.getUser().getEmail();
-        Role role = customOauthUser.getUser().getRole();
-
-        String token = jwtTokenProvider.createToken(email, role);
-        System.out.println("token = " + token);
-        response.setHeader("JWT", token);
-
-
-        return "/";
     }
 
 
@@ -108,22 +91,19 @@ public class indexController {
     }
 
     @PostMapping("/accounts/detail_info/")
-    String detail(@AuthenticationPrincipal OAuth2User userDetails, @RequestBody ProfileDto profileDto){
-        Optional<User> user = userRepository.findByEmail(userDetails.getAttributes().get("email").toString());
-        UserDetailsImpl userDetails1 = new UserDetailsImpl(user.get(), userDetails.getAttributes());
-        System.out.println("userDetails1 = " + userDetails1);
-        System.out.println("userDetails1.getUser().getEmail() = " + userDetails1.getUser().getEmail());
+    String detail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
+        Optional<User> user = userRepository.findByEmail(customOauthUser.getUser().getEmail());
 
-        System.out.println("profileDto = " + profileDto.getMajor());
+        profileService.insertDetail(customOauthUser.getUser(), profileDto);
 
         return "detail";
     }
 
     @GetMapping("/accounts/detail_info/")
-    String detail2(@AuthenticationPrincipal OAuth2User userDetails, @RequestBody ProfileDto profileDto){
+    String detail2(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
 
         // 로그인 유저의 email 추출
-        Optional<User> user = userRepository.findByEmail(userDetails.getAttributes().get("email").toString());
+        Optional<User> user = userRepository.findByEmail(customOauthUser.getAttributes().get("email").toString());
         // profile_id와 엮을 user_id 추출
         int userId = user.get().getId();
 
@@ -133,13 +113,5 @@ public class indexController {
 
         return "detail";
     }
-
-    @GetMapping("/test/auth")
-    public @ResponseBody String test(Authentication authentication){
-//        System.out.println("req = " + req);
-        System.out.println("authentication = " + authentication);
-        return "success";
-    }
-
 
 }

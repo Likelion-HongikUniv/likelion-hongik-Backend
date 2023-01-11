@@ -17,7 +17,7 @@ public class User {
     private int id;
 
     @Column
-    private String username;
+    private String username; // 솔직히 이거 필요 없음
 
     @Column(nullable = false)
     private String name;

@@ -8,7 +8,6 @@ import lombok.Getter;
 @Getter
 public class ProfileDto {
 
-    private User user;
     private String nickname;
     private String major;
     private String studentId;
@@ -24,7 +23,7 @@ public class ProfileDto {
         this.phoneNum = phoneNum;
     }
 
-    public Profile toEntity(){
+    public Profile toEntity(User user){
         Profile profile = Profile.builder()
                 .user(user)
                 .nickname(nickname)
