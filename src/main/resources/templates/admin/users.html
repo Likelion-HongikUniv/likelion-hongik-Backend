@@ -50,6 +50,12 @@
                                 <tr th:each="user : ${users}">
                                     <td th:text="${user?.name}"></td>
                                     <td th:text="${user?.email}"></td>
+                                    <td>
+                                        <a href="#" th:href="@{users/{id}/edit (id=${user.id})}" class="btn btn-primary" role="button">수정</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" th:href="@{users/{id}/delete (id=${user.id})}" class="btn btn-danger" role="button">삭제</a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

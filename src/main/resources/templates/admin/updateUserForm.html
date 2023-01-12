@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="container">
+
+    <form th:object="${form}" method="post">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="form-group">
+            <label th:for="name">이름</label>
+            <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요" />
+        </div>
+
+        <div class="form-group">
+            <label th:for="email">이메일</label>
+            <input type="text" th:field="*{email}" class="form-control" placeholder="이메일을 입력하세요" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div> <!-- /container -->
+</body>
+</html>
+
