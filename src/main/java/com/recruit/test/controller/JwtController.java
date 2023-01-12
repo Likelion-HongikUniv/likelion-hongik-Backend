@@ -9,13 +9,14 @@ import com.recruit.test.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class JwtController {
 
@@ -24,7 +25,7 @@ public class JwtController {
     private final JwtTokenProvider jwtTokenProvider;
 
     // 여기서 JWT를 돌려줄 것이다.
-    @GetMapping("/test/oauth/login")
+    @GetMapping("/token")
     public String testOAuthLogin(@AuthenticationPrincipal OAuth2User userDetails, HttpServletResponse response){
 
         Optional<User> user = userRepository.findByEmail(userDetails.getAttributes().get("email").toString());

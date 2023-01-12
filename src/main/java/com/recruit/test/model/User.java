@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Getter
 @NoArgsConstructor
 @Entity
@@ -31,6 +33,10 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private com.recruit.test.model.Role role;
+
+    @ManyToOne(fetch = LAZY) //
+    @JoinColumn(name = "team_id")
+    private Team team;
 
 //    @Column
 //    private String provider;

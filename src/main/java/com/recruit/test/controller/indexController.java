@@ -12,6 +12,7 @@ import com.recruit.test.model.dto.ProfileDto;
 import com.recruit.test.repository.ProfileRepository;
 import com.recruit.test.security.UserDetailsImpl;
 import com.recruit.test.service.ProfileService;
+import com.recruit.test.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -31,6 +32,7 @@ public class indexController {
 
     private final HttpSession httpSession;
     private final UserRepository userRepository;
+    private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
     private final ProfileService profileService;
 
@@ -60,10 +62,6 @@ public class indexController {
         return "index2";
     }
 
-
-
-
-
     @GetMapping("/loginForm")
     public String loginForm(){
 //        System.out.println("여기는 로그인 폼이지롱~");
@@ -92,24 +90,29 @@ public class indexController {
 
     @PostMapping("/accounts/detail_info/")
     String detail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
-        Optional<User> user = userRepository.findByEmail(customOauthUser.getUser().getEmail());
+       // 지금 로그인되어 있는 User 객체 정보 찾기
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
 
-        profileService.insertDetail(customOauthUser.getUser(), profileDto);
+        // 처음 로그인 한 것이지 확인하기 == Profile db에 해당 user의 정보가 있는지 확인하기
+        Integer user_id = user.getId();
+        System.out.println("user_id = " + user_id);
+
+        Profile profile = profileService.haveUser(user_id);
+        if (profile != null){
+            System.out.println("프로필이 이미 있습니다!");
+            return "already";
+        }
+        else {
+            System.out.println("어서오세요~~~");
+            profileService.insertDetail(customOauthUser.getUser(), profileDto);
+        }
 
         return "detail";
     }
 
     @GetMapping("/accounts/detail_info/")
     String detail2(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
-
-        // 로그인 유저의 email 추출
-        Optional<User> user = userRepository.findByEmail(customOauthUser.getAttributes().get("email").toString());
-        // profile_id와 엮을 user_id 추출
-        int userId = user.get().getId();
-
-
-
-        System.out.println("profileDto = " + profileDto.getMajor());
 
         return "detail";
     }

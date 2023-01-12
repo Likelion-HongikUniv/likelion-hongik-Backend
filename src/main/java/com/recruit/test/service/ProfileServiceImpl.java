@@ -23,4 +23,11 @@ public class ProfileServiceImpl implements ProfileService{
         profileRepository.save(profile);
         System.out.println("profile save 완료");
     }
+
+    @Override
+    public Profile haveUser(int userId) {
+        return profileRepository.findByUser_Id(userId);
+    }
+
+
 }
