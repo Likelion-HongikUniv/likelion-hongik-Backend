@@ -13,7 +13,8 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReplyDto {
-    private Long replyId;
+    private Long reply_id;
+    private String body;
     private String createDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyy.MM.dd HH:mm"));
     private boolean isDeleted;
 
@@ -24,10 +25,11 @@ public class ReplyDto {
 
     @Builder
     /* Entity -> Dto*/
-    public ReplyDto(Long replyId, String createDate, boolean isDeleted){
-        this.replyId = replyId;
+    public ReplyDto(Long reply_id, String createDate, String body, boolean isDeleted){
+        this.reply_id = reply_id;
         this.createDate = createDate;
         this.isDeleted = isDeleted;
+        this.body = body;
     }
     /*Dto -> Entity*/
     public Reply toEntity(){
@@ -35,7 +37,7 @@ public class ReplyDto {
                 .user(user)
                 .author(author)
                 .comments(comments)
-                .replyId(replyId)
+                .reply_id(reply_id)
                 .createDate(createDate)
                 .isDeleted(isDeleted)
                 .build();

@@ -4,7 +4,7 @@ package Likelion.config.auth;
 import Likelion.config.auth.dto.OAuthAttributes;
 import Likelion.config.auth.dto.SessionUser;
 import Likelion.model.User;
-import Likelion.model.UserRepository;
+import Likelion.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;

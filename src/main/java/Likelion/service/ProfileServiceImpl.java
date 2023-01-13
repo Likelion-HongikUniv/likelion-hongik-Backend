@@ -1,6 +1,6 @@
 package Likelion.service;
 
-import Likelion.model.UserRepository;
+import Likelion.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

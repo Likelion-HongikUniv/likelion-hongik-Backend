@@ -1,5 +1,6 @@
-package Likelion.model;
+package Likelion.model.repository;
 
+import Likelion.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

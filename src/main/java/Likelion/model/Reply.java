@@ -18,7 +18,7 @@ public class Reply {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reply_id")
-    private Long replyId;
+    private Long reply_id;
 
     @Column(name = "reply_body")
     private String body;
@@ -50,11 +50,12 @@ public class Reply {
     private List<ReplyLike> likeProfiles = new ArrayList<>();
 
     @Builder
-    public Reply(User user, Profile author, Comments comments, Long replyId, String createDate, boolean isDeleted) {
+    public Reply(User user, Profile author, Comments comments, Long reply_id, String body ,String createDate, boolean isDeleted) {
         this.user = user;
         this.author = author;
         this.comments = comments;
-        this.replyId = replyId;
+        this.reply_id = reply_id;
+        this.body = body;
         this.createDate = createDate;
         this.isDeleted = isDeleted;
     }
