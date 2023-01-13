@@ -1,6 +1,6 @@
-package Likelion.Recruiting.repository;
+package Likelion.model.repository;
 
-import Likelion.Recruiting.domain.Reply;
+import Likelion.model.entity.Reply;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ReplyRepository extends JpaRepository<Reply,Long> {

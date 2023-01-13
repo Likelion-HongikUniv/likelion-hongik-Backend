@@ -1,7 +1,8 @@
-package Likelion.Recruiting.domain;
+package Likelion.model.entity;
 
-import Likelion.Recruiting.domain.enums.LType;
-import Likelion.Recruiting.domain.enums.Role;
+
+import Likelion.model.entity.enums.LType;
+import Likelion.model.entity.enums.Role;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

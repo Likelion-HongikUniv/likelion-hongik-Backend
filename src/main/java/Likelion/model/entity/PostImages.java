@@ -1,5 +1,4 @@
-package Likelion.Recruiting.domain;
-
+package Likelion.model.entity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package Likelion.Recruiting.service.Dto;
+package Likelion.model.dto;
 
 import lombok.Data;
 

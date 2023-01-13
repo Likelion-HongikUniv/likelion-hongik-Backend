@@ -1,8 +1,9 @@
-package Likelion.Recruiting.domain;
+package Likelion.model.entity;
 
 
-import Likelion.Recruiting.domain.enums.MainCategory;
-import Likelion.Recruiting.domain.enums.SubCategory;
+
+import Likelion.model.entity.enums.MainCategory;
+import Likelion.model.entity.enums.SubCategory;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 

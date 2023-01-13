@@ -1,8 +1,8 @@
-package Likelion.Recruiting.service;
+package Likelion.service;
 
-import Likelion.Recruiting.domain.Post;
-import Likelion.Recruiting.domain.PostImages;
-import Likelion.Recruiting.repository.PostImagesRepository;
+import Likelion.model.entity.Post;
+import Likelion.model.entity.PostImages;
+import Likelion.model.repository.PostImagesRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

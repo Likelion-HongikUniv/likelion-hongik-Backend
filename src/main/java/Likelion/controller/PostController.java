@@ -1,13 +1,13 @@
-package Likelion.Recruiting.controller;
+package Likelion.controller;
 
-import Likelion.Recruiting.domain.Post;
-import Likelion.Recruiting.domain.PostImages;
-import Likelion.Recruiting.domain.enums.MainCategory;
-import Likelion.Recruiting.domain.enums.SubCategory;
-import Likelion.Recruiting.repository.PostRepository;
-import Likelion.Recruiting.service.Dto.PostSimpleDto;
-import Likelion.Recruiting.service.PostImagesService;
-import Likelion.Recruiting.service.PostService;
+
+import Likelion.model.dto.PostSimpleDto;
+import Likelion.model.entity.Post;
+import Likelion.model.entity.enums.MainCategory;
+import Likelion.model.entity.enums.SubCategory;
+import Likelion.model.repository.PostRepository;
+import Likelion.service.PostImagesService;
+import Likelion.service.PostService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +32,10 @@ public class PostController {
     @GetMapping("/community/posts/{mainCategory}/{subCategory}/")
     public List<PostSimpleDto> getPosts() {
         List<Post> posts = postService.findPosts();
-//        List<PostSimpleDto> result = posts.stream()
-//                .map(o -> new OrderDto(o))
-//                .collect(toList());
-//        return result;
+        List<PostSimpleDto> result = posts.stream()
+                .map(o -> new Post(o))
+                .collect(toList());
+       return result;
     }
 
     @Data
@@ -87,8 +87,8 @@ public class PostController {
                     .title(title)
                     .body(body)
                     .createdTime(LocalDateTime.now())
-                    .mainCategory(mainCategory)
-                    .subCategory(subCategory)
+                    .mainCategory(this.getMainCategory())
+                    .subCategory(this.getSubCategory())
                     .build();
             return post;
         }
