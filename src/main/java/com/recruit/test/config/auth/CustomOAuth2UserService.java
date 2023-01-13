@@ -72,6 +72,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService implements
     public CustomOauthUser loadUserByEmail(String email) throws UsernameNotFoundException{
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new customException(ErrorCode.NO_USER));
+//        System.out.println("custom user = " + user);
 
         return new CustomOauthUserImpl(user);
     }

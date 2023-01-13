@@ -1,5 +1,6 @@
 package com.recruit.test.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.recruit.test.model.Profile;
 import com.recruit.test.model.User;
 import lombok.Builder;
@@ -8,10 +9,19 @@ import lombok.Getter;
 @Getter
 public class ProfileDto {
 
+    @JsonProperty("nickname")
     private String nickname;
+
+    @JsonProperty("major")
     private String major;
+
+    @JsonProperty("studentId")
     private String studentId;
+
+    @JsonProperty("part")
     private String part;
+
+    @JsonProperty("phoneNum")
     private String phoneNum;
 
     @Builder

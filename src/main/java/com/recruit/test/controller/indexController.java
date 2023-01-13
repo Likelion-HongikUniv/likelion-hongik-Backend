@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.net.http.HttpHeaders;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -101,6 +102,7 @@ public class indexController {
         Profile profile = profileService.haveUser(user_id);
         if (profile != null){
             System.out.println("프로필이 이미 있습니다!");
+            System.out.println("profile.getMajor() = " + profile.getMajor());
             return "already";
         }
         else {
@@ -119,7 +121,7 @@ public class indexController {
 
     @ResponseBody
     @GetMapping("/mypage")
-    public String myPage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
+    public ProfileDto myPage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
 
         // 로그인 유저의 email 추출
         //Optional<User> user = userRepository.findByEmail(customOauthUser.getAttributes().get("email").toString());
@@ -128,15 +130,21 @@ public class indexController {
 //        System.out.println("user = " + user);
 //        Profile profile = profileService.viewProfile(user);
 
+
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
 
         // 처음 로그인 한 것이지 확인하기 == Profile db에 해당 user의 정보가 있는지 확인하기
         Integer user_id = user.getId();
         System.out.println("user_id = " + user_id);
-
         Profile profile = profileService.haveUser(user_id);
-        return profile.getMajor();
+
+        return new ProfileDto(
+                profile.getNickname(),
+                profile.getMajor(),
+                profile.getStudentId(),
+                profile.getPart(),
+                profile.getPhoneNum());
     }
 
 }
