@@ -28,4 +28,15 @@ public class ProfileServiceImpl implements ProfileService{
         Profile profile = profileRepository.findById(user.getId());
         return profile;
     }
+    public Profile haveUser(int userId) {
+        return profileRepository.findByUser_Id(userId);
+    }
+
+    @Override
+    public Profile viewProfile(User user){
+        Profile profile = profileRepository.findByUser_Id(user.getId());
+        System.out.println("profile = " + profile.getMajor());
+        return profile;
+    }
+
 }
