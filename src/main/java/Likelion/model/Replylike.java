@@ -9,7 +9,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-public class ReplyLike {
+public class Replylike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "replylike_id")
@@ -28,7 +28,7 @@ public class ReplyLike {
     private Profile author;
 
     @Builder
-    public ReplyLike(User user, Profile author, Reply reply_id, Long replylike_id){
+    public Replylike(User user, Profile author, Reply reply_id, Long replylike_id){
         this.user = user;
         this.author = author;
         this.reply_id = reply_id;

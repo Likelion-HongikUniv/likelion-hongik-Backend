@@ -47,7 +47,7 @@ public class Reply {
             orphanRemoval = true
     )
 
-    private List<ReplyLike> likeProfiles = new ArrayList<>();
+    private List<Replylike> likeProfiles = new ArrayList<>();
 
     @Builder
     public Reply(User user, Profile author, Comments comments, Long reply_id, String body ,String createDate, boolean isDeleted) {
