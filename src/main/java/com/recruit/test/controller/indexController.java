@@ -1,30 +1,21 @@
 package com.recruit.test.controller;
 
-import com.recruit.test.config.auth.CustomOauthUser;
 import com.recruit.test.config.auth.CustomOauthUserImpl;
 import com.recruit.test.config.auth.JwtTokenProvider;
-import com.recruit.test.config.auth.dto.SessionUser;
-import com.recruit.test.model.Profile;
-import com.recruit.test.model.Role;
-import com.recruit.test.model.User;
+import Likelion.model.Profile;
+import Likelion.model.User;
 import com.recruit.test.model.UserRepository;
-import com.recruit.test.model.dto.ProfileDto;
-import com.recruit.test.repository.ProfileRepository;
-import com.recruit.test.security.UserDetailsImpl;
-import com.recruit.test.service.ProfileService;
-import com.recruit.test.service.UserService;
+import Likelion.model.dto.dto.ProfileDto;
+import Likelion.service.ProfileService;
+import Likelion.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.net.http.HttpHeaders;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller

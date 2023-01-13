@@ -1,4 +1,4 @@
-package com.recruit.test.model;
+package Likelion.model;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

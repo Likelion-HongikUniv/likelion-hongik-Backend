@@ -1,7 +1,6 @@
-package com.recruit.test.service;
+package Likelion.service;
 
 
-import Likelion.model.Reply;
 import Likelion.model.User;
 import Likelion.model.dto.ReplyDto;
 import Likelion.model.repository.CommentsRepository;

@@ -1,4 +1,4 @@
-package com.recruit.test.service;
+package Likelion.service;
 
 import Likelion.model.dto.ReplyDto;
 

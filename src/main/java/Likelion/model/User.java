@@ -1,4 +1,4 @@
-package com.recruit.test.model;
+package Likelion.model;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private com.recruit.test.model.Role role;
+    private Role role;
 
     @ManyToOne(fetch = LAZY) //
     @JoinColumn(name = "team_id")

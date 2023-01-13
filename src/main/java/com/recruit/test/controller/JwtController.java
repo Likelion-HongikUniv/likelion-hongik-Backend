@@ -2,16 +2,15 @@ package com.recruit.test.controller;
 
 import com.recruit.test.config.auth.CustomOauthUserImpl;
 import com.recruit.test.config.auth.JwtTokenProvider;
-import com.recruit.test.model.Role;
-import com.recruit.test.model.User;
+import Likelion.model.Role;
+import Likelion.model.User;
 import com.recruit.test.model.UserRepository;
-import com.recruit.test.repository.ProfileRepository;
+import Likelion.model.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;

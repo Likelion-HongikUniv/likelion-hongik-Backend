@@ -5,7 +5,7 @@ import com.recruit.test.config.auth.dto.OAuthAttributes;
 import com.recruit.test.config.auth.dto.SessionUser;
 import com.recruit.test.exception.ErrorCode;
 import com.recruit.test.exception.customException;
-import com.recruit.test.model.User;
+import Likelion.model.User;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

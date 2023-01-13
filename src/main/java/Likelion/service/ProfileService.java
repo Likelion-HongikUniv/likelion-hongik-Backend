@@ -1,8 +1,8 @@
-package com.recruit.test.service;
+package Likelion.service;
 
-import com.recruit.test.model.Profile;
-import com.recruit.test.model.User;
-import com.recruit.test.model.dto.ProfileDto;
+import Likelion.model.Profile;
+import Likelion.model.User;
+import Likelion.model.dto.dto.ProfileDto;
 
 public interface ProfileService {
 

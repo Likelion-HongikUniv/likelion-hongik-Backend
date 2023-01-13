@@ -1,7 +1,7 @@
-package com.recruit.test.model.dto;
+package Likelion.model.dto.dto;
 
-import com.recruit.test.model.Profile;
-import com.recruit.test.model.User;
+import Likelion.model.Profile;
+import Likelion.model.User;
 import lombok.Builder;
 import lombok.Getter;
 

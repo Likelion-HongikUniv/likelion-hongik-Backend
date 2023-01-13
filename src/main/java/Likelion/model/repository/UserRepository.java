@@ -1,2 +1,4 @@
-package Likelion.model.repository;public interface UserRepository {
+package Likelion.model.repository;
+
+public interface UserRepository {
 }

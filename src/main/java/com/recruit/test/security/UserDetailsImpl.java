@@ -1,6 +1,6 @@
 package com.recruit.test.security;
 
-import com.recruit.test.model.User;
+import Likelion.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
