@@ -18,9 +18,14 @@ public class ProfileServiceImpl implements ProfileService{
 
     @Override
     public void insertDetail(User user, ProfileDto profileDto) {
-
         Profile profile = profileDto.toEntity(user);
         profileRepository.save(profile);
         System.out.println("profile save 완료");
+    }
+
+    @Override
+    public Profile viewProfile(User user){
+        Profile profile = profileRepository.findById(user.getId());
+        return profile;
     }
 }

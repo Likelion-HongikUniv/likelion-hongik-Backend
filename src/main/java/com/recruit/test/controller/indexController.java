@@ -32,20 +32,20 @@ public class indexController {
     private final HttpSession httpSession;
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ProfileRepository profileRepository;
     private final ProfileService profileService;
 
     @GetMapping("/")
-    String index(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Model model){
+    String index(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Model model) {
 //        SessionUser sessionUser = (SessionUser) httpSession.getAttribute("user");
 
         System.out.println("userDetails = " + customOauthUser);
-        if(customOauthUser != null){
+        if (customOauthUser != null) {
             User user = customOauthUser.getUser();
 //            System.out.println("user.getRole() = " + user.getRole());
             model.addAttribute("message", user);
 
-        }
-        else{
+        } else {
             model.addAttribute("message", "hello~");
         }
 //        if(sessionUser != null){
@@ -61,17 +61,14 @@ public class indexController {
     }
 
 
-
-
-
     @GetMapping("/loginForm")
-    public String loginForm(){
+    public String loginForm() {
 //        System.out.println("여기는 로그인 폼이지롱~");
         return "loginForm";
     }
 
     @GetMapping("/user")
-    public @ResponseBody String user(@AuthenticationPrincipal OAuth2User userDetails){
+    public @ResponseBody String user(@AuthenticationPrincipal OAuth2User userDetails) {
 //        Optional<User> user = userRepository.findByEmail(userDetails.getAttributes().get("email").toString());
 //        UserDetailsImpl userDetails1 = new UserDetailsImpl(user.get(), userDetails.getAttributes());
         System.out.println("userDetails = " + userDetails.getAttributes());
@@ -86,12 +83,12 @@ public class indexController {
     }
 
     @GetMapping("/admin")
-    public @ResponseBody String admin(){
+    public @ResponseBody String admin() {
         return "admin";
     }
 
     @PostMapping("/accounts/detail_info/")
-    String detail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
+    String detail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto) {
         Optional<User> user = userRepository.findByEmail(customOauthUser.getUser().getEmail());
 
         profileService.insertDetail(customOauthUser.getUser(), profileDto);
@@ -100,18 +97,26 @@ public class indexController {
     }
 
     @GetMapping("/accounts/detail_info/")
-    String detail2(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
+    String detail2(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto) {
 
         // 로그인 유저의 email 추출
         Optional<User> user = userRepository.findByEmail(customOauthUser.getAttributes().get("email").toString());
         // profile_id와 엮을 user_id 추출
         int userId = user.get().getId();
 
-
-
         System.out.println("profileDto = " + profileDto.getMajor());
 
         return "detail";
     }
 
+    @GetMapping("/mypage")
+    public @ResponseBody Profile myPage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
+
+        // 로그인 유저의 email 추출
+        //Optional<User> user = userRepository.findByEmail(customOauthUser.getAttributes().get("email").toString());
+        // profile_id와 엮을 user_id 추출
+        User user = customOauthUser.getUser();
+        Profile profile = profileService.viewProfile(user);
+        return profile;
+    }
 }
