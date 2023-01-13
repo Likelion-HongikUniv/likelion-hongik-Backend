@@ -1,16 +1,66 @@
 # local DataSource
+#spring:
+#    datasource:
+#        driver-class-name: com.mysql.cj.jdbc.Driver
+#        url: jdbc:mysql:/mutsa-recruiting-backend-database.cvsvqfeuqnjc.ap-northeast-2.rds.amazonaws.com:3306/mutsa-recruiting-backend-db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&allowPublicKeyRetrieval=true&useSSL=false
+#        username: admin
+#        password: Mutsadatabase2023!
+#
+#    jpa:
+#        database: mysql
+#        hibernate:
+#            ddl-auto: none
+#            naming:
+#                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#        show_sql: true
+#        properties:
+#            hibernate:
+#                format_sql: true
+
+
+server:
+    port: 8080
+    servlet:
+        context-path: /
+        encoding:
+            charset: UTF-8
+            enabled: true
+            force: true
+
+app:
+    auth:
+        token:
+            secret-key: …
+            refresh-cookie-key: "refresh"
+    oauth2:
+        authorizedRedirectUri: "http://localhost:3000/oauth2/redirect"
+#    tokenExpirationMsec: 86400
+
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql:/mutsa-recruiting-backend-database.cvsvqfeuqnjc.ap-northeast-2.rds.amazonaws.com:3306/mutsa-recruiting-backend-db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false
+        #    url: jdbc:mysql://localhost:3306/recruit?serverTimezone=Asia/Seoul
+        #    username: cos
+        #    password: cos1234
+        url: jdbc:mysql://mutsa-recruiting-backend-db.cvsvqfeuqnjc.ap-northeast-2.rds.amazonaws.com:3306/Mutsa_Recruiting_Database?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
         username: admin
         password: Mutsadatabase2023!
 
+
     jpa:
         hibernate:
-            ddl-auto: none
-        propeties:
-            hibernate:
-                show_sql: true
+            ddl-auto: update #create update none
+            naming:
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        show-sql: true
 
-
+    security:
+        oauth2:
+            client:
+                registration:
+                    google: # /oauth2/authorization/google ? ??? ???? ??.
+                        client-id: ..
+                        client-secret: …
+                        scope:
+                            - email
+                            - profile
