@@ -31,8 +31,8 @@ public class Comment {
     private Post post;
 
     @ManyToOne(fetch = LAZY) //
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
+    @JoinColumn(name = "user_id")
+    private User user;
     @Column(columnDefinition = "TEXT", nullable = false)
     private String body; // 댓글 내용
 
@@ -50,9 +50,9 @@ public class Comment {
     private List<CommentLike> likeProfiles = new ArrayList<>();
 
     @Builder
-    public Comment( Post post, Profile profile, String body, List<CommentLike> likeProfiles, LocalDateTime createdTime, boolean isDeleted) {
+    public Comment( Post post, User user, String body, List<CommentLike> likeProfiles, LocalDateTime createdTime, boolean isDeleted) {
         this.post = post;
-        this.profile = profile;
+        this.user=user;
         this.body = body;
         this.likeProfiles=likeProfiles;
         this.createdTime= createdTime;
