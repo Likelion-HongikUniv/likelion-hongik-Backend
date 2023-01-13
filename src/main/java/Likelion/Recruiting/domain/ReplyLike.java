@@ -1,6 +1,8 @@
 package Likelion.Recruiting.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -8,6 +10,7 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReplyLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +22,13 @@ public class ReplyLike {
     private Reply reply;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    public void makeReplyLike(User user, Reply reply) {
+        this.user = user;
+        this.reply = reply;
+        user.getLikeReplis().add(this);
+        reply.getLikeUsers().add(this);
+    }
 }

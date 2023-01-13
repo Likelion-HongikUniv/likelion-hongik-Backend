@@ -1,12 +1,15 @@
 package Likelion.Recruiting.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Team {
 
     @Id
@@ -16,6 +19,10 @@ public class Team {
 
 
     @OneToMany(mappedBy = "team")
-    private List<Profile> profileList;
+    private List<User> userList;
 
+
+    public Team(String name) {
+        this.name = name;
+    }
 }
