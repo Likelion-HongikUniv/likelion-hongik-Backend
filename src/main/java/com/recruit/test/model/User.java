@@ -32,7 +32,7 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private com.recruit.test.model.Role role;
+    private Role role;
 
     @ManyToOne(fetch = LAZY) //
     @JoinColumn(name = "team_id")
