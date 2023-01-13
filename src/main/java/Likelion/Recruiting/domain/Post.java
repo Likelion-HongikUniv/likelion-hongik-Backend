@@ -26,6 +26,12 @@ public class Post {
 
     private Date createdTime;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+
+
 
 
 

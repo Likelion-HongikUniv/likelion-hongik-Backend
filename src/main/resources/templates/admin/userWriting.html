@@ -37,21 +37,32 @@
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>카테고리</th>
                                     <th>제목</th>
                                     <th>날짜</th>
+                                    <th>작성자</th>
                                     <th>옵션</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="post : ${posts}">
+                                    <td th:text="${post?.id}"></td>
                                     <td th:text="${post?.mainCategory}"></td>
                                     <td th:text="${post?.title}"></td>
                                     <td th:text="${post?.createdTime}"></td>
-                                    <td>
-                                        <a href="#" class="btn btn-danger" role="button">삭제</a>
-                                    </td>
+                                    <td th:text="${post?.user.name}"></td>
+                                    <td><a href="#" class="btn btn-danger" role="button">삭제</a></td>
                                 </tr>
+                                <!--
+                                <tr th:each="user : ${users}">
+                                    <td th:text="${user.posts[0]?.mainCategory}"></td>
+                                    <td th:text="${user.posts[0]?.title}"></td>
+                                    <td th:text="${user.posts[0]?.createdTime}"></td>
+                                    <td th:text="${user.posts[0]?.user.id}"></td>
+                                    <td><a href="#" class="btn btn-danger" role="button">삭제</a></td>
+                                </tr>
+                                -->
                                 </tbody>
                             </table>
                         </div>

@@ -3,6 +3,7 @@ package Likelion.Recruiting.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 
@@ -32,5 +33,9 @@ public class User {
     private String role;
 
     private String username;
+
+    @BatchSize(size = 1000)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Post> posts = new ArrayList<>();
 
 }

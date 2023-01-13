@@ -36,9 +36,5 @@ public class AdminController {
         return "admin/volunteers";
     }
 
-    @GetMapping("/admin/tables")
-    public String tables() {
-        return "admin/tables";
-    }
 }
 

@@ -70,8 +70,10 @@ public class UserController {
 
     @GetMapping("admin/users/{userId}/writing")
     public String writing(@PathVariable("userId") Long userId, Model model) {
+        List<User> users = userService.findUsers();
         List<Post> posts = postService.findPosts();
 
+        model.addAttribute("users", users);
         model.addAttribute("posts", posts);
 
         // user_id를 가지고 post랑 join 해야됨
