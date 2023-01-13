@@ -3,10 +3,7 @@ package Likelion.Recruiting.domain;
 
 import Likelion.Recruiting.domain.enums.MainCategory;
 import Likelion.Recruiting.domain.enums.SubCategory;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -19,6 +16,8 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class Post {
 
     @Id
@@ -58,14 +57,6 @@ public class Post {
 
     @OneToMany(mappedBy = "post")
     private List<PostImages> postImages;
-
-    @Builder
-    public Post(String title, String body, String mainCategory, String subCategory) {
-        this.title = title;
-        this.body = body;
-        this.mainCategory = MainCategory.valueOf(mainCategory);
-        this.subCategory = SubCategory.valueOf(subCategory);
-    }
 
     public void setUser(User user){
         this.author = user;
