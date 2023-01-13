@@ -39,13 +39,6 @@ app:
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        #    url: jdbc:mysql://localhost:3306/recruit?serverTimezone=Asia/Seoul
-        #    username: cos
-        #    password: cos1234
-        url: jdbc:mysql://mutsa-recruiting-backend-db.cvsvqfeuqnjc.ap-northeast-2.rds.amazonaws.com:3306/Mutsa_Recruiting_Database?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-        username: admin
-        password: Mutsadatabase2023!
-
 
     jpa:
         hibernate:
