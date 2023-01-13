@@ -1,7 +1,9 @@
 package Likelion.Recruiting.controller;
 
+import Likelion.Recruiting.domain.Post;
 import Likelion.Recruiting.domain.User;
 import Likelion.Recruiting.domain.UserForm;
+import Likelion.Recruiting.service.PostService;
 import Likelion.Recruiting.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -15,14 +17,17 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final PostService postService;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PostService postService) {
         this.userService = userService;
+        this.postService = postService;
     }
 
     @GetMapping("admin/users")
     public String list(Model model) {
         List<User> users = userService.findUsers();
+
         model.addAttribute("users", users);
 
         System.out.println(users);
@@ -37,7 +42,7 @@ public class UserController {
         User form = new User();
         form.setId(user.getId());
         form.setName(user.getName());
-        form.setName(user.getEmail());
+        form.setEmail(user.getEmail());
 
         model.addAttribute("form", form);
 
@@ -63,6 +68,18 @@ public class UserController {
         return "redirect:/admin/users";
     }
 
+    @GetMapping("admin/users/{userId}/writing")
+    public String writing(@PathVariable("userId") Long userId, Model model) {
+        List<Post> posts = postService.findPosts();
+
+        model.addAttribute("posts", posts);
+
+        // user_id를 가지고 post랑 join 해야됨
+        // user.id = user_id and post.author = user.name 인 post를 가져와서
+        // 해당 Html 파일에 넘겨줘야됨
+
+        return "admin/userWriting";
+    }
 
 
 }

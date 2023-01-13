@@ -12,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserRepository {
 
-
     private final EntityManager em;
 
     public User findOne(Long id) {

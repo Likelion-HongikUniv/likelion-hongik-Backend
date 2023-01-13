@@ -1,11 +1,16 @@
 package Likelion.Recruiting.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 
 import javax.persistence.Id;
+import java.util.ArrayList;
+import java.util.List;
+
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 // @Entity(name="Member") 이렇게하면 JPA에서는 User를 Member 라는 이름으로 사용가능
@@ -27,5 +32,8 @@ public class User {
     private String role;
 
     private String username;
+
+    @OneToOne(mappedBy = "user")
+    private Profile profile;
 
 }

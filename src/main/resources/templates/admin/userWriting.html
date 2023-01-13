@@ -20,39 +20,36 @@
             <!-- Topbar -->
             <head th:replace="fragments/topbar :: topbar" />
 
-            <!-- Begin Page Content -->
+            <!-- Begin Page Content 1 -->
             <div class="container-fluid">
 
                 <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">사용자</h1>
-                <p class="mb-4"> 모든 사용자 정보를 보여주는 페이지</p>
+                <h1 class="h3 mb-2 text-gray-800">게시글</h1>
+                <p class="mb-4"> 사용자가 작성한 게시글 조회</p>
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">유저 정보</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">게시글 리스트</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-                                    <th>이름</th>
-                                    <th>이메일</th>
+                                    <th>카테고리</th>
+                                    <th>제목</th>
+                                    <th>날짜</th>
+                                    <th>옵션</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="user : ${users}">
-                                    <td th:text="${user?.name}"></td>
-                                    <td th:text="${user?.email}"></td>
+                                <tr th:each="post : ${posts}">
+                                    <td th:text="${post?.mainCategory}"></td>
+                                    <td th:text="${post?.title}"></td>
+                                    <td th:text="${post?.createdTime}"></td>
                                     <td>
-                                        <a href="#" th:href="@{users/{id}/writing (id=${user.id})}" class="btn btn-primary" role="button">작성글</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" th:href="@{users/{id}/edit (id=${user.id})}" class="btn btn-primary" role="button">수정</a>
-                                    </td>
-                                    <td>
-                                        <a href="#" th:href="@{users/{id}/delete (id=${user.id})}" class="btn btn-danger" role="button">삭제</a>
+                                        <a href="#" class="btn btn-danger" role="button">삭제</a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -63,6 +60,52 @@
 
             </div>
             <!-- /.container-fluid -->
+
+            <!-- Begin Page Content-2 -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">댓글</h1>
+                <p class="mb-4">사용자가 작성한 댓글 조회</p>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">댓글 리스트</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>게시</th>
+                                    <th>댓글내용</th>
+                                    <th>날짜</th>
+                                    <th>옵션</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>코딩잘하는법</td>
+                                    <td>와우 정말 유익하네요!</td>
+                                    <td>2022.12.31</td>
+                                    <td><a class="btn btn-danger" role="button">삭제</a></td>
+                                </tr>
+                                <tr>
+                                    <td>컴공특</td>
+                                    <td>컴하하하하</td>
+                                    <td>2023.01.02</td>
+                                    <td><a class="btn btn-danger" role="button">삭제</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
 
         </div>
         <!-- End of Main Content -->
@@ -118,7 +161,7 @@
 <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
 <!-- Page level custom scripts -->
-<script src="js/demo/datatables-demo.js"></script>
+<script src="/js/demo/datatables-demo.js"></script>
 
 </body>
 
