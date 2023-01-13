@@ -8,5 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class ReplyApiController {
-    @PostMapping("/community/post")
+    @PostMapping("/community/post_id/comments/commnet_id")
 }
