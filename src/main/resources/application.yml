@@ -2,7 +2,7 @@
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql:/{host_name}:3306/{schema_name}?serverTimezone=UTC&characterEncoding=UTF-8&useSSL=false
+        url: jdbc:mysql:/{host_name}:3306/{schema_name}?serverTimezone=Asia/Seoul&characterEncoding=UTF-8&useSSL=false
         username: {username}
         password: {password}
 
@@ -12,5 +12,3 @@ spring:
         propeties:
             hibernate:
                 show_sql: true
-
-
