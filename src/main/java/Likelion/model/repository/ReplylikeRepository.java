@@ -1,7 +1,8 @@
 package Likelion.model.repository;
 
-import Likelion.model.Replylike;
+
+import Likelion.model.entity.ReplyLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReplylikeRepository extends JpaRepository<Replylike,Long> {
+public interface ReplyLikeRepository extends JpaRepository<ReplyLike,Long> {
 }
