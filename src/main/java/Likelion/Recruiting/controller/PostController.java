@@ -29,14 +29,14 @@ public class PostController {
     private final PostService postService;
     private final PostImagesService postImagesService;
 
-    @GetMapping("/community/posts/{mainCategory}/{subCategory}/")
-    public List<PostSimpleDto> getPosts() {
-        List<Post> posts = postService.findPosts();
-//        List<PostSimpleDto> result = posts.stream()
-//                .map(o -> new OrderDto(o))
-//                .collect(toList());
-//        return result;
-    }
+//    @GetMapping("/community/posts/{mainCategory}/{subCategory}/")
+//    public List<PostSimpleDto> getPosts() {
+//        List<Post> posts = postService.findPosts();
+////        List<PostSimpleDto> result = posts.stream()
+////                .map(o -> new OrderDto(o))
+////                .collect(toList());
+////        return result;
+//    }
 
     @Data
     @AllArgsConstructor
