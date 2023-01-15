@@ -2,6 +2,7 @@ package Likelion.Recruiting.model;
 
 
 import Likelion.Recruiting.model.enums.LType;
+import Likelion.Recruiting.model.enums.Role;
 import com.recruit.test.model.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -55,7 +56,7 @@ public class User {
 
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "team_name")
+    @JoinColumn(name = "team_id")
     private Team team;
 
     @OneToMany(
@@ -130,5 +131,9 @@ public class User {
         // user.getRoleKey() == ROLE_USER, ROLE_GUEST
 
         return this.getRole().getKey();
+    }
+    public void setTeam(Team team){
+        this.team = team;
+        team.getUserList().add(this);
     }
 }

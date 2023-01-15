@@ -2,7 +2,7 @@ package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.config.auth.JwtTokenProvider;
 import Likelion.Recruiting.repository.UserRepository;
-import Likelion.Recruiting.model.Role;
+import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

@@ -67,3 +67,4 @@ public class Comment {
         post.getComments().add(this);
     }
 }
+

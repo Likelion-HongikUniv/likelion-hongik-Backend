@@ -49,8 +49,8 @@ public class Reply {
         this.author = user;
         user.getReplies().add(this);
     }
-//    public void setComment(Comment comment){
-//        this.comment = comment;
-//        comment.getReplies().add(this);
-//    }
+    public void setComment(Comment comment){
+        this.comment = comment;
+        comment.getReplies().add(this);
+    }
 }
