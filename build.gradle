@@ -4,15 +4,9 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
-group = 'Likelion'
+group = 'com.recruit'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
-}
 
 repositories {
 	mavenCentral()
@@ -20,14 +14,33 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-mustache' // 템플릿 엔진
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-
-	implementation 'mysql:mysql-connector-java'
-
 	compileOnly 'org.projectlombok:lombok'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.6.2'
+
+	//jwt 관련
+	implementation "io.jsonwebtoken:jjwt:0.9.1"
+
+	// https://mvnrepository.com/artifact/org.webjars/jquery
+	implementation group: 'org.webjars', name: 'jquery', version: '3.5.1'
+
+	// https://mvnrepository.com/artifact/org.webjars/bootstrap
+	implementation group: 'org.webjars', name: 'bootstrap', version: '4.6.0'
+
+	// https://mvnrepository.com/artifact/org.webjars/webjars-locator-core
+	implementation group: 'org.webjars', name: 'webjars-locator-core', version: '0.46'
+
+	// https://mvnrepository.com/artifact/org.webjars/js-cookie
+	implementation group: 'org.webjars', name: 'js-cookie', version: '2.1.0'
+
+
 }
 
 tasks.named('test') {
