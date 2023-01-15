@@ -33,7 +33,7 @@ public class Reply {
     private String body;
 
     @Column(nullable = false)
-    private LocalDateTime createTime;
+    private final LocalDateTime createTime= LocalDateTime.now();
 
     private boolean isDeleted; //default 는 false로 설정하기
 
@@ -43,6 +43,11 @@ public class Reply {
             orphanRemoval = true
     )
     private List<ReplyLike> likeUsers = new ArrayList<>();
+
+    public Reply(String body) {
+        this.body = body;
+        this.isDeleted = false;
+    }
 
 
     public void setUser(User user){

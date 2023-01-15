@@ -1,6 +1,7 @@
-package Likelion.model.dto;
+package Likelion.Recruiting.model.dto;
 
-import Likelion.model.entity.User;
+import Likelion.Recruiting.model.User;
+
 import lombok.Data;
 
 @Data

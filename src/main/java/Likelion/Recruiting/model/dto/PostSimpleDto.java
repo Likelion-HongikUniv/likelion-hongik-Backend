@@ -1,6 +1,7 @@
-package Likelion.model.dto;
+package Likelion.Recruiting.model.dto;
 
-import Likelion.model.entity.Post;
+
+import Likelion.Recruiting.model.Post;
 import lombok.Data;
 
 import java.time.LocalDateTime;

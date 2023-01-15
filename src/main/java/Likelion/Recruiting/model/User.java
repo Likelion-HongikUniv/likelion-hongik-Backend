@@ -1,9 +1,10 @@
 package Likelion.Recruiting.model;
 
 
-import Likelion.Recruiting.model.enums.LType;
+
 import Likelion.Recruiting.model.enums.Role;
-import com.recruit.test.model.*;
+import Likelion.Recruiting.model.enums.LType;
+
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -103,7 +104,7 @@ public class User {
 
 
     @Builder
-    public User(String name, String email, LType lType, Role role) {
+    public User(String name, String email,LType lType, Role role) {
         this.name = name;
         this.email = email;
         this.lType = lType;

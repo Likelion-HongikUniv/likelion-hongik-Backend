@@ -1,4 +1,4 @@
-package Likelion.model.entity.enums;
+package Likelion.Recruiting.model.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

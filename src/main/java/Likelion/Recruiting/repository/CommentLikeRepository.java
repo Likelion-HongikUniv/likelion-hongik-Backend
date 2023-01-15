@@ -1,7 +1,8 @@
-package Likelion.model.repository;
+package Likelion.Recruiting.repository;
 
 
-import Likelion.model.entity.CommentLike;
+
+import Likelion.Recruiting.model.CommentLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentLikeRepository extends JpaRepository<CommentLike,Long> {

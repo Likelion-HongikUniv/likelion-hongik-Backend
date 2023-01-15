@@ -1,6 +1,7 @@
 package Likelion.Recruiting.model;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -33,7 +34,7 @@ public class Comment {
     private String body;
 
     @Column(nullable = false)
-    private LocalDateTime createdTime; //생성할떄 현재시각 넣기
+    private final LocalDateTime createdTime = LocalDateTime.now(); //생성할떄 현재시각 넣기
 
     private boolean isDeleted; //default 는 false로 설정하기
 
@@ -51,14 +52,13 @@ public class Comment {
     )
     private List<CommentLike> likeUsers = new ArrayList<>();
 
-    public Comment(String body, LocalDateTime createdTime, boolean isDeleted) {
+    @Builder
+    public Comment(String body) {
         this.body = body;
-        this.createdTime = LocalDateTime.now();
         this.isDeleted = false;
     }
 
-
-    public void setUser(User user){
+    public void setAuthor(User user){
         this.author = user;
         user.getComments().add(this);
     }

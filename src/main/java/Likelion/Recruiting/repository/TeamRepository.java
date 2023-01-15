@@ -1,8 +1,9 @@
-package Likelion.model.repository;
+package Likelion.Recruiting.repository;
 
 
-import Likelion.model.entity.Team;
+import Likelion.Recruiting.model.Team;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TeamRepository extends JpaRepository<Team,String> {
+public interface TeamRepository extends JpaRepository<Team,Long> {
 }

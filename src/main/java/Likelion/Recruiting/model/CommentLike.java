@@ -1,6 +1,7 @@
 package Likelion.Recruiting.model;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -25,6 +26,7 @@ public class CommentLike {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
 
     public void makeCommentLike(User user, Comment comment) {
         this.user = user;

@@ -16,8 +16,6 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
-@Builder
 public class Post {
 
     @Id
@@ -39,7 +37,7 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private SubCategory subCategory;
 
-    private LocalDateTime createdTime;
+    private final LocalDateTime createdTime= LocalDateTime.now();
 
     @OneToMany(
             mappedBy = "post",
@@ -55,10 +53,20 @@ public class Post {
     )
     private List<PostLike> likeUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
-    private List<PostImages> postImages;
+    @OneToMany(mappedBy = "post",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<PostImages> postImages = new ArrayList<>();
 
-    public void setUser(User user){
+    @Builder
+    public Post(String title, String body, MainCategory mainCategory, SubCategory subCategory) {
+        this.title = title;
+        this.body = body;
+        this.mainCategory = mainCategory;
+        this.subCategory = subCategory;
+    }
+
+    public void setAuthor(User user){
         this.author = user;
         user.getPosts().add(this);
     }
@@ -71,4 +79,5 @@ public class Post {
     public void changeSubCategory(SubCategory subCategory){
         this.subCategory = subCategory;
     }
+
 }

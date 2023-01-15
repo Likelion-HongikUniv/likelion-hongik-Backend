@@ -1,6 +1,7 @@
-package Likelion.model.repository;
+package Likelion.Recruiting.repository;
 
-import Likelion.model.entity.PostImages;
+import Likelion.Recruiting.model.PostImages;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PostImagesRepository extends JpaRepository<PostImages,Long> {
