@@ -33,7 +33,7 @@ public class Reply {
     private String body;
 
     @Column(nullable = false)
-    private final LocalDateTime createTime= LocalDateTime.now();
+    private final LocalDateTime createdTime= LocalDateTime.now();
 
     private boolean isDeleted; //default 는 false로 설정하기
 

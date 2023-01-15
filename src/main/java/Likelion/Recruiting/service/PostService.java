@@ -1,14 +1,10 @@
 package Likelion.Recruiting.service;
 
 
-import Likelion.Recruiting.model.Post;
-import Likelion.Recruiting.model.PostImages;
-import Likelion.Recruiting.model.User;
+import Likelion.Recruiting.model.*;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
-import Likelion.Recruiting.repository.CommentRepository;
-import Likelion.Recruiting.repository.PostLikeRepository;
-import Likelion.Recruiting.repository.PostRepository;
+import Likelion.Recruiting.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,10 +22,12 @@ public class PostService {
     @Autowired
     private final PostLikeRepository postLikeRepository;
     @Autowired
-    private final CommentRepository commentRepository;
+    private final CommentLikeRepository commentLikeRepository;
+    @Autowired
+    private final ReplyLikeRepository replyLikeRepository;
 
-    public Post createPost(Post post, User user, ArrayList<String> imageUrls) {
-        ArrayList<PostImages> postImages = new ArrayList<>();
+    public Post createPost(Post post, User user, List<String> imageUrls) {
+        List<PostImages> postImages = new ArrayList<>();
         for (int i = 0; i < imageUrls.size(); i++) {
             postImages.add(PostImages.builder()
                     .url(imageUrls.get(i))
@@ -41,10 +39,13 @@ public class PostService {
         return createdPost;
     }
     public Long countingPostLike(Long id){
-        return postLikeRepository.countById(id);
+        return postLikeRepository.countByPostId(id);
     }
     public Long countingCommentLike(Long id){
-        return commentRepository.countById(id);
+        return commentLikeRepository.countByCommentId(id);
+    }
+    public Long countingReplyLike(Long id){
+        return replyLikeRepository.countByReplyId(id);
     }
     public List<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory){
         return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory);

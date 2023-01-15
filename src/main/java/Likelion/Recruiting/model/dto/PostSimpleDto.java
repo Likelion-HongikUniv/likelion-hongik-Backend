@@ -2,6 +2,7 @@ package Likelion.Recruiting.model.dto;
 
 
 import Likelion.Recruiting.model.Post;
+import Likelion.Recruiting.model.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -18,10 +19,10 @@ public class PostSimpleDto {
     private Long commentCount;
     private LocalDateTime createdTime;
 
-    public PostSimpleDto(Post post, Long likeCount, Long commentCount) {
+    public PostSimpleDto(Post post, User user, Long likeCount, Long commentCount) {
         this.id = post.getId();
         this.title = post.getTitle();
-        this.author = new UserSimpleDto(post.getAuthor());
+        this.author = new UserSimpleDto(post.getAuthor().getId(),post.getAuthor().getNickname(),post.getAuthor().getProfileImage(), user);
         this.body = post.getBody();
         if (post.getPostImages().isEmpty() == false)
             this.thumbNailUrl = String.valueOf(post.getPostImages().get(0));

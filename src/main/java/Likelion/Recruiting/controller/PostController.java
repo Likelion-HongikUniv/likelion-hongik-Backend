@@ -3,6 +3,7 @@ package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.User;
+import Likelion.Recruiting.model.dto.PostDetailDto;
 import Likelion.Recruiting.model.dto.PostSimpleDto;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
@@ -42,11 +43,13 @@ public class PostController {
     @Autowired
     private final PostLikeRepository postLikeRepository;
 
-    @GetMapping("/community/posts/{mainCategory}/{subCategory}")
-    public Result getPosts(@RequestHeader("HEADER") String header,@PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
+    @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
+    public Result getSimplePosts(@RequestHeader("HEADER") String header,@PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
         List<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory));
+        Long id = Long.valueOf(1);
+        User user = userRepository.findById(id).get();
         List<PostSimpleDto> result = posts.stream()
-                .map(p -> new PostSimpleDto(p,postService.countingPostLike(p.getId()),postService.countingCommentLike(p.getId())))
+                .map(p -> new PostSimpleDto(p,user,postService.countingPostLike(p.getId()),postService.countingCommentLike(p.getId())))
                 .collect(toList());
        return new Result(result.size(), result);
     }
@@ -63,8 +66,8 @@ public class PostController {
     static class MemberDto {
         private String name;
     }
-
-    @PostMapping("/community/posts/{mainCategory}/{subCategory}")
+//-------------------------------------------------------------------------------------------------------
+    @PostMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 저장 api
     public CreatePostResponse savePost(@RequestHeader("HEADER") String header, @RequestBody CreatePostRequest request, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
 
         CreatePostRequest createPostRequest = new CreatePostRequest(request.getTitle(), request.getBody(), MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),request.getImageUrls());
@@ -112,6 +115,26 @@ public class PostController {
         public CreatePostResponse(Long id) {
             this.id = id;
         }
+    }
+
+    //----------------------------------------------------------------------------------------------------------------------------
+    @GetMapping("/community/post/{postId}")//게시글 상세보기
+    public PostDetailDto getPostDetail(@RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
+        Post post = postRepository.findById(postId).get();
+        // user insert partition
+        Long id = Long.valueOf(1);
+        User user = userRepository.findById(id).get();
+        PostDetailDto result = new PostDetailDto(post, user);
+        result.setLikeCount(postService.countingPostLike(result.getId()));
+        for(int i = 0; i<result.getComments().size();i++){
+            result.getComments().get(i)
+                    .setLikeCount(postService.countingCommentLike(result.getComments().get(i).getId()));
+            for(int k = 0; k<result.getComments().get(i).getReplies().size(); k++){
+                result.getComments().get(i).getReplies().get(k)
+                        .setLikeCount(postService.countingReplyLike(result.getComments().get(i).getReplies().get(k).getId()));
+            }
+        }
+        return result;
     }
 }
 
