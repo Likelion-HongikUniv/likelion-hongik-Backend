@@ -28,7 +28,7 @@ public class ReplyServiceImpl {
     public Reply createReply(Long user_id, Long comment_id, Reply reply){
         User user = userRepository.findById(user_id);
         Comment comment = commentRepository.findById(comment_id).orElseThrow(() ->
-                new IllegalArgumentException("답글 쓰기 실패: 해당 게시글이 존재하지 않습니다." + id));
+                new IllegalArgumentException("답글 쓰기 실패: 해당 게시글이 존재하지 않습니다." + comment_id));
         Reply createReply = replyRepository.save(reply);
 
         reply.setUser(user);
