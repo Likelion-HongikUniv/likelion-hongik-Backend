@@ -1,7 +1,6 @@
 package Likelion.controller;
 
 import Likelion.config.auth.dto.SessionUser;
-import Likelion.model.User;
 import Likelion.model.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;

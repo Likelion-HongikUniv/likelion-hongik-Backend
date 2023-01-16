@@ -1,8 +1,11 @@
 package Likelion.model.dto;
 
 import Likelion.model.*;
+import Likelion.model.entity.Comment;
+import Likelion.model.entity.Profile;
+import Likelion.model.entity.Reply;
+import Likelion.model.entity.User;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -15,34 +18,31 @@ import java.time.format.DateTimeFormatter;
 public class ReplyDto {
     private Long reply_id;
     private String body;
-    private String createDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyy.MM.dd HH:mm"));
+    private LocalDateTime createtime;
     private boolean isDeleted;
 
-    private Comments comments;
-    private Profile author;
-    private User user;
+    private CommentDto comment_id;
+    private UserSimpleDto user_id;
 
-
-    @Builder
-    /* Entity -> Dto*/
-    public ReplyDto(Long reply_id, String createDate, String body, boolean isDeleted){
+    /*ResponseDTO: Entity -> Dto*/
+    public ReplyDto(Long reply_id, String body, LocalDateTime createtime, boolean isDeleted, CommentDto comment_id, UserSimpleDto user_id){
         this.reply_id = reply_id;
-        this.createDate = createDate;
-        this.isDeleted = isDeleted;
         this.body = body;
+        this.createtime = createtime;
+        this.isDeleted = isDeleted;
     }
-    /*Dto -> Entity*/
+    /*RequestDTO: DTO -> Entity*/
     public Reply toEntity(){
         Reply reply = Reply.builder()
-                .user(user)
-                .author(author)
-                .comments(comments)
                 .reply_id(reply_id)
-                .createDate(createDate)
-                .isDeleted(isDeleted)
+                .body(body)
+                .createtime(LocalDateTime.now())
+                .comment_id(comment_id)
+                .user_id(user_id)
                 .build();
-
         return reply;
+
     }
+
 
 }

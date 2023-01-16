@@ -1,4 +1,4 @@
-package Likelion.model;
+package Likelion.model.entity;
 
 import lombok.Builder;
 import lombok.Getter;

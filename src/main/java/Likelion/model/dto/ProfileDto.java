@@ -1,7 +1,7 @@
-package Likelion.model.dto.dto;
+package Likelion.model.dto;
 
-import Likelion.model.Profile;
-import Likelion.model.User;
+import Likelion.model.entity.Profile;
+import Likelion.model.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -1,6 +1,6 @@
 package Likelion.model.repository;
 
-import Likelion.model.Profile;
+import Likelion.model.entity.Profile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ProfileRepository extends JpaRepository<Profile, Integer> {

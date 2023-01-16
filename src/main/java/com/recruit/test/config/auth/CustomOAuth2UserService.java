@@ -1,11 +1,11 @@
 package com.recruit.test.config.auth;
 
 
+import Likelion.model.repository.UserRepository;
 import com.recruit.test.config.auth.dto.OAuthAttributes;
 import com.recruit.test.config.auth.dto.SessionUser;
 import com.recruit.test.exception.ErrorCode;
 import com.recruit.test.exception.customException;
-import Likelion.model.User;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

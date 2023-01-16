@@ -1,7 +1,6 @@
 package com.recruit.test.config.auth.dto;
 
-import Likelion.model.Role;
-import Likelion.model.User;
+import Likelion.model.entity.User;
 import lombok.Builder;
 import lombok.Getter;
 

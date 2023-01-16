@@ -1,6 +1,5 @@
 package com.recruit.test.config.auth.dto;
 
-import Likelion.model.User;
 import lombok.Getter;
 
 import java.io.Serializable;

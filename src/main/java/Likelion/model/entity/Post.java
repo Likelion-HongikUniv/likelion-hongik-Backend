@@ -28,7 +28,7 @@ public class Post {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
-    private User author;
+    private User user;
 
     private String title;
 
@@ -60,7 +60,7 @@ public class Post {
     private List<PostImages> postImages;
 
     public void setUser(User user){
-        this.author = user;
+        this.user = user;
         user.getPosts().add(this);
     }
 

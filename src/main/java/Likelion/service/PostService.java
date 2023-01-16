@@ -17,8 +17,8 @@ public class PostService {
 
     @Transactional
     public Post createPost(Post post) {
-        Post createdPost = postRepository.save(post);
-        return createdPost;
+        Post createPost = postRepository.save(post);
+        return createPost;
     }
     @Transactional
     public List<Post> findPosts() {

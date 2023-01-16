@@ -1,6 +1,6 @@
 package Likelion.service;
 
-import com.recruit.test.model.UserRepository;
+import Likelion.model.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

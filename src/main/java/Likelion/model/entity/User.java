@@ -24,7 +24,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long id;
+    private Long user_id;
 
     @Column(nullable = false)
     private String name;
@@ -100,7 +100,7 @@ public class User {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<ReplyLike> likeReplis = new ArrayList<>();
+    private List<Replylike> likeReplies = new ArrayList<>();
 
     public User(String name, String email, LType lType, Role role) {
         this.name = name;

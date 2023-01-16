@@ -1,9 +1,8 @@
-package com.recruit.test.controller;
+package Likelion.controller;
 
 import com.recruit.test.config.auth.CustomOauthUserImpl;
 import com.recruit.test.config.auth.JwtTokenProvider;
-import Likelion.model.Profile;
-import Likelion.model.User;
+import Likelion.model.entity.Profile;
 import com.recruit.test.model.UserRepository;
 import Likelion.model.dto.dto.ProfileDto;
 import Likelion.service.ProfileService;

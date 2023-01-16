@@ -10,11 +10,11 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReplyLike {
+public class Replylike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reply_like_id")
-    private Long id;
+    private Long replylike_id;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "reply_id")

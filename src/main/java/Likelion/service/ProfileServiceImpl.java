@@ -1,24 +1,40 @@
 package Likelion.service;
 
+import Likelion.model.entity.Profile;
+import Likelion.model.entity.User;
 import Likelion.model.repository.UserRepository;
+import Likelion.model.dto.ProfileDto;
+import Likelion.model.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
+@Service
 public class ProfileServiceImpl implements ProfileService{
 
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
 
-//    @Override
-//    public void insertDetail(ProfileDto profileDto, User user, String nickname, String major, String studentId, String part, String phoneNum) {
-//        ProfileDto.builder()
-//                .user(user)
-//                .nickname(nickname)
-//                .major(major)
-//                .studentId(studentId)
-//                .part(part)
-//                .phoneNum(phoneNum)
-//                .build();
-//    }
+
+    @Override
+    public void insertDetail(User user, ProfileDto profileDto) {
+
+        Profile profile = profileDto.toEntity(user);
+        profileRepository.save(profile);
+        System.out.println("profile save 완료");
+    }
+
+    @Override
+    public Profile haveUser(int userId) {
+        return profileRepository.findByUser_Id(userId);
+    }
+
+    @Override
+    public Profile viewProfile(User user){
+        Profile profile = profileRepository.findByUser_Id(user.getId());
+        System.out.println("profile = " + profile.getMajor());
+        return profile;
+    }
 
 
 }

@@ -1,6 +1,5 @@
 package com.recruit.test.config.auth;
 
-import Likelion.model.Role;
 import com.recruit.test.model.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

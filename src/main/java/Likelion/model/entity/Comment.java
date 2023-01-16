@@ -20,11 +20,11 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
-    private Long id;
+    private Long comment;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id",nullable = false)
-    private User author;
+    private User user;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id",nullable = false)
@@ -60,7 +60,7 @@ public class Comment {
 
 
     public void setUser(User user){
-        this.author = user;
+        this.user = user;
         user.getComments().add(this);
     }
     public void setPost(Post post){

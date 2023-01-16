@@ -1,6 +1,5 @@
 package com.recruit.test.config.auth;
 
-import Likelion.model.User;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;

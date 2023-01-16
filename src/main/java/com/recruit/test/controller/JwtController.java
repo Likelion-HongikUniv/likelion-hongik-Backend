@@ -2,8 +2,6 @@ package com.recruit.test.controller;
 
 import com.recruit.test.config.auth.CustomOauthUserImpl;
 import com.recruit.test.config.auth.JwtTokenProvider;
-import Likelion.model.Role;
-import Likelion.model.User;
 import com.recruit.test.model.UserRepository;
 import Likelion.model.repository.ProfileRepository;
 import lombok.RequiredArgsConstructor;
