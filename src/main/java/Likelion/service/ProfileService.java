@@ -1,5 +1,6 @@
 package Likelion.service;
 
+import Likelion.model.dto.ProfileDto;
 import Likelion.model.entity.Profile;
 import Likelion.model.entity.User;
 
