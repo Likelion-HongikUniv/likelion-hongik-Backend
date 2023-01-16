@@ -15,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 public class CommentLike {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "comment_like_id")
     private Long id;
 

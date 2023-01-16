@@ -19,7 +19,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "post_id")
     private Long id;
 

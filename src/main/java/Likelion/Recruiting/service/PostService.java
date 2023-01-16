@@ -12,9 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostService {
     @Autowired
@@ -26,6 +27,7 @@ public class PostService {
     @Autowired
     private final ReplyLikeRepository replyLikeRepository;
 
+    @Transactional
     public Post createPost(Post post, User user, List<String> imageUrls) {
         List<PostImages> postImages = new ArrayList<>();
         for (int i = 0; i < imageUrls.size(); i++) {
@@ -38,24 +40,11 @@ public class PostService {
         Post createdPost = postRepository.save(post);
         return createdPost;
     }
-    public Long countingPostLike(Long id){
-        return postLikeRepository.countByPostId(id);
-    }
-    public Long countingCommentLike(Long id){
-        return commentLikeRepository.countByCommentId(id);
-    }
-    public Long countingReplyLike(Long id){
-        return replyLikeRepository.countByReplyId(id);
-    }
     public List<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory){
         return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory);
     }
 
-//    public List<Post> findPosts() {
-//        return postRepository.findAll();
-//    }
-
-//    public List<Post> findAllWithPostImages() {
-//        return postRepository.findAll();
-//    }
+    public Post searchOneId(Long id) {
+        return postRepository.findById(id);
+    }
 }

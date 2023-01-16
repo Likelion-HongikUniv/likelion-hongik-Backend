@@ -15,7 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 public class PostImages {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "image_id")
     private Long id;
 

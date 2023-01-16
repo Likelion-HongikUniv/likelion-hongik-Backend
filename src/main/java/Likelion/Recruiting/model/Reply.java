@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Reply {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "reply_id")
     private Long id;
 
@@ -35,7 +35,7 @@ public class Reply {
     @Column(nullable = false)
     private final LocalDateTime createdTime= LocalDateTime.now();
 
-    private boolean isDeleted; //default 는 false로 설정하기
+    private Boolean isDeleted; //default 는 false로 설정하기
 
     @OneToMany(
             mappedBy = "reply",

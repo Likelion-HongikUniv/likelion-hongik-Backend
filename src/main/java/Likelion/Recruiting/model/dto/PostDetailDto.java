@@ -31,6 +31,7 @@ public class PostDetailDto {
                 .map(postImages -> postImages.getUrl())
                 .collect(Collectors.toList());
         this.createdTime = createdTime;
+        this.likeCount = (long)post.getLikeUsers().size();
         this.comments = post.getComments().stream()
                 .map(comment -> new CommentDto(comment,user))
                 .collect(Collectors.toList());;

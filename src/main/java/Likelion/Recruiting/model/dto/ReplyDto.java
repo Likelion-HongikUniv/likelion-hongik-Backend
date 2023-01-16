@@ -21,7 +21,8 @@ public class ReplyDto {
         this.id = reply.getId();
         this.author = new UserSimpleDto(reply.getAuthor().getId(), reply.getAuthor().getNickname(), reply.getAuthor().getProfileImage(), user);
         this.body = reply.getBody();
-        this.isDeleted = reply.isDeleted();
+        this.isDeleted = reply.getIsDeleted();
         this.createdTime = reply.getCreatedTime();
+        this.likeCount = (long)reply.getLikeUsers().size();
     }
 }

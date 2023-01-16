@@ -18,7 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
 
@@ -36,7 +36,7 @@ public class Comment {
     @Column(nullable = false)
     private final LocalDateTime createdTime = LocalDateTime.now(); //생성할떄 현재시각 넣기
 
-    private boolean isDeleted; //default 는 false로 설정하기
+    private Boolean isDeleted; //default 는 false로 설정하기
 
     @OneToMany(
             mappedBy = "comment",

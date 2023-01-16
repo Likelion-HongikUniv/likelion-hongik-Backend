@@ -10,7 +10,7 @@ public class UserSimpleDto {
     private Long id;
     private String nickname;
     private String profileImage;
-    private boolean isAuthor;
+    private Boolean isAuthor;
 
     public UserSimpleDto(Long id, String nickname, String profileImage,User user) {
         this.id = id;
@@ -20,6 +20,7 @@ public class UserSimpleDto {
             this.isAuthor = true;
         else this.isAuthor = false;
     }
+
 
 
 }

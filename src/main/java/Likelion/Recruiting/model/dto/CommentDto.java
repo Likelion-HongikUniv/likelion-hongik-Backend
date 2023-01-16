@@ -14,7 +14,7 @@ public class CommentDto {
     private Long id;
     private UserSimpleDto author;
     private String body;
-    private boolean isDeleted;
+    private Boolean isDeleted;
     private LocalDateTime createdTime;
     private Long likeCount;
     private List<ReplyDto> replies;
@@ -23,10 +23,12 @@ public class CommentDto {
         this.id = comment.getId();
         this.author = new UserSimpleDto(comment.getAuthor().getId(),comment.getAuthor().getNickname(),comment.getAuthor().getProfileImage(), user);
         this.body = comment.getBody();
-        this.isDeleted = comment.isDeleted();
+        this.isDeleted = comment.getIsDeleted();
         this.createdTime = comment.getCreatedTime();
+        this.likeCount = (long)comment.getLikeUsers().size();
         this.replies = comment.getReplies().stream()
                 .map(reply -> new ReplyDto(reply,user))
                 .collect(Collectors.toList());
+
     }
 }
