@@ -1,9 +1,7 @@
 package Likelion.service;
 
 
-import Likelion.model.dto.ReplyDto;
 import Likelion.model.entity.Comment;
-import Likelion.model.entity.Post;
 import Likelion.model.entity.Reply;
 import Likelion.model.entity.User;
 import Likelion.model.repository.CommentRepository;
@@ -19,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ReplyServiceImpl {
+public class ReplyService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
