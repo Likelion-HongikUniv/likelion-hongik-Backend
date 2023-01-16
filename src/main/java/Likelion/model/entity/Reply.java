@@ -65,4 +65,7 @@ public class Reply {
     public void setComment(Comment comment_id){
         comment_id.getReplies().add(this);
     }
+    public void updateReply(String body) {
+        this.body = body;
+    }
 }

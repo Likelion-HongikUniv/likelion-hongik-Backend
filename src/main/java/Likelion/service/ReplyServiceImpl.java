@@ -2,7 +2,10 @@ package Likelion.service;
 
 
 import Likelion.model.dto.ReplyDto;
+import Likelion.model.entity.Comment;
+import Likelion.model.entity.Post;
 import Likelion.model.entity.Reply;
+import Likelion.model.entity.User;
 import Likelion.model.repository.CommentRepository;
 import Likelion.model.repository.PostRepository;
 import Likelion.model.repository.ReplyRepository;
@@ -22,21 +25,31 @@ public class ReplyServiceImpl {
     private final CommentRepository commentRepository;
     private final ReplyRepository replyRepository;
     @Transactional
-    public Reply createReply(Reply reply){
-        Reply createReply = replyRepository.save(reply)
-        return createReply;
+    public Reply createReply(Long user_id, Long comment_id, Reply reply){
+        User user = userRepository.findById(user_id);
+        Comment comment = commentRepository.findById(comment_id).orElseThrow(() ->
+                new IllegalArgumentException("답글 쓰기 실패: 해당 게시글이 존재하지 않습니다." + id));
+        Reply createReply = replyRepository.save(reply);
+
+        reply.setUser(user);
+        reply.setComment(comment);
+
     }
     @Transactional
     public List<Reply> findReplies(){
         return replyRepository.findAll();
     }
     @Transactional
-    public void removeReply(Long reply_id){
-        replyRepository.deleteById(reply_id);
+    public void modifyReply(Long reply_id){
+        Reply reply = replyRepository.findById(reply_id).orElseThrow(()->
+                new IllegalArgumentException("해당 답글이 존재하지 않음" + reply_id));
+        reply.updateReply(reply.getBody());
     }
     @Transactional
-    public void modify(ReplyDto replyDto){
-
+    public void deleteReply(Long reply_id){
+        Reply reply = replyRepository.findById(reply_id).orElseThrow(()->
+                new IllegalArgumentException("해당 답글 존재하지 않음 id= " + reply_id));
+        replyRepository.delete(reply);
     }
 }
 
