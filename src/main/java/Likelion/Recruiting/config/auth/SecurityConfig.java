@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -19,6 +20,9 @@ public class SecurityConfig {
 
     private final CustomOAuth2UserService customOAuth2UserService;
     private final JwtTokenProvider jwtTokenProvider;
+//    private final AuthenticationSuccessHandler authenticationSuccessHandler;
+    private final CustomAuthSuccessHandler customAuthSuccessHandler;
+
 
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
@@ -44,7 +48,8 @@ public class SecurityConfig {
                 .oauth2Login()
                 .loginPage("/loginForm")
 //                .loginProcessingUrl("/login") // /login 주소가 호출이 되면 시큐리티가 낚아채서 대신 로그인을 진행해준다 -> 내가 controller에 /login을 만들지 않아도 된다.
-                .defaultSuccessUrl("/token", true)
+//                .defaultSuccessUrl("/token", true)
+                .successHandler(customAuthSuccessHandler) // 꼭 추가해주세요!
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService);
 

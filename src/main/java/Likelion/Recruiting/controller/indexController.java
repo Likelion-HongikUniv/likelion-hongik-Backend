@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -63,18 +64,10 @@ public class indexController {
     }
 
     @GetMapping("/user")
-    public @ResponseBody String user(@AuthenticationPrincipal OAuth2User userDetails){
-//        Optional<User> user = userRepository.findByEmail(userDetails.getAttributes().get("email").toString());
-//        UserDetailsImpl userDetails1 = new UserDetailsImpl(user.get(), userDetails.getAttributes());
-        System.out.println("userDetails = " + userDetails.getAttributes());
-//        System.out.println("userDetails1.getUser().getEmail() = " + userDetails1.getUser().getEmail());
-//
-//        int userId = userDetails1.getUser().getId();
-//        Profile profile = Profile.builder()
-//                .
-//        System.out.println("profileDto = " + profileDto);
+    public @ResponseBody List<User> user(@AuthenticationPrincipal OAuth2User userDetails){
+        List<User> users = userService.findUserAll();
 
-        return "user";
+        return users;
     }
 
     @GetMapping("/admin")

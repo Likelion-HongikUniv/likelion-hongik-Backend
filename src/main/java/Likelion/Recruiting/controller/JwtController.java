@@ -1,16 +1,20 @@
 package Likelion.Recruiting.controller;
 
+import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
 import Likelion.Recruiting.config.auth.JwtTokenProvider;
 import Likelion.Recruiting.repository.UserRepository;
 import Likelion.Recruiting.model.Role;
 import Likelion.Recruiting.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,10 +25,12 @@ public class JwtController {
 
     // 여기서 JWT를 돌려줄 것이다.
     @GetMapping("/token")
-    public String testOAuthLogin(@AuthenticationPrincipal OAuth2User userDetails, HttpServletResponse response){
+    public String testOAuthLogin(Authentication authentication, HttpServletResponse response) throws IOException {
 
+
+        OAuth2User oAuth2User1 = (OAuth2User) authentication.getPrincipal();
         // 해당 email을 가진 유저 객체 가져오기
-        User user = userRepository.findByEmail(userDetails.getAttributes().get("email").toString()).get();
+        User user = userRepository.findByEmail(oAuth2User1.getAttributes().get("email").toString()).get();
 
         // JWT 속 암호화 할 정보들 세팅하기
         String email = user.getEmail();
@@ -36,8 +42,12 @@ public class JwtController {
 
         // 응답 헤더에 JWT 넣기
         response.setHeader("JWT", token);
+        // redirect 할 링크 설정
+        response.sendRedirect("http://localhost:3000/");
+        String uri;
+        uri = UriComponentsBuilder.fromUriString("/login").queryParam("JWT", "token").build().toUriString();
 
 
-        return token;
+        return "http://localhost:3000/";
     }
 }
