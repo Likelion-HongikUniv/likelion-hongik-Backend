@@ -1,6 +1,7 @@
 package Likelion.Recruiting.model;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -43,14 +44,22 @@ public class Reply {
             orphanRemoval = true
     )
     private List<ReplyLike> likeUsers = new ArrayList<>();
-
+    @Builder
     public Reply(String body) {
         this.body = body;
         this.isDeleted = false;
     }
 
+    public void update(String body){
+        this.body = body;
+    }
 
-    public void setUser(User user){
+    public void delete(){
+        this.isDeleted = true;
+    }
+
+
+    public void setAuthor(User user){
         this.author = user;
         user.getReplies().add(this);
     }

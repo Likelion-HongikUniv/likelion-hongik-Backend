@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -20,12 +19,6 @@ import java.util.Optional;
 public class PostService {
     @Autowired
     private final PostRepository postRepository;
-    @Autowired
-    private final PostLikeRepository postLikeRepository;
-    @Autowired
-    private final CommentLikeRepository commentLikeRepository;
-    @Autowired
-    private final ReplyLikeRepository replyLikeRepository;
 
     @Transactional
     public Post createPost(Post post, User user, List<String> imageUrls) {
@@ -40,11 +33,13 @@ public class PostService {
         Post createdPost = postRepository.save(post);
         return createdPost;
     }
+
+
     public List<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory){
         return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory);
     }
 
     public Post searchOneId(Long id) {
-        return postRepository.findById(id);
+        return postRepository.findById(id).get();
     }
 }

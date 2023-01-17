@@ -17,29 +17,29 @@ import java.util.List;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class CommentService {
-
+public class ReplyService {
     @Autowired
-    private final CommentRepository commentRepository;
+    private final ReplyRepository replyRepository;
 
     @Transactional
-    public Comment createComment(Comment comment, Post post, User user){
-        comment.setAuthor(user);
-        comment.setPost(post);
-        Comment createdComment = commentRepository.save(comment);
-        return createdComment;
+    public Reply createReply(Reply reply,Comment comment, User user){
+        reply.setAuthor(user);
+        reply.setComment(comment);
+        Reply createdReply = replyRepository.save(reply);
+        return createdReply;
     }
 
     @Transactional
-    public Comment updateComment(Comment comment, String body){
-        comment.update(body);
-        return comment;
+    public Reply updateReply(Reply reply, String body){
+        reply.update(body);
+        return reply;
     }
 
+
     @Transactional
-    public Comment deleteComment (Comment comment){
-        comment.delete(); // 진짜 삭제가 아니라 불값만 변경 ==>> 객체는 있으나 프론트에서 표기만 ~~
-        return comment;
+    public Reply deleteReply (Reply reply){
+        reply.delete(); // 진짜 삭제가 아니라 불값만 변경 ==>> 객체는 있으나 프론트에서 표기만 ~~
+        return reply;
     }
 
 }

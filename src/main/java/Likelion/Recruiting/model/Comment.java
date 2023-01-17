@@ -57,6 +57,13 @@ public class Comment {
         this.body = body;
         this.isDeleted = false;
     }
+    public void update(String body){
+        this.body = body;
+    }
+
+    public void delete(){
+        this.isDeleted = true;
+    }
 
     public void setAuthor(User user){
         this.author = user;
@@ -66,5 +73,6 @@ public class Comment {
         this.post = post;
         post.getComments().add(this);
     }
+
 }
 
