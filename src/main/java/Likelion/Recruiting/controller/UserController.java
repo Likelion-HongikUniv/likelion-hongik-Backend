@@ -70,15 +70,9 @@ public class UserController {
 
     @GetMapping("admin/users/{userId}/writing")
     public String writing(@PathVariable("userId") Long userId, Model model) {
-        List<User> users = userService.findUsers();
-        List<Post> posts = postService.findPosts();
+        List<Post> posts = postService.findPostsByUserId(userId);
 
-        model.addAttribute("users", users);
         model.addAttribute("posts", posts);
-
-        // user_id를 가지고 post랑 join 해야됨
-        // user.id = user_id and post.author = user.name 인 post를 가져와서
-        // 해당 Html 파일에 넘겨줘야됨
 
         return "admin/userWriting";
     }

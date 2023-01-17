@@ -32,6 +32,11 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    // 특정 User가 작성한 게시글 조회 (by. userId)
+    @Transactional(readOnly = true)
+    public List<Post> findPostsByUserId(Long userId) { return postRepository.findByUserId(userId); }
+
+    // Post 하나를 조회
     @Transactional(readOnly = true)
     public Post findOne(Long postId) {
         return postRepository.findOne(postId);

@@ -28,11 +28,9 @@ public class User {
 
     private String email;
 
-    private String picture;
-
     private String role;
 
-    private String username;
+    private String nickname;
 
     @BatchSize(size = 1000)
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
