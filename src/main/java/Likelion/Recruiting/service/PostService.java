@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import static java.util.stream.Collectors.toList;
 
@@ -54,7 +55,7 @@ public class PostService {
     public Post searchOneId(Long id) {
         return postRepository.findById(id).get();
     }
-
+    
 
     public Page<PostDto> getMyAllPost(String email, Pageable pageable){
         // 해당 이메일가진 User 객체 가져오기
@@ -77,5 +78,13 @@ public class PostService {
     public List<Post> findPostAll(){
         return postRepository.findAll();
     }
+
+    public List<Post> findByComment(List<Comment> comments){
+        List<Post> posts = comments.stream()
+                .map(c->c.getPost())
+                .collect(Collectors.toList());
+        return posts;
+    }
+
 
 }

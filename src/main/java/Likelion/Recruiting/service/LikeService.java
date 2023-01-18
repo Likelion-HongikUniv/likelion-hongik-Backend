@@ -38,8 +38,6 @@ public class LikeService {
                 .likes(p.getLikeUsers().size())
                 .comments(p.getComments().size())
                 .build());
-//        Page<PostDto> postDto = postLikes.map(m -> new PostDto(m.getPost().getTitle(), m.getPost().getAuthor().getName(), user.getProfileImage(), m.getPost().getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")), m.getPost().getBody(), m.getPost().getLikeUsers().size(), m.getPost().getComments().size()))
-//                .collect(Collectors.toList());
 
         return postDto;
 

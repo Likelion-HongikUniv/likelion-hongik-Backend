@@ -41,5 +41,4 @@ public class ReplyService {
         reply.delete(); // 진짜 삭제가 아니라 불값만 변경 ==>> 객체는 있으나 프론트에서 표기만 ~~
         return reply;
     }
-
 }

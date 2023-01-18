@@ -42,4 +42,8 @@ public class CommentService {
         return comment;
     }
 
+    public List<Comment> findUser_Comment(User user) {
+
+        return commentRepository.findAllDesc(user);
+    }
 }
