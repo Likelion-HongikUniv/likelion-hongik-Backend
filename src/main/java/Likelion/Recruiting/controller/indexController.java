@@ -5,7 +5,7 @@ import Likelion.Recruiting.config.auth.JwtTokenProvider;
 import Likelion.Recruiting.model.dto.IsMemberDto;
 import Likelion.Recruiting.model.dto.ProfileDto;
 import Likelion.Recruiting.repository.UserRepository;
-import Likelion.Recruiting.model.Role;
+import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.service.UserService;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,7 @@
 package Likelion.Recruiting.model;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "comment_id")
     private Long id;
 
@@ -33,9 +34,9 @@ public class Comment {
     private String body;
 
     @Column(nullable = false)
-    private LocalDateTime createdTime; //생성할떄 현재시각 넣기
+    private final LocalDateTime createdTime = LocalDateTime.now(); //생성할떄 현재시각 넣기
 
-    private boolean isDeleted; //default 는 false로 설정하기
+    private Boolean isDeleted; //default 는 false로 설정하기
 
     @OneToMany(
             mappedBy = "comment",
@@ -51,14 +52,20 @@ public class Comment {
     )
     private List<CommentLike> likeUsers = new ArrayList<>();
 
-    public Comment(String body, LocalDateTime createdTime, boolean isDeleted) {
+    @Builder
+    public Comment(String body) {
         this.body = body;
-        this.createdTime = LocalDateTime.now();
         this.isDeleted = false;
     }
+    public void update(String body){
+        this.body = body;
+    }
 
+    public void delete(){
+        this.isDeleted = true;
+    }
 
-    public void setUser(User user){
+    public void setAuthor(User user){
         this.author = user;
         user.getComments().add(this);
     }
@@ -66,4 +73,6 @@ public class Comment {
         this.post = post;
         post.getComments().add(this);
     }
+
 }
+

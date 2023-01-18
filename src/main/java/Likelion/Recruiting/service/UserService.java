@@ -5,6 +5,7 @@ import Likelion.Recruiting.model.dto.ProfileDto;
 import Likelion.Recruiting.repository.UserRepository;
 import Likelion.Recruiting.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+    @Autowired
     private final UserRepository userRepository;
 
     public User findUser(String email){

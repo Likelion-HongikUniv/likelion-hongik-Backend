@@ -1,7 +1,10 @@
 package Likelion.Recruiting.model;
 
 
+
+import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.enums.LType;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,12 +18,11 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
     @Id
     @GeneratedValue
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
@@ -55,7 +57,7 @@ public class User {
 
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "team_name")
+    @JoinColumn(name = "team_id")
     private Team team;
 
     @OneToMany(
@@ -132,5 +134,9 @@ public class User {
         // user.getRoleKey() == ROLE_USER, ROLE_GUEST
 
         return this.getRole().getKey();
+    }
+    public void setTeam(Team team){
+        this.team = team;
+        team.getUserList().add(this);
     }
 }
