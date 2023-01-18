@@ -1,6 +1,6 @@
 package Likelion.Recruiting.config.auth.dto;
 
-import Likelion.Recruiting.model.Role;
+import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.model.enums.LType;
 import lombok.Builder;

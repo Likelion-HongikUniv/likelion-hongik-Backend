@@ -1,6 +1,6 @@
 package Likelion.Recruiting.config.auth;
 
-import Likelion.Recruiting.model.Role;
+import Likelion.Recruiting.model.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
