@@ -1,8 +1,6 @@
 package Likelion.Recruiting.model.dto;
 
-import Likelion.Recruiting.model.Comment;
-import Likelion.Recruiting.model.Reply;
-import Likelion.Recruiting.model.User;
+import Likelion.Recruiting.model.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -15,6 +13,7 @@ public class ReplyDto {
     private String body;
     private boolean isDeleted;
     private LocalDateTime createdTime;
+    private Boolean isLiked;
     private Long likeCount;
 
     public ReplyDto(Reply reply, User user) {
@@ -23,6 +22,13 @@ public class ReplyDto {
         this.body = reply.getBody();
         this.isDeleted = reply.getIsDeleted();
         this.createdTime = reply.getCreatedTime();
+        this.isLiked = false;
+        for(ReplyLike replyLike:reply.getLikeUsers()){
+            if(replyLike.getUser().equals(user)) {
+                this.isLiked = true;
+                break;
+            }
+        }
         this.likeCount = (long)reply.getLikeUsers().size();
     }
 }

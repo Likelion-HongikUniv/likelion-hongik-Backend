@@ -1,6 +1,7 @@
 package Likelion.Recruiting.model.dto;
 
 import Likelion.Recruiting.model.Comment;
+import Likelion.Recruiting.model.CommentLike;
 import Likelion.Recruiting.model.User;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class CommentDto {
     private String body;
     private Boolean isDeleted;
     private LocalDateTime createdTime;
+    private Boolean isLiked;
     private Long likeCount;
     private List<ReplyDto> replies;
 
@@ -25,6 +27,12 @@ public class CommentDto {
         this.body = comment.getBody();
         this.isDeleted = comment.getIsDeleted();
         this.createdTime = comment.getCreatedTime();
+        for(CommentLike commentLike:comment.getLikeUsers()){
+            if(commentLike.getUser().equals(user)) {
+                this.isLiked = true;
+                break;
+            }
+        }
         this.likeCount = (long)comment.getLikeUsers().size();
         this.replies = comment.getReplies().stream()
                 .map(reply -> new ReplyDto(reply,user))

@@ -2,6 +2,7 @@ package Likelion.Recruiting.model.dto;
 
 import Likelion.Recruiting.model.Comment;
 import Likelion.Recruiting.model.Post;
+import Likelion.Recruiting.model.PostLike;
 import Likelion.Recruiting.model.User;
 import lombok.Data;
 
@@ -19,6 +20,7 @@ public class PostDetailDto {
     private String body;
     private List<String> ImageUrls;
     private LocalDateTime createdTime;
+    private Boolean isLiked;
     private Long likeCount;
     private List<CommentDto> comments;
 
@@ -31,6 +33,13 @@ public class PostDetailDto {
                 .map(postImages -> postImages.getUrl())
                 .collect(Collectors.toList());
         this.createdTime = post.getCreatedTime();
+        this.isLiked = false;
+        for(PostLike postLike:post.getLikeUsers()){
+            if(postLike.getUser().equals(user)) {
+                this.isLiked = true;
+                break;
+            }
+        }
         this.likeCount = (long)post.getLikeUsers().size();
         this.comments = post.getComments().stream()
                 .map(comment -> new CommentDto(comment,user))
