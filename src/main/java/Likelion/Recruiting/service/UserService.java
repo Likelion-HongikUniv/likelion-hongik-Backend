@@ -1,5 +1,6 @@
 package Likelion.Recruiting.service;
 
+import Likelion.Recruiting.model.dto.NavbarDto;
 import Likelion.Recruiting.model.dto.ProfileDto;
 import Likelion.Recruiting.repository.UserRepository;
 import Likelion.Recruiting.model.User;
@@ -30,7 +31,13 @@ public class UserService {
         System.out.println("profile save 완료");
     }
 
-    public List<User> findUserAll(){
-        return userRepository.findAll();
+    public NavbarDto navProfile(String email){
+        // 해당 유저 찾기
+        User user = userRepository.findByEmail(email).get();
+
+        return NavbarDto.builder()
+                .name(user.getName())
+                .profileImage(user.getProfileImage())
+                .build();
     }
 }

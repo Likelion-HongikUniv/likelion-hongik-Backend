@@ -18,13 +18,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+//@CrossOrigin
 @RequiredArgsConstructor
 @Controller
 public class indexController {
 
-    private final HttpSession httpSession;
-    private final UserRepository userRepository;
-    private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
 
     @GetMapping("/")
@@ -53,6 +51,12 @@ public class indexController {
         return "index2";
     }
 
+    @GetMapping("/oauth2/authorization/google")
+    public void auth(){
+        System.out.println("auth 속");
+
+    }
+
 
 
 
@@ -64,10 +68,9 @@ public class indexController {
     }
 
     @GetMapping("/user")
-    public @ResponseBody List<User> user(@AuthenticationPrincipal OAuth2User userDetails){
-        List<User> users = userService.findUserAll();
+    public @ResponseBody String user(@AuthenticationPrincipal OAuth2User userDetails){
 
-        return users;
+        return "users";
     }
 
     @GetMapping("/admin")

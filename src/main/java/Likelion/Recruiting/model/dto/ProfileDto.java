@@ -21,16 +21,5 @@ public class ProfileDto {
         this.phoneNum = phoneNum;
     }
 
-//    public Profile toEntity(User user){
-//        Profile profile = Profile.builder()
-//                .user(user)
-//                .nickname(nickname)
-//                .major(major)
-//                .studentId(studentId)
-//                .part(part)
-//                .phoneNum(phoneNum)
-//                .build();
-//
-//        return profile;
-//    }
+
 }

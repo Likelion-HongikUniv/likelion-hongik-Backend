@@ -41,9 +41,10 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         OAuth2User oAuth2User1 = (OAuth2User) authentication.getPrincipal();
         // 해당 email을 가진 유저 객체 가져오기
         User user = userRepository.findByEmail(oAuth2User1.getAttributes().get("email").toString()).get();
-
+        System.out.println("user.getEmail() = " + user.getEmail());
         // JWT 속 암호화 할 정보들 세팅하기
-        String email = user.getEmail();
+//        String email = user.getEmail();
+        String email = "tmfrk0426@gmail.com";
         Role role = user.getRole();
 
         // JWT 만들기
