@@ -1,7 +1,7 @@
 package Likelion.Recruiting.config.auth;
 
-import Likelion.Recruiting.model.Role;
 import Likelion.Recruiting.model.User;
+import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
