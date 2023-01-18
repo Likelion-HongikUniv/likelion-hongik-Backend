@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 @Data
 public class ReplyDto {
-    private Long id;
+    private Long replyId;
     private UserSimpleDto author;
     private String body;
     private boolean isDeleted;
@@ -18,7 +18,7 @@ public class ReplyDto {
     private Long likeCount;
 
     public ReplyDto(Reply reply, User user) {
-        this.id = reply.getId();
+        this.replyId = reply.getId();
         this.author = new UserSimpleDto(reply.getAuthor().getId(), reply.getAuthor().getNickname(), reply.getAuthor().getProfileImage(), user);
         this.body = reply.getBody();
         this.isDeleted = reply.getIsDeleted();

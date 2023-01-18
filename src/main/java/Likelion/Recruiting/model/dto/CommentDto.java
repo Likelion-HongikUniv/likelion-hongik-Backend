@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @Data
 public class CommentDto {
 
-    private Long id;
+    private Long commentId;
     private UserSimpleDto author;
     private String body;
     private Boolean isDeleted;
@@ -20,7 +20,7 @@ public class CommentDto {
     private List<ReplyDto> replies;
 
     public CommentDto(Comment comment, User user) {
-        this.id = comment.getId();
+        this.commentId = comment.getId();
         this.author = new UserSimpleDto(comment.getAuthor().getId(),comment.getAuthor().getNickname(),comment.getAuthor().getProfileImage(), user);
         this.body = comment.getBody();
         this.isDeleted = comment.getIsDeleted();

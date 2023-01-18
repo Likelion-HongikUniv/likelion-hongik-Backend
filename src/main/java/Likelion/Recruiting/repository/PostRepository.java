@@ -16,4 +16,6 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     @Query("select p from Post p join fetch p.author")
     List<Post> findByMainCategoryAndSubCategory(MainCategory mainCategory, SubCategory subCategory);
+    @Query("select p from Post p join fetch p.author")
+    List<Post> findByUserId(Long userId);
 }

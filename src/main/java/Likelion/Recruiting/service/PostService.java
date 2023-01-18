@@ -19,6 +19,8 @@ import java.util.List;
 public class PostService {
     @Autowired
     private final PostRepository postRepository;
+    @Autowired
+    private final PostLikeRepository postLikeRepository;
 
     @Transactional
     public Post createPost(Post post, User user, List<String> imageUrls) {

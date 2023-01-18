@@ -25,10 +25,16 @@ public class ReplyLike {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void makeReplyLike(User user, Reply reply) {
+    public ReplyLike(User user, Reply reply) {
         this.user = user;
         this.reply = reply;
         user.getLikeReplis().add(this);
         reply.getLikeUsers().add(this);
+    }
+    public void dislike(){
+        this.user.getLikeReplis().remove(this);
+        this.user = null;
+        this.reply.getLikeUsers().remove(this);
+        this.reply = null;
     }
 }

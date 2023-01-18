@@ -4,6 +4,7 @@ package Likelion.Recruiting.model;
 
 import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.enums.LType;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

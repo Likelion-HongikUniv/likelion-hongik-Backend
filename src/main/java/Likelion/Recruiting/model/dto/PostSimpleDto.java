@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 @Data
 public class PostSimpleDto {
-    private Long id;
+    private Long postId;
     private String title;
     private UserSimpleDto author;
     private String body;
@@ -22,7 +22,7 @@ public class PostSimpleDto {
     private LocalDateTime createdTime;
 
     public PostSimpleDto(Post post, User user) {
-        this.id = post.getId();
+        this.postId = post.getId();
         this.title = post.getTitle();
         this.author = new UserSimpleDto(post.getAuthor().getId(),post.getAuthor().getNickname(),post.getAuthor().getProfileImage(), user);
         this.body = post.getBody();
