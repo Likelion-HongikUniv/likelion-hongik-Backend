@@ -87,17 +87,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>코딩잘하는법</td>
-                                    <td>와우 정말 유익하네요!</td>
-                                    <td>2022.12.31</td>
-                                    <td><a class="btn btn-danger" role="button">삭제</a></td>
-                                </tr>
-                                <tr>
-                                    <td>컴공특</td>
-                                    <td>컴하하하하</td>
-                                    <td>2023.01.02</td>
-                                    <td><a class="btn btn-danger" role="button">삭제</a></td>
+                                <tr th:each="comment : ${comments}">
+                                    <td th:text="${comment?.id}"></td>
+                                    <td th:text="${comment?.body}"></td>
+                                    <td th:text="${comment?.createdTime}"></td>
+                                    <td th:text="${comment?.user.name}"></td>
+                                    <td><a href="#" class="btn btn-danger" role="button">삭제</a></td>
+
                                 </tr>
                                 </tbody>
                             </table>

@@ -1,8 +1,10 @@
 package Likelion.Recruiting.controller;
 
+import Likelion.Recruiting.domain.Comment;
 import Likelion.Recruiting.domain.Post;
 import Likelion.Recruiting.domain.User;
 import Likelion.Recruiting.domain.UserForm;
+import Likelion.Recruiting.service.CommentService;
 import Likelion.Recruiting.service.PostService;
 import Likelion.Recruiting.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -18,11 +20,14 @@ public class UserController {
 
     private final UserService userService;
     private final PostService postService;
+    private final CommentService commentService;
 
-    public UserController(UserService userService, PostService postService) {
+    public UserController(UserService userService, PostService postService, CommentService commentService) {
         this.userService = userService;
         this.postService = postService;
+        this.commentService = commentService;
     }
+
 
     @GetMapping("admin/users")
     public String list(Model model) {
@@ -71,8 +76,10 @@ public class UserController {
     @GetMapping("admin/users/{userId}/writing")
     public String writing(@PathVariable("userId") Long userId, Model model) {
         List<Post> posts = postService.findPostsByUserId(userId);
+        List<Comment> comments = commentService.findCommentsByUserId(userId);
 
         model.addAttribute("posts", posts);
+        model.addAttribute("comments", comments);
 
         return "admin/userWriting";
     }
