@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
@@ -48,8 +49,14 @@ public class PostService {
         return postRepository.findById(id).get();
     }
 
-    public List<Post> findPostAll(){
-    return postRepository.findAll();
-}
+    public List<Post> findByComment(List<Comment> comments){
+        List<Post> posts = comments.stream()
+                .map(c->c.getPost())
+                .collect(Collectors.toList());
+        return posts;
+    }
+
+
+
 
 }

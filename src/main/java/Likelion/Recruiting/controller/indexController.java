@@ -2,6 +2,7 @@ package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
 import Likelion.Recruiting.config.auth.JwtTokenProvider;
+import Likelion.Recruiting.model.Comment;
 import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.MainCategory;
@@ -9,6 +10,7 @@ import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.UserRepository;
 import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.User;
+import Likelion.Recruiting.service.CommentService;
 import Likelion.Recruiting.service.PostService;
 import Likelion.Recruiting.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +35,7 @@ public class indexController {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
     private final PostService postService;
+    private final CommentService commentService;
 
     @GetMapping("/")
     String index(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Model model){
@@ -139,9 +142,10 @@ public class indexController {
     List<PostDetailDto> myComments (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        List<Post> posts = postService.findPostAll();
 
-        List<PostDetailDto> result = posts.stream()
+        List<Comment> comments = commentService.findUser_Comment(user);
+        List<Post> post =  postService.findByComment(comments);
+        List<PostDetailDto> result = post.stream()
                 .map(p -> new PostDetailDto(p,user))
                 .collect(toList());
         return result;
