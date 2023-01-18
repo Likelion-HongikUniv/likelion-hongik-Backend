@@ -54,7 +54,7 @@ public class PostService {
     public Post searchOneId(Long id) {
         return postRepository.findById(id).get();
     }
-    
+
 
     public Page<PostDto> getMyAllPost(String email, Pageable pageable){
         // 해당 이메일가진 User 객체 가져오기
