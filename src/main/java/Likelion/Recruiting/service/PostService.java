@@ -2,6 +2,8 @@ package Likelion.Recruiting.service;
 
 
 import Likelion.Recruiting.model.*;
+import Likelion.Recruiting.model.dto.PostDetailDto;
+import Likelion.Recruiting.model.dto.PostSimpleDto;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.*;
@@ -12,6 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)
@@ -42,4 +47,9 @@ public class PostService {
     public Post searchOneId(Long id) {
         return postRepository.findById(id).get();
     }
+
+    public List<Post> findPostAll(){
+    return postRepository.findAll();
+}
+
 }
