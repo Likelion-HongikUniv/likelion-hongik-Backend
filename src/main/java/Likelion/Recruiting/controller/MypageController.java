@@ -50,20 +50,19 @@ public class MypageController {
         return posts;
     }
 
-    // dto 써서 return 하기
+    @GetMapping("/mypage/like")
+    public Page<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Pageable pageable){
 
-//    @GetMapping("/mypage/like")
-//    public List<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PageableDefault(size = 10, sort = "id")Pageable pageable){
-//
-//        // 유저의 email 뽑아내기
-//        String email = customOauthUser.getUser().getEmail();
-//
-//        Long user_id = userService.findUser(email).getId();
-//
+        // 유저의 email 뽑아내기
+        String email = customOauthUser.getUser().getEmail();
+
+        Long user_id = userService.findUser(email).getId();
+
 //        List<PostDto> postDtos = likeService.getLikedPost(user_id);
-//
-//        return postDtos;
-//    }
+        Page<PostDto> posts = likeService.getLikedPost(user_id, pageable);
+
+        return posts;
+    }
 
 
 

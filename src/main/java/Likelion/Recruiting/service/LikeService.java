@@ -1,11 +1,15 @@
 package Likelion.Recruiting.service;
 
 import Likelion.Recruiting.model.Post;
+import Likelion.Recruiting.model.PostLike;
 import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.model.dto.PostDto;
+import Likelion.Recruiting.repository.PostLikeRepository;
 import Likelion.Recruiting.repository.PostRepository;
 import Likelion.Recruiting.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
@@ -18,16 +22,26 @@ public class LikeService {
 
     private final UserRepository userRepository;
     private final PostRepository postRepository;
+    private final PostLikeRepository postLikeRepository;
 
-//    public List<PostDto> getLikedPost(Long userId){
-//
-//        List<Post> posts = postRepository.findAllByLikeUsersIn(userId);
-//        User user = userRepository.findById(userId).get();
-//
-//        List<PostDto> postDto = posts.stream()
-//                .map(p -> new PostDto(p.getTitle(), p.getAuthor().getName(), user.getProfileImage(), p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")), p.getBody(), p.getLikeUsers().size(), p.getComments().size()))
+    public Page<PostDto> getLikedPost(Long userId, Pageable pageable){
+
+        User user = userRepository.findById(userId).get();
+        List<PostLike> postLikes = postLikeRepository.findByUser(user);
+        Page<Post> posts = postRepository.findAllByLikeUsersIn(postLikes, pageable);
+        Page<PostDto> postDto = posts.map(p -> PostDto.builder()
+                .title(p.getTitle())
+                .author(p.getAuthor().getName())
+                .profileImage(user.getProfileImage())
+                .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
+                .body(p.getBody())
+                .likes(p.getLikeUsers().size())
+                .comments(p.getComments().size())
+                .build());
+//        Page<PostDto> postDto = postLikes.map(m -> new PostDto(m.getPost().getTitle(), m.getPost().getAuthor().getName(), user.getProfileImage(), m.getPost().getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")), m.getPost().getBody(), m.getPost().getLikeUsers().size(), m.getPost().getComments().size()))
 //                .collect(Collectors.toList());
-//        return postDto;
-//
-//    }
+
+        return postDto;
+
+    }
 }

@@ -2,6 +2,7 @@ package Likelion.Recruiting.repository;
 
 import Likelion.Recruiting.model.Post;
 
+import Likelion.Recruiting.model.PostLike;
 import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
@@ -23,6 +24,8 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 //    List<Post> findAllByLikeUsersIn(Long user_id);
 
     Page<Post> findAllByAuthor(User user, Pageable pageable);
+
+    Page<Post> findAllByLikeUsersIn(List<PostLike> postLike, Pageable pageable);
 
 }
 
