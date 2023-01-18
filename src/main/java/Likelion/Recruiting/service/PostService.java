@@ -3,6 +3,8 @@ package Likelion.Recruiting.service;
 
 import Likelion.Recruiting.model.*;
 import Likelion.Recruiting.model.dto.PostDto;
+import Likelion.Recruiting.model.dto.PostDetailDto;
+import Likelion.Recruiting.model.dto.PostSimpleDto;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.*;
@@ -19,6 +21,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)
@@ -51,7 +54,7 @@ public class PostService {
     public Post searchOneId(Long id) {
         return postRepository.findById(id).get();
     }
-
+    
 
     public Page<PostDto> getMyAllPost(String email, Pageable pageable){
         // 해당 이메일가진 User 객체 가져오기
@@ -70,4 +73,9 @@ public class PostService {
                 .build());
         return postDto;
     }
+
+    public List<Post> findPostAll(){
+        return postRepository.findAll();
+    }
+
 }

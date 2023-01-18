@@ -2,13 +2,17 @@ package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
 import Likelion.Recruiting.config.auth.JwtTokenProvider;
-import Likelion.Recruiting.model.dto.IsMemberDto;
-import Likelion.Recruiting.model.dto.ProfileDto;
+import Likelion.Recruiting.model.Post;
+import Likelion.Recruiting.model.dto.*;
+import Likelion.Recruiting.model.enums.MainCategory;
+import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.UserRepository;
 import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.User;
+import Likelion.Recruiting.service.PostService;
 import Likelion.Recruiting.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -18,12 +22,15 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
+
 //@CrossOrigin
 @RequiredArgsConstructor
 @Controller
 public class indexController {
 
     private final UserService userService;
+    private final PostService postService;
 
     @GetMapping("/")
     String index(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Model model){
@@ -103,6 +110,44 @@ public class indexController {
         }
 
     }
+    @ResponseBody
+    @GetMapping("/mypage/")
+    ProfileDto user_info (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
 
+        return new ProfileDto(
+                user.getNickname(),
+                user.getMajor(),
+                user.getStudentId(),
+                user.getPart(),
+                user.getPhoneNum());
+    }
+
+    @ResponseBody
+    @PatchMapping("/mypage/edit/")
+    ProfileDto mypage_edit(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
+        user = user.profileUpdate(profileDto.getNickname(), profileDto.getMajor(), profileDto.getStudentId(), profileDto.getPart(), profileDto.getPhoneNum());
+        return new ProfileDto(
+                user.getNickname(),
+                user.getMajor(),
+                user.getStudentId(),
+                user.getPart(),
+                user.getPhoneNum());
+    }
+
+    @GetMapping("/mypage/comments/")
+    List<PostDetailDto> myComments (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
+        List<Post> posts = postService.findPostAll();
+
+        List<PostDetailDto> result = posts.stream()
+                .map(p -> new PostDetailDto(p,user))
+                .collect(toList());
+        return result;
+    }
 
 }
