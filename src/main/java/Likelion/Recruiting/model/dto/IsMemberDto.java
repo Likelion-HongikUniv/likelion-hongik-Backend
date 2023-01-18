@@ -1,7 +1,7 @@
 package Likelion.Recruiting.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import Likelion.Recruiting.model.Role;
+import Likelion.Recruiting.model.enums.Role;
 
 public class IsMemberDto {
 

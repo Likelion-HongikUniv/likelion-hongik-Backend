@@ -1,6 +1,7 @@
 package Likelion.Recruiting.model;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -17,7 +18,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Reply {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "reply_id")
     private Long id;
 
@@ -33,9 +34,9 @@ public class Reply {
     private String body;
 
     @Column(nullable = false)
-    private LocalDateTime createTime;
+    private final LocalDateTime createdTime= LocalDateTime.now();
 
-    private boolean isDeleted; //default 는 false로 설정하기
+    private Boolean isDeleted; //default 는 false로 설정하기
 
     @OneToMany(
             mappedBy = "reply",
@@ -43,14 +44,27 @@ public class Reply {
             orphanRemoval = true
     )
     private List<ReplyLike> likeUsers = new ArrayList<>();
+    @Builder
+    public Reply(String body) {
+        this.body = body;
+        this.isDeleted = false;
+    }
+
+    public void update(String body){
+        this.body = body;
+    }
+
+    public void delete(){
+        this.isDeleted = true;
+    }
 
 
-    public void setUser(User user){
+    public void setAuthor(User user){
         this.author = user;
         user.getReplies().add(this);
     }
-//    public void setComment(Comment comment){
-//        this.comment = comment;
-//        comment.getReplies().add(this);
-//    }
+    public void setComment(Comment comment){
+        this.comment = comment;
+        comment.getReplies().add(this);
+    }
 }
