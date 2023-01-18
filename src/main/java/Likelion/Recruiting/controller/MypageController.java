@@ -39,15 +39,18 @@ public class MypageController {
         return navbarDto;
     }
 
+
     @GetMapping("/mypage/post")
-    public Page<Post> getMyPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PageableDefault(size = 10, sort = "id")Pageable pageable){
+    public Page<PostDto> getMyPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Pageable pageable){
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
 
-        // dto 써서 return 하기
-        Page<Post> postDtos = postService.getMyAllPost(email, pageable);
-        return postDtos;
+        Page<PostDto> posts = postService.getMyAllPost(email, pageable);
+
+        return posts;
     }
+
+    // dto 써서 return 하기
 
 //    @GetMapping("/mypage/like")
 //    public List<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PageableDefault(size = 10, sort = "id")Pageable pageable){
@@ -61,7 +64,7 @@ public class MypageController {
 //
 //        return postDtos;
 //    }
-    
+
 
 
 }

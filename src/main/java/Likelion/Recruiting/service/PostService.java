@@ -8,6 +8,8 @@ import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import Likelion.Recruiting.repository.PostRepository;
+import Likelion.Recruiting.repository.UserRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -50,15 +52,22 @@ public class PostService {
         return postRepository.findById(id).get();
     }
 
-    public Page<Post> getMyAllPost(String email, Pageable pageable){
+
+    public Page<PostDto> getMyAllPost(String email, Pageable pageable){
         // 해당 이메일가진 User 객체 가져오기
         User user = userRepository.findByEmail(email).get();
 
-//        List<Post> posts = postRepository.findAllByAuthor(user, pageable);
+        Page<Post> posts = postRepository.findAllByAuthor(user, pageable);
 
-//        List<PostDto> postDto = posts.stream()
-//                .map(p -> new PostDto(p.getTitle(), p.getAuthor().getName(), user.getProfileImage(), p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")), p.getBody(), p.getLikeUsers().size(), p.getComments().size()))
-//                .collect(Collectors.toList());
-        return postRepository.findAllByAuthor(user, pageable);
+        Page<PostDto> postDto = posts.map(p -> PostDto.builder()
+                .title(p.getTitle())
+                .author(p.getAuthor().getName())
+                .profileImage(user.getProfileImage())
+                .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
+                .body(p.getBody())
+                .likes(p.getLikeUsers().size())
+                .comments(p.getComments().size())
+                .build());
+        return postDto;
     }
 }
