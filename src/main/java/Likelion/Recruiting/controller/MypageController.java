@@ -8,6 +8,9 @@ import Likelion.Recruiting.model.dto.PostDto;
 import Likelion.Recruiting.service.PostService;
 import Likelion.Recruiting.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -38,17 +41,19 @@ public class MypageController {
         return navbarDto;
     }
 
+
     @GetMapping("/mypage/post")
-    public List<PostDto> getMyPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
+    public Page<PostDto> getMyPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Pageable pageable){
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
 
         // dto 써서 return 하기
-        List<PostDto> postDtos = postService.getMyAllPost(email);
-        System.out.println("postDtos = " + postDtos);
-        return postDtos;
+        Page<PostDto> posts = postService.getMyAllPost(email, pageable);
+
+        return posts;
     }
-    
+
+
 
 
 }
