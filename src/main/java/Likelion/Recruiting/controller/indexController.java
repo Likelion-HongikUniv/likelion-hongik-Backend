@@ -121,11 +121,19 @@ public class indexController {
                 user.getPhoneNum());
     }
 
-//    @ResponseBody
-//    @PatchMapping("/mypage/edit/")
-//    ProfileDto mypage_edit(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
-//
-//    }
+    @ResponseBody
+    @PatchMapping("/mypage/edit/")
+    ProfileDto mypage_edit(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
+        user = user.profileUpdate(profileDto.getNickname(), profileDto.getMajor(), profileDto.getStudentId(), profileDto.getPart(), profileDto.getPhoneNum());
+        return new ProfileDto(
+                user.getNickname(),
+                user.getMajor(),
+                user.getStudentId(),
+                user.getPart(),
+                user.getPhoneNum());
+    }
 
     @GetMapping("/mypage/comments/")
     List<PostDetailDto> myComments (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
