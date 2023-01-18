@@ -49,18 +49,18 @@ public class MypageController {
         return postDtos;
     }
 
-    @GetMapping("/mypage/like")
-    public List<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PageableDefault(size = 10, sort = "id")Pageable pageable){
-
-        // 유저의 email 뽑아내기
-        String email = customOauthUser.getUser().getEmail();
-
-        Long user_id = userService.findUser(email).getId();
-
-        List<PostDto> postDtos = likeService.getLikedPost(user_id);
-
-        return postDtos;
-    }
+//    @GetMapping("/mypage/like")
+//    public List<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PageableDefault(size = 10, sort = "id")Pageable pageable){
+//
+//        // 유저의 email 뽑아내기
+//        String email = customOauthUser.getUser().getEmail();
+//
+//        Long user_id = userService.findUser(email).getId();
+//
+//        List<PostDto> postDtos = likeService.getLikedPost(user_id);
+//
+//        return postDtos;
+//    }
     
 
 

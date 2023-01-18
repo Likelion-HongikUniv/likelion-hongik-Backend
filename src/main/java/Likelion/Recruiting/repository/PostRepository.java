@@ -20,7 +20,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     @Query("select p from Post p join fetch p.author")
     List<Post> findByMainCategoryAndSubCategory(MainCategory mainCategory, SubCategory subCategory);
 
-    List<Post> findAllByLikeUsersIn(Long user_id);
+//    List<Post> findAllByLikeUsersIn(Long user_id);
 
     Page<Post> findAllByAuthor(User user, Pageable pageable);
 

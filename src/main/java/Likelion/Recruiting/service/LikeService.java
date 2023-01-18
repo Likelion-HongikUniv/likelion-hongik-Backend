@@ -19,15 +19,15 @@ public class LikeService {
     private final UserRepository userRepository;
     private final PostRepository postRepository;
 
-    public List<PostDto> getLikedPost(Long userId){
-
-        List<Post> posts = postRepository.findAllByLikeUsersIn(userId);
-        User user = userRepository.findById(userId).get();
-
-        List<PostDto> postDto = posts.stream()
-                .map(p -> new PostDto(p.getTitle(), p.getAuthor().getName(), user.getProfileImage(), p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")), p.getBody(), p.getLikeUsers().size(), p.getComments().size()))
-                .collect(Collectors.toList());
-        return postDto;
-
-    }
+//    public List<PostDto> getLikedPost(Long userId){
+//
+//        List<Post> posts = postRepository.findAllByLikeUsersIn(userId);
+//        User user = userRepository.findById(userId).get();
+//
+//        List<PostDto> postDto = posts.stream()
+//                .map(p -> new PostDto(p.getTitle(), p.getAuthor().getName(), user.getProfileImage(), p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")), p.getBody(), p.getLikeUsers().size(), p.getComments().size()))
+//                .collect(Collectors.toList());
+//        return postDto;
+//
+//    }
 }
