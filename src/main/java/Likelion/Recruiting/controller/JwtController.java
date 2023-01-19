@@ -22,8 +22,8 @@ public class JwtController {
     private final JwtTokenProvider jwtTokenProvider;
 
     // 여기서 JWT를 돌려줄 것이다.
-    @GetMapping("/token")
-    public String testOAuthLogin(Authentication authentication, HttpServletResponse response) throws IOException {
+    @GetMapping("/v1/token")
+    public void testOAuthLogin(Authentication authentication, HttpServletResponse response) throws IOException {
 
 
         OAuth2User oAuth2User1 = (OAuth2User) authentication.getPrincipal();
@@ -39,13 +39,13 @@ public class JwtController {
         System.out.println("token = " + token);
 
         // 응답 헤더에 JWT 넣기
-        response.setHeader("JWT", token);
+        response.setHeader("Authorization", token);
         // redirect 할 링크 설정
-        response.sendRedirect("http://localhost:3000/");
+//        response.sendRedirect("http://localhost:3000/");
         String uri;
-        uri = UriComponentsBuilder.fromUriString("/login").queryParam("JWT", "token").build().toUriString();
+//        uri = UriComponentsBuilder.fromUriString("/login").queryParam("JWT", "token").build().toUriString();
 
 
-        return "http://localhost:3000/";
+//        return "http://localhost:3000/";
     }
 }
