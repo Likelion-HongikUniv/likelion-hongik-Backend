@@ -2,6 +2,7 @@ package Likelion.Recruiting.controller;
 
 
 import Likelion.Recruiting.model.*;
+import Likelion.Recruiting.model.dto.CommentDto;
 import Likelion.Recruiting.model.dto.DataResponseDto;
 import Likelion.Recruiting.model.dto.PostDetailDto;
 import Likelion.Recruiting.model.dto.PostSimpleDto;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -146,11 +148,9 @@ public class CommunityController {
     @GetMapping("/community/post/{postId}")//게시글 상세보기
     public PostDetailDto getPostDetail(@RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
         Post post = postService.searchOneId(postId);
-        System.out.println(123);
         // user insert partition
         Long id = Long.valueOf(1);
         User user = userRepository.findById(id).get();
-        System.out.println(123);
         PostDetailDto result = new PostDetailDto(post, user);
         return result;
     }
@@ -172,6 +172,17 @@ public class CommunityController {
     }
 
     //------------------------------------댓글------------------------
+
+    @GetMapping("/community/post/{postId}/comments")//게시글에 따른 댓글 & 대댓글 불러오기
+    public DataResponseDto getSimplePosts(@RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        Long id = Long.valueOf(1);
+        User user = userRepository.findById(id).get(); // 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
+        List<CommentDto> result = comments.stream()
+                .map(comment -> new CommentDto(comment,user))
+                .collect(Collectors.toList());
+        return new DataResponseDto(result.size(), result);
+    }
     @PostMapping("/community/post/{postId}")//댓글 저장 api
     public CreatePostResponse saveComment(@RequestHeader("HEADER") String header, @RequestBody CreateCommentReqeust request, @PathVariable("postId") Long postId) {
         Comment createdComment = Comment.builder()
