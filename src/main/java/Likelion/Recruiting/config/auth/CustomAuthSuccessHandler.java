@@ -36,12 +36,11 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         // 로그인 실패 후 성공 시 남아있는 에러 세션 제거
 //        clearSession(request);
 
-        SavedRequest savedRequest = requestCache.getRequest(request, response);
-
         OAuth2User oAuth2User1 = (OAuth2User) authentication.getPrincipal();
+
         // 해당 email을 가진 유저 객체 가져오기
         User user = userRepository.findByEmail(oAuth2User1.getAttributes().get("email").toString()).get();
-        System.out.println("user.getEmail() = " + user.getEmail());
+
         // JWT 속 암호화 할 정보들 세팅하기
 //        String email = user.getEmail();
         String email = "tmfrk0426@gmail.com";
@@ -49,10 +48,9 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // JWT 만들기
         String token = jwtTokenProvider.createToken(email, role);
-        System.out.println("token = " + token);
+        System.out.println("filter token = " + token);
 
         response.setHeader("JWT", token);
-//        System.out.println("response = " + response.getHeader("JWT"));
 
         String tartgetUri;
         tartgetUri = UriComponentsBuilder.fromUriString("http://localhost:3000/")

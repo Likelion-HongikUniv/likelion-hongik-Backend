@@ -55,7 +55,7 @@ public class PostService {
     public Post searchOneId(Long id) {
         return postRepository.findById(id).get();
     }
-    
+
 
     public Page<PostDto> getMyAllPost(String email, Pageable pageable){
         // 해당 이메일가진 User 객체 가져오기
@@ -64,6 +64,7 @@ public class PostService {
         Page<Post> posts = postRepository.findAllByAuthor(user, pageable);
 
         Page<PostDto> postDto = posts.map(p -> PostDto.builder()
+                .postId(p.getId())
                 .title(p.getTitle())
                 .author(p.getAuthor().getName())
                 .profileImage(user.getProfileImage())

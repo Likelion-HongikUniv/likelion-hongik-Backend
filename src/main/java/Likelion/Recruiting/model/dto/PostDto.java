@@ -10,6 +10,7 @@ import javax.validation.constraints.Size;
 @Getter
 public class PostDto {
 
+    private Long postId;
     @Size(max = 20)
     private String title;
     private String author;
@@ -21,7 +22,8 @@ public class PostDto {
     private Integer comments;
 
     @Builder
-    public PostDto(String title, String author, String profileImage, String time, String body, Integer likes, Integer comments) {
+    public PostDto(Long postId, String title, String author, String profileImage, String time, String body, Integer likes, Integer comments) {
+        this.postId = postId;
         this.title = title;
         this.author = author;
         this.profileImage = profileImage;

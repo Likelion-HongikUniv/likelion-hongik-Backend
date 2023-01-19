@@ -34,6 +34,6 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     @Query("SELECT p FROM Post p join fetch p.author") //게시글 데이터를 모두 가져오는 query
     List<PostDetailDto> findAllDesc(User user);
 
-    List<Post> findByComment(List<Comment> comments);
+//    List<Post> findByComment(List<Comment> comments);
 }
 
