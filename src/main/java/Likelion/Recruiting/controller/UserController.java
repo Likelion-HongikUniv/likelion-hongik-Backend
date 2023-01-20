@@ -75,13 +75,23 @@ public class UserController {
 
     @GetMapping("admin/users/{userId}/writing")
     public String writing(@PathVariable("userId") Long userId, Model model) {
+        User user = (User) userService.findOne(userId);
         List<Post> posts = postService.findPostsByUserId(userId);
         List<Comment> comments = commentService.findCommentsByUserId(userId);
 
+        model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         model.addAttribute("comments", comments);
 
         return "admin/userWriting";
+    }
+
+    @GetMapping("admin/users/{userId}/posts/delete")
+    public String postDeleteAll(@PathVariable("userId") Long userId) {
+        User user = (User) userService.findOne(userId);
+        postService.deletePostByUser(userId);
+
+        return "redirect:/admin/users/{userId}/writing";
     }
 
 

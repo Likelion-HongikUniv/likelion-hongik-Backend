@@ -42,4 +42,12 @@ public class PostRepository {
     public void deletePost(Post post) {
         em.remove(post);
     }
+
+    public void deletePosts(List<Post> posts) {
+
+        for (Post post : posts) {
+            em.remove(post);
+        }
+    }
+
 }
