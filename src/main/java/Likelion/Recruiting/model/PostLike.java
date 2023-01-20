@@ -25,10 +25,16 @@ public class PostLike {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void makePostLike(User user, Post post) {
+    public PostLike(User user, Post post) {
         this.user = user;
         this.post = post;
         user.getLikePosts().add(this);
         post.getLikeUsers().add(this);
+    }
+    public void dislike(){
+        this.user.getLikePosts().remove(this);
+        this.user = null;
+        this.post.getLikeUsers().remove(this);
+        this.post = null;
     }
 }
