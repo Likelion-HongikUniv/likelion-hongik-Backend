@@ -7,6 +7,9 @@ import lombok.Getter;
 @Getter
 public class NavbarDto {
 
+    @JsonProperty("id")
+    private Long id;
+
     @JsonProperty("name")
     private String name;
 
@@ -14,7 +17,9 @@ public class NavbarDto {
     private String profileImage;
 
     @Builder
-    public NavbarDto(String name, String profileImage) {
+
+    public NavbarDto(Long id, String name, String profileImage) {
+        this.id = id;
         this.name = name;
         this.profileImage = profileImage;
     }
