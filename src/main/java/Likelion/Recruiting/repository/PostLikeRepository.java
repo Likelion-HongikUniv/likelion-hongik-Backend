@@ -1,5 +1,6 @@
 package Likelion.Recruiting.repository;
 
+import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.PostLike;
 
 import Likelion.Recruiting.model.User;
@@ -14,4 +15,5 @@ public interface PostLikeRepository extends JpaRepository<PostLike,Long> {
 
     List<PostLike> findByUser(User user);
 
+    PostLike findOneByUserAndPost(User user, Post post);
 }

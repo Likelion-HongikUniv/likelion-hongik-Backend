@@ -31,7 +31,8 @@ public class PostService {
 
     @Autowired
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
+    @Autowired
+    private final PostLikeRepository postLikeRepository;
 
     @Transactional
     public Post createPost(Post post, User user, List<String> imageUrls) {
