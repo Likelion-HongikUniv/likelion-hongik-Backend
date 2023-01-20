@@ -45,6 +45,27 @@ public class LikeService {
         commentLikeRepository.save(createdCommentLike);
 
     }
+    
+    public Page<PostDto> getLikedPost(Long userId, Pageable pageable){
+
+        User user = userRepository.findById(userId).get();
+        List<PostLike> postLikes = postLikeRepository.findByUser(user);
+        Page<Post> posts = postRepository.findAllByLikeUsersIn(postLikes, pageable);
+        Page<PostDto> postDto = posts.map(p -> PostDto.builder()
+                .title(p.getTitle())
+                .author(p.getAuthor().getName())
+                .profileImage(user.getProfileImage())
+                .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
+                .body(p.getBody())
+                .likes(p.getLikeUsers().size())
+                .comments(p.getComments().size())
+                .build());
+
+        
+        return postDto;
+
+    }
+    
     @Transactional
     public void deleteCommentLike(User user, Comment comment){
         CommentLike commentLike = commentLikeRepository.findOneByUserAndComment(user,comment);//에러코드~~ (옵셔널임  )
