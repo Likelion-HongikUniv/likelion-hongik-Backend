@@ -44,8 +44,15 @@ public class LikeService {
         postLikeRepository.delete(postLike);
     }
 
+    //---------------댓글
+    @Transactional
+    public void createCommentLike(User user, Comment comment){
+        CommentLike createdCommentLike= new CommentLike(user,comment);
+        commentLikeRepository.save(createdCommentLike);
 
-    public Page<PostDto> getLikedPost(Long userId, Pageable pageable) {
+    }
+    
+    public Page<PostDto> getLikedPost(Long userId, Pageable pageable){
 
         User user = userRepository.findById(userId).get();
         List<PostLike> postLikes = postLikeRepository.findByUser(user);
@@ -64,13 +71,7 @@ public class LikeService {
         return postDto;
     }
 
-    //---------------댓글
-    @Transactional
-    public void createCommentLike(User user, Comment comment){
-        CommentLike createdCommentLike= new CommentLike(user,comment);
-        commentLikeRepository.save(createdCommentLike);
-
-    }
+    
     @Transactional
     public void deleteCommentLike(User user, Comment comment){
         CommentLike commentLike = commentLikeRepository.findOneByUserAndComment(user,comment);//에러코드~~ (옵셔널임  )
