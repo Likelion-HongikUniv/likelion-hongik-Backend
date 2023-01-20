@@ -1,7 +1,6 @@
 package Likelion.Recruiting.repository;
 
 import Likelion.Recruiting.domain.Post;
-import Likelion.Recruiting.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -44,10 +43,7 @@ public class PostRepository {
     }
 
     public void deletePosts(List<Post> posts) {
-
-        for (Post post : posts) {
-            em.remove(post);
-        }
+        for (Post post : posts) { em.remove(post); }
     }
 
 }

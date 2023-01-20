@@ -52,7 +52,7 @@
                                     <td th:text="${post?.title}"></td>
                                     <td th:text="${post?.createdTime}"></td>
                                     <td th:text="${post?.user.name}"></td>
-                                    <td><a href="#" class="btn btn-danger" role="button">삭제</a></td>
+                                    <td class="btn btn-danger" role="button">삭제</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -74,6 +74,7 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">댓글 리스트</h6>
+                        <a href="#" th:href="@{comments/delete (id=${user.id})}" class="btn btn-danger" role="button" style="float:right">댓글 전체삭제</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -92,7 +93,7 @@
                                     <td th:text="${comment?.body}"></td>
                                     <td th:text="${comment?.createdTime}"></td>
                                     <td th:text="${comment?.user.name}"></td>
-                                    <td><a href="#" th:href="@{users/{id}/delete (id=${user.id})}" class="btn btn-danger" role="button">삭제</a></td>
+                                    <td class="btn btn-danger" role="button">삭제</td>
 
                                 </tr>
                                 </tbody>

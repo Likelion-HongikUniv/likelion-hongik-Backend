@@ -24,13 +24,23 @@ public class User {
     @Column(name = "user_id")
     private Long id;
 
+    private String email;
+
     private String name;
 
-    private String email;
+    private String nickname;
+
+    private String studentId;
+
+    private String major;
+
+    private String part;
+
+    private String phoneNum;
 
     private String role;
 
-    private String nickname;
+    private Long team_id;
 
     @BatchSize(size = 1000)
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

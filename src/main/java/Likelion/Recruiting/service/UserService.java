@@ -16,10 +16,15 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void updateUser(Long userId, String name, String email) {
+    public void updateUser(Long userId, String name, String email, String major, String nickname, String part, String studentId, Long team_id) {
         User findUser = userRepository.findOne(userId);
         findUser.setName(name);
         findUser.setEmail(email);
+        findUser.setMajor(major);
+        findUser.setNickname(nickname);
+        findUser.setPart(part);
+        findUser.setStudentId(studentId);
+        findUser.setTeam_id(team_id);
     }
 
     @Transactional

@@ -35,8 +35,6 @@ public class UserController {
 
         model.addAttribute("users", users);
 
-        System.out.println(users);
-
         return "admin/users";
     }
 
@@ -48,6 +46,11 @@ public class UserController {
         form.setId(user.getId());
         form.setName(user.getName());
         form.setEmail(user.getEmail());
+        form.setNickname(user.getNickname());
+        form.setMajor(user.getMajor());
+        form.setStudentId(user.getStudentId());
+        form.setPart(user.getPart());
+        form.setTeam_id(user.getTeam_id());
 
         model.addAttribute("form", form);
 
@@ -59,7 +62,15 @@ public class UserController {
 
         User book = new User();
 
-        userService.updateUser(userId, form.getName(), form.getEmail());
+        userService.updateUser(userId
+                ,form.getName()
+                ,form.getEmail()
+                ,form.getMajor()
+                ,form.getNickname()
+                ,form.getPart()
+                ,form.getStudentId()
+                ,form.getTeam_id()
+        );
 
         return "redirect:/admin/users";
     }
@@ -86,10 +97,20 @@ public class UserController {
         return "admin/userWriting";
     }
 
+
     @GetMapping("admin/users/{userId}/posts/delete")
     public String postDeleteAll(@PathVariable("userId") Long userId) {
-        User user = (User) userService.findOne(userId);
+
         postService.deletePostByUser(userId);
+
+        return "redirect:/admin/users/{userId}/writing";
+
+    }
+
+    @GetMapping("admin/users/{userId}/comments/delete")
+    public String commentDeleteAll(@PathVariable("userId") Long userId) {
+
+        commentService.deleteCommentByUser(userId);
 
         return "redirect:/admin/users/{userId}/writing";
     }
