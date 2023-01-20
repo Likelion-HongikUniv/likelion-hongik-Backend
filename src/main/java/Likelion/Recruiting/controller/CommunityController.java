@@ -289,6 +289,7 @@ public class CommunityController {
             this.responseCode = responseCode;
             this.message = message;
         }
+        
     }
 }
 
