@@ -163,10 +163,10 @@ public class CommunityController {
     //---------------------------------------------------------------
 
     @PostMapping("/community/post/{postId}/like") // 게시글좋아용(이미 있으면 삭제, 없으면 저장)
-    public CreateResponeseMessage likePost(@RequestHeader("HEADER") String header, @PathVariable("postId") Long postId){
+    public CreateResponeseMessage likePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("postId") Long postId){
         Post post = postRepository.findById(postId).get();//역시 예외처리는 예외코드로
-        Long id = Long.valueOf(1);
-        User user = userRepository.findById(id).get(); //   유저는 헤더파일에서 뽑아오기
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email); //   유저는 헤더파일에서 뽑아오기
         PostLike postLike = postLikeRepository.findOneByUserAndPost(user,post);
         if (postLike == null){
             likeService.createPostLike(user,post);
@@ -179,10 +179,10 @@ public class CommunityController {
     //------------------------------------댓글------------------------
 
     @GetMapping("/community/post/{postId}/comments")//게시글에 따른 댓글 & 대댓글 불러오기
-    public DataResponseDto getSimplePosts(@RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
+    public DataResponseDto getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
         List<Comment> comments = commentRepository.findByPostId(postId);
-        Long id = Long.valueOf(1);
-        User user = userRepository.findById(id).get(); // 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);// 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
         List<CommentDto> result = comments.stream()
                 .map(comment -> new CommentDto(comment,user))
                 .collect(Collectors.toList());
@@ -223,10 +223,10 @@ public class CommunityController {
     }
 
     @PostMapping("/community/comment/{commentId}/like") // 게시글좋아용(이미 있으면 삭제, 없으면 저장)
-    public CreateResponeseMessage likeComment(@RequestHeader("HEADER") String header, @PathVariable("commentId") Long commentId){
+    public CreateResponeseMessage likeComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("commentId") Long commentId){
         Comment comment = commentRepository.findById(commentId).get();//역시 예외처리는 예외코드로
-        Long id = Long.valueOf(1);
-        User user = userRepository.findById(id).get(); //   유저는 헤더파일에서 뽑아오기
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email); //   유저는 헤더파일에서 뽑아오기
         CommentLike commentLike = commentLikeRepository.findOneByUserAndComment(user,comment);
         if (commentLike == null){
             likeService.createCommentLike(user,comment);
@@ -266,10 +266,10 @@ public class CommunityController {
     }
 
     @PostMapping("/community/reply/{replyId}/like") // 게시글좋아용(이미 있으면 삭제, 없으면 저장)
-    public CreateResponeseMessage likeReply(@RequestHeader("HEADER") String header, @PathVariable("replyId") Long replyId){
+    public CreateResponeseMessage likeReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("replyId") Long replyId){
         Reply reply= replyRepository.findById(replyId).get();//역시 예외처리는 예외코드로
-        Long id = Long.valueOf(1);
-        User user = userRepository.findById(id).get(); //   유저는 헤더파일에서 뽑아오기
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);//   유저는 헤더파일에서 뽑아오기
         ReplyLike replyLike = replyLikeRepository.findOneByUserAndReply(user,reply);
         if (replyLike == null){
             likeService.createReplyLike(user,reply);
