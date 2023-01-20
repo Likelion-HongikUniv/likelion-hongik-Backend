@@ -89,16 +89,9 @@ public class CommunityController {
 //        }
 //    }
     //--------------------------------------------------------
+
     @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
-<<<<<<< HEAD
-<<<<<<< HEAD
     public Result getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
-=======
-    public DataResponseDto getSimplePosts(@RequestHeader("HEADER") String header,@PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
->>>>>>> 0bf9f52059384810617922a045b5e8e8f5e12002
-=======
-    public DataResponseDto getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header,@PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
->>>>>>> 50edab1e3218834354e863d8d5fdf53ed42c63a8
         List<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory));
         String email = customOauthUser.getUser().getEmail();
 
@@ -114,7 +107,8 @@ public class CommunityController {
 
 
 //-------------------------------------------------------------------------------------------------------
-    @PostMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 저장 api
+   //카테고리에따른 게시글 저장 api
+    @PostMapping("/community/posts/{mainCategory}/{subCategory}")
     public CreatePostResponse savePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreatePostRequest request, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
 
         CreatePostRequest createPostRequest = new CreatePostRequest(request.getTitle(), request.getBody(),request.getImageUrls());
@@ -160,20 +154,8 @@ public class CommunityController {
     public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
         Post post = postService.searchOneId(postId);
         // user insert partition
-<<<<<<< HEAD
-<<<<<<< HEAD
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        System.out.println(123);
-=======
-        Long id = Long.valueOf(1);
-        User user = userRepository.findById(id).get();
->>>>>>> 0bf9f52059384810617922a045b5e8e8f5e12002
-=======
-        String email = customOauthUser.getUser().getEmail();
-        User user = userService.findUser(email);
-        System.out.println(123);
->>>>>>> 50edab1e3218834354e863d8d5fdf53ed42c63a8
         PostDetailDto result = new PostDetailDto(post, user);
         return result;
     }
