@@ -25,35 +25,95 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@RestController
+@CrossOrigin
 @RequiredArgsConstructor
+@RestController
 public class MypageController {
 
-    private final PostService postService;
-
-    private final CommentService commentService;
-    private final ReplyService replyService;
     private final UserService userService;
-    @Autowired
-    private final PostRepository postRepository;
-    @Autowired
-    private final CommentRepository commentRepository;
-    @Autowired
-    private final ReplyRepository replyRepository;
-    @Autowired
-    private final UserRepository userRepository;
+    private final PostService postService;
+    private final LikeService likeService;
+    private final CommentService commentService;
 
-    //----------------------작성한 게시글------------------------------
-    @GetMapping("/mypage/posts")//카테고리에따른 게시글 가져오는 api
-    public DataResponseDto getSimplePosts(@RequestHeader("HEADER") String header) {
-        Long userId = Long.valueOf(1);
-        User user = userRepository.findById(userId).get(); // 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
-        List<Post> posts = postRepository.findByUserId(userId);
-        List<PostSimpleDto> result = posts.stream()
-                .map(p -> new PostSimpleDto(p,user))
-                .collect(toList());
-        return new DataResponseDto(result.size(), result);
+    @GetMapping("/profile")
+    public NavbarDto getNameandImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
+
+        // 유저의 email 뽑아내기
+        String email = customOauthUser.getUser().getEmail();
+
+        // navbarDto에 넣기
+        NavbarDto navbarDto = userService.navProfile(email);
+
+        return navbarDto;
     }
 
-    //
+    @ResponseBody
+    @GetMapping("/mypage/")
+    ProfileDto user_info (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
+
+        return new ProfileDto(
+                user.getNickname(),
+                user.getMajor(),
+                user.getStudentId(),
+                user.getPart(),
+                user.getPhoneNum());
+    }
+
+    @ResponseBody
+    @PatchMapping("/mypage/edit/")
+    ProfileDto mypage_edit(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
+        user = user.profileUpdate(profileDto.getNickname(), profileDto.getMajor(), profileDto.getStudentId(), profileDto.getPart(), profileDto.getPhoneNum());
+        return new ProfileDto(
+                user.getNickname(),
+                user.getMajor(),
+                user.getStudentId(),
+                user.getPart(),
+                user.getPhoneNum());
+    }
+
+
+    @GetMapping("/mypage/post")
+    public Page<PostDto> getMyPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Pageable pageable){
+        // 유저의 email 뽑아내기
+        String email = customOauthUser.getUser().getEmail();
+
+        Page<PostDto> posts = postService.getMyAllPost(email, pageable);
+
+        return posts;
+    }
+
+    @GetMapping("/mypage/comments/")
+    List<PostDetailDto> myComments (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
+
+        List<Comment> comments = commentService.findUser_Comment(user);
+        List<Post> post =  postService.findByComment(comments);
+        List<PostDetailDto> result = post.stream()
+                .map(p -> new PostDetailDto(p,user))
+                .collect(toList());
+        return result;
+    }
+
+    @GetMapping("/mypage/like")
+    public Page<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Pageable pageable){
+
+        // 유저의 email 뽑아내기
+        String email = customOauthUser.getUser().getEmail();
+
+        Long user_id = userService.findUser(email).getId();
+
+//        List<PostDto> postDtos = likeService.getLikedPost(user_id);
+        Page<PostDto> posts = likeService.getLikedPost(user_id, pageable);
+
+        return posts;
+    }
+
+
+
+
 }

@@ -91,10 +91,14 @@ public class CommunityController {
     //--------------------------------------------------------
     @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
 <<<<<<< HEAD
+<<<<<<< HEAD
     public Result getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
 =======
     public DataResponseDto getSimplePosts(@RequestHeader("HEADER") String header,@PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
 >>>>>>> 0bf9f52059384810617922a045b5e8e8f5e12002
+=======
+    public DataResponseDto getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header,@PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
+>>>>>>> 50edab1e3218834354e863d8d5fdf53ed42c63a8
         List<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory));
         String email = customOauthUser.getUser().getEmail();
 
@@ -157,6 +161,7 @@ public class CommunityController {
         Post post = postService.searchOneId(postId);
         // user insert partition
 <<<<<<< HEAD
+<<<<<<< HEAD
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
         System.out.println(123);
@@ -164,6 +169,11 @@ public class CommunityController {
         Long id = Long.valueOf(1);
         User user = userRepository.findById(id).get();
 >>>>>>> 0bf9f52059384810617922a045b5e8e8f5e12002
+=======
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
+        System.out.println(123);
+>>>>>>> 50edab1e3218834354e863d8d5fdf53ed42c63a8
         PostDetailDto result = new PostDetailDto(post, user);
         return result;
     }
@@ -197,12 +207,7 @@ public class CommunityController {
         return new DataResponseDto(result.size(), result);
     }
     @PostMapping("/community/post/{postId}")//댓글 저장 api
-<<<<<<< HEAD
     public CreatePostResponse saveComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreateCommentReqeust request, @PathVariable("postId") Long postId) {
-        CreateCommentReqeust createCommentReqeust = new CreateCommentReqeust(request.body, request.name);
-=======
-    public CreatePostResponse saveComment(@RequestHeader("HEADER") String header, @RequestBody CreateCommentReqeust request, @PathVariable("postId") Long postId) {
->>>>>>> 0bf9f52059384810617922a045b5e8e8f5e12002
         Comment createdComment = Comment.builder()
                 .body(request.getBody())
                 .build();

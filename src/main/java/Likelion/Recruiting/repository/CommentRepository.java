@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment,Long> {
-    @Query("")
-    List<Comment> findByPostId(Long PostId);
+    @Query("SELECT p FROM Comment p join fetch p.author")
+    List<Comment> findAllDesc(User user);
+
 }
