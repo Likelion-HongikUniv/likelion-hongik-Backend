@@ -100,8 +100,8 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Custom Utilities:</h6>
                     <tr th:each="ass : ${teams}">
-                        <a class="collapse-item" th:href="@{/admin/community/project/projects/{team_id}/{team_name}(team_id = ${ass.getId()}, team_name=${ass.getTeamName()})}">
-                            <td th:text="${ass.getTeamName()}"></td>
+                        <a class="collapse-item" th:href="@{/admin/community/project/projects/{team_id}/{team_name}(team_id = ${ass.getId()}, team_name=${ass.getName()})}">
+                            <td th:text="${ass.getName()}"></td>
                         </a>
                     </tr>
                 </div>

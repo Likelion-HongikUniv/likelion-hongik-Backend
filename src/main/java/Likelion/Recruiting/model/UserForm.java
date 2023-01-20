@@ -8,7 +8,22 @@ public class UserForm {
 
     private Long id;
 
-    private String name;
     private String email;
+
+    private String name;
+
+    private String nickname;
+
+    private String studentId;
+
+    private String major;
+
+    private String part;
+
+    private String phoneNum;
+
+    private String role;
+
+    private Long team_id;
 
 }

@@ -1,6 +1,7 @@
 package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.model.Comment;
+
 import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.model.UserForm;
@@ -50,7 +51,7 @@ public class UserController {
         form.setMajor(user.getMajor());
         form.setStudentId(user.getStudentId());
         form.setPart(user.getPart());
-        form.setTeam_id(user.getTeam_id());
+        form.setId(user.getId());
 
         model.addAttribute("form", form);
 

@@ -1,11 +1,10 @@
 package Likelion.Recruiting.repository;
 
-import Likelion.Recruiting.domain.Comment;
+import Likelion.Recruiting.model.Comment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.Iterator;
 import java.util.List;
 
 @Repository

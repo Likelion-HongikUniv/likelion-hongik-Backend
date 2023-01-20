@@ -1,11 +1,10 @@
 package Likelion.Recruiting.model;
 
 
+
+import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.enums.LType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -17,11 +16,11 @@ import static javax.persistence.FetchType.LAZY;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-public class Users {
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "user_id")
     private Long id;
 
@@ -56,7 +55,7 @@ public class Users {
 
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "team_name")
+    @JoinColumn(name = "team_id")
     private Team team;
 
     @OneToMany(
@@ -103,21 +102,23 @@ public class Users {
 
 
     @Builder
-    public Users(String name, String email, LType lType, Role role) {
+    public User(String name, String email, LType lType, Role role, String profileImage) {
         this.name = name;
         this.email = email;
         this.lType = lType;
         this.role = role;
-        this.isJoind = false;
+        this.profileImage = profileImage;
     }
 
-    public Users update(String name, String profileImage){
+
+
+    public User update(String name, String profileImage){
         this.name = name;
         this.profileImage = profileImage;
 
         return this;
     }
-    public Users profileUpdate(String nickname, String major, String studentId, String part, String phoneNum){
+    public User profileUpdate(String nickname, String major, String studentId, String part, String phoneNum){
         this.nickname =nickname;
         this.major = major;
         this.studentId = studentId;
@@ -131,5 +132,9 @@ public class Users {
         // user.getRoleKey() == ROLE_USER, ROLE_GUEST
 
         return this.getRole().getKey();
+    }
+    public void setTeam(Team team){
+        this.team = team;
+        team.getUserList().add(this);
     }
 }

@@ -1,5 +1,7 @@
 package Likelion.Recruiting.model.enums;
-
+//public enum SubCategory {
+//    , , , , , DESIGN
+//}
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

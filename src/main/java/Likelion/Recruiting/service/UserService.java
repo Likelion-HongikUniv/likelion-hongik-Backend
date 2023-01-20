@@ -24,7 +24,7 @@ public class UserService {
         findUser.setNickname(nickname);
         findUser.setPart(part);
         findUser.setStudentId(studentId);
-        findUser.setTeam_id(team_id);
+        findUser.setId(team_id);
     }
 
     @Transactional

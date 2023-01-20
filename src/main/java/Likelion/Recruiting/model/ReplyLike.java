@@ -13,7 +13,7 @@ import static javax.persistence.FetchType.LAZY;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ReplyLike {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "reply_like_id")
     private Long id;
 
@@ -23,12 +23,18 @@ public class ReplyLike {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
-    public void makeReplyLike(Users user, Reply reply) {
+    public ReplyLike(User user, Reply reply) {
         this.user = user;
         this.reply = reply;
         user.getLikeReplis().add(this);
         reply.getLikeUsers().add(this);
+    }
+    public void dislike(){
+        this.user.getLikeReplis().remove(this);
+        this.user = null;
+        this.reply.getLikeUsers().remove(this);
+        this.reply = null;
     }
 }

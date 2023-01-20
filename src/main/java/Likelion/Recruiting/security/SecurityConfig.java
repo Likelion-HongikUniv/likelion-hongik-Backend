@@ -13,7 +13,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                //.antMatcher("/admin/users/1/**") // 해당 경로는 접근 막겠다. 이 코드 없으면 전부 다막힘
+                .antMatcher("/admin/") // 해당 경로는 접근 막겠다. 이 코드 없으면 전부 다막힘
                 .authorizeRequests()
                 .anyRequest().authenticated()
                 .and().formLogin();

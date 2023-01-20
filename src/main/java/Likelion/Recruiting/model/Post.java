@@ -4,10 +4,7 @@ package Likelion.Recruiting.model;
 
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -22,13 +19,13 @@ import static javax.persistence.FetchType.LAZY;
 public class Post {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "post_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "user_id")
-    private Users author;
+    private User author;
 
     private String title;
 
@@ -40,7 +37,7 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private SubCategory subCategory;
 
-    private LocalDateTime createdTime;
+    private final LocalDateTime createdTime= LocalDateTime.now();
 
     @OneToMany(
             mappedBy = "post",
@@ -56,18 +53,20 @@ public class Post {
     )
     private List<PostLike> likeUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
-    private List<PostImages> postImages;
+    @OneToMany(mappedBy = "post",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
+    private List<PostImages> postImages = new ArrayList<>();
 
     @Builder
-    public Post(String title, String body, String mainCategory, String subCategory) {
+    public Post(String title, String body, MainCategory mainCategory, SubCategory subCategory) {
         this.title = title;
         this.body = body;
-        this.mainCategory = MainCategory.valueOf(mainCategory);
-        this.subCategory = SubCategory.valueOf(subCategory);
+        this.mainCategory = mainCategory;
+        this.subCategory = subCategory;
     }
 
-    public void setUser(Users user){
+    public void setAuthor(User user){
         this.author = user;
         user.getPosts().add(this);
     }
@@ -80,4 +79,5 @@ public class Post {
     public void changeSubCategory(SubCategory subCategory){
         this.subCategory = subCategory;
     }
+
 }

@@ -1,18 +1,14 @@
 package Likelion.Recruiting.repository;
 
-import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 
 //mainCategory = {Board,Assignment,Project} , subCategory = {Backend, Frontend,Design, Free,QnA,Notice}
 @Repository
