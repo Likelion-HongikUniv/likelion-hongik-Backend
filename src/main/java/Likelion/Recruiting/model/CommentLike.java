@@ -28,10 +28,16 @@ public class CommentLike {
     private User user;
 
 
-    public void makeCommentLike(User user, Comment comment) {
+    public CommentLike(User user, Comment comment) {
         this.user = user;
         this.comment = comment;
         user.getLikeComments().add(this);
         comment.getLikeUsers().add(this);
+    }
+    public void dislike(){
+        this.user.getLikeComments().remove(this);
+        this.user = null;
+        this.comment.getLikeUsers().remove(this);
+        this.comment = null;
     }
 }
