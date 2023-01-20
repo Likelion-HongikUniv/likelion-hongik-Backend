@@ -89,6 +89,7 @@ public class CommunityController {
 //        }
 //    }
     //--------------------------------------------------------
+
     @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
     public DataResponseDto getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header,@PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
         List<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory));
@@ -106,7 +107,8 @@ public class CommunityController {
 
 
 //-------------------------------------------------------------------------------------------------------
-    @PostMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 저장 api
+   //카테고리에따른 게시글 저장 api
+    @PostMapping("/community/posts/{mainCategory}/{subCategory}")
     public CreatePostResponse savePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreatePostRequest request, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
 
         CreatePostRequest createPostRequest = new CreatePostRequest(request.getTitle(), request.getBody(),request.getImageUrls());
@@ -154,7 +156,6 @@ public class CommunityController {
         // user insert partition
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        System.out.println(123);
         PostDetailDto result = new PostDetailDto(post, user);
         return result;
     }
