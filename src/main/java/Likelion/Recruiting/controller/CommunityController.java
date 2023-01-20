@@ -1,6 +1,7 @@
 package Likelion.Recruiting.controller;
 
 
+import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
 import Likelion.Recruiting.model.Comment;
 import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.Reply;
@@ -22,6 +23,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -48,47 +50,48 @@ public class CommunityController {
     private final UserRepository userRepository;
 
     //-------------------야매 유저생성-------------
-    @PostMapping("/makeUser")
-    public CreatePostResponse makeUser(@RequestBody CreateUserRequest request) {
-        User user = User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .lType(LType.KAKAO)
-                .role(Role.USER)
-                .build();
-        user.profileUpdate(request.getNickname(), request.getMajor(), request.getStudentId(), request.getPart(), request.getPhoneNum());
-        User savedUser = userRepository.save(user);
-        return new CreatePostResponse(savedUser.getId());
-    }
-
-    @Data
-    static class CreateUserRequest{
-        private String name;
-        private String email;
-        private String profileImage;
-        private String nickname;
-        private String major;
-        private String studentId;
-        private String part;
-        private String phoneNum;
-
-        public CreateUserRequest(String name, String email, String profileImage, String nickname, String major, String studentId, String part, String phoneNum) {
-            this.name = name;
-            this.email = email;
-            this.profileImage = profileImage;
-            this.nickname = nickname;
-            this.major = major;
-            this.studentId = studentId;
-            this.part = part;
-            this.phoneNum = phoneNum;
-        }
-    }
+//    @PostMapping("/makeUser")
+//    public CreatePostResponse makeUser(@RequestBody CreateUserRequest request) {
+//        User user = User.builder()
+//                .name(request.getName())
+//                .email(request.getEmail())
+//                .lType(LType.KAKAO)
+//                .role(Role.USER)
+//                .build();
+//        user.profileUpdate(request.getNickname(), request.getMajor(), request.getStudentId(), request.getPart(), request.getPhoneNum());
+//        User savedUser = userRepository.save(user);
+//        return new CreatePostResponse(savedUser.getId());
+//    }
+//
+//    @Data
+//    static class CreateUserRequest{
+//        private String name;
+//        private String email;
+//        private String profileImage;
+//        private String nickname;
+//        private String major;
+//        private String studentId;
+//        private String part;
+//        private String phoneNum;
+//
+//        public CreateUserRequest(String name, String email, String profileImage, String nickname, String major, String studentId, String part, String phoneNum) {
+//            this.name = name;
+//            this.email = email;
+//            this.profileImage = profileImage;
+//            this.nickname = nickname;
+//            this.major = major;
+//            this.studentId = studentId;
+//            this.part = part;
+//            this.phoneNum = phoneNum;
+//        }
+//    }
     //--------------------------------------------------------
     @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
-    public Result getSimplePosts(@RequestHeader("HEADER") String header,@PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
+    public Result getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
         List<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory));
-        Long id = Long.valueOf(1);
-        User user = userRepository.findById(id).get(); // 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
+        String email = customOauthUser.getUser().getEmail();
+
+        User user = userService.findUser(email); // 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
         List<PostSimpleDto> result = posts.stream()
                 .map(p -> new PostSimpleDto(p,user))
                 .collect(toList());
@@ -110,7 +113,7 @@ public class CommunityController {
     }
 //-------------------------------------------------------------------------------------------------------
     @PostMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 저장 api
-    public CreatePostResponse savePost(@RequestHeader("HEADER") String header, @RequestBody CreatePostRequest request, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
+    public CreatePostResponse savePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreatePostRequest request, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
 
         CreatePostRequest createPostRequest = new CreatePostRequest(request.getTitle(), request.getBody(),request.getImageUrls());
         Post createdPost = Post.builder()
@@ -120,8 +123,9 @@ public class CommunityController {
                 .subCategory(SubCategory.valueOf(subCategory))
                 .build();
         // user insert partition
-        Long id = Long.valueOf(1);
-        User user = userRepository.findById(id).get();
+        String email = customOauthUser.getUser().getEmail();
+        //test
+        User user = userService.findUser(email);
         Post savedPost = postService.createPost(createdPost,user,createPostRequest.getImageUrls());
 
         return new CreatePostResponse(savedPost.getId());
@@ -151,12 +155,12 @@ public class CommunityController {
 
     //----------------------------------------------------------------------------------------------------------------------------
     @GetMapping("/community/post/{postId}")//게시글 상세보기
-    public PostDetailDto getPostDetail(@RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
+    public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
         Post post = postService.searchOneId(postId);
         System.out.println(123);
         // user insert partition
-        Long id = Long.valueOf(1);
-        User user = userRepository.findById(id).get();
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
         System.out.println(123);
         PostDetailDto result = new PostDetailDto(post, user);
         return result;
@@ -165,14 +169,14 @@ public class CommunityController {
 
     //------------------------------------댓글------------------------
     @PostMapping("/community/post/{postId}")//댓글 저장 api
-    public CreatePostResponse saveComment(@RequestHeader("HEADER") String header, @RequestBody CreateCommentReqeust request, @PathVariable("postId") Long postId) {
+    public CreatePostResponse saveComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreateCommentReqeust request, @PathVariable("postId") Long postId) {
         CreateCommentReqeust createCommentReqeust = new CreateCommentReqeust(request.body, request.name);
         Comment createdComment = Comment.builder()
                 .body(request.getBody())
                 .build();
         // user insert partition
-        Long id = Long.valueOf(1);
-        User user = userRepository.findById(id).get();
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
         Post post = postRepository.findById(postId).get();//역시 예외처리는 예외코드로
         Comment savedComment = commentService.createComment(createdComment,post,user);
         return new CreatePostResponse(savedComment.getId());
@@ -204,13 +208,13 @@ public class CommunityController {
     }
     //------------------------------------대댓글------------------------
     @PostMapping("/community/comment/{commentId}")//대댓글 저장 api
-    public CreatePostResponse saveReply(@RequestHeader("HEADER") String header, @RequestBody CreateCommentReqeust request, @PathVariable("commentId") Long commentId) {
+    public CreatePostResponse saveReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreateCommentReqeust request, @PathVariable("commentId") Long commentId) {
         Reply createdReply = Reply.builder()
                 .body(request.getBody())
                 .build();
         // user insert partition
-        Long id = Long.valueOf(1);
-        User user = userRepository.findById(id).get();
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
         Comment comment = commentRepository.findById(commentId).get();//역시 예외처리는 예외코드로
         Reply savedReply = replyService.createReply(createdReply,comment,user);
         return new CreatePostResponse(savedReply.getId());
