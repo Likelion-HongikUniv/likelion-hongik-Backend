@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="fragments/header :: header" />
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+    <!-- Sidebar -->
+    <head th:replace="fragments/sidebar :: sidebar" />
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <head th:replace="fragments/topbar :: topbar" />
+
+            <!-- Begin Page Content 1 -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">게시글</h1>
+                <p class="mb-4"> 사용자가 작성한 게시글 조회</p>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">게시글 리스트</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>카테고리</th>
+                                    <th>제목</th>
+                                    <th>날짜</th>
+                                    <th>작성자</th>
+                                    <th>옵션</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="post : ${posts}">
+                                    <td th:text="${post?.id}"></td>
+                                    <td th:text="${post?.mainCategory}"></td>
+                                    <td th:text="${post?.title}"></td>
+                                    <td th:text="${post?.createdTime}"></td>
+                                    <td th:text="${post?.user.name}"></td>
+                                    <td><a href="#" class="btn btn-danger" role="button">삭제</a></td>
+                                </tr>
+                                <!--
+                                <tr th:each="user : ${users}">
+                                    <td th:text="${user.posts[0]?.mainCategory}"></td>
+                                    <td th:text="${user.posts[0]?.title}"></td>
+                                    <td th:text="${user.posts[0]?.createdTime}"></td>
+                                    <td th:text="${user.posts[0]?.user.id}"></td>
+                                    <td><a href="#" class="btn btn-danger" role="button">삭제</a></td>
+                                </tr>
+                                -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+            <!-- Begin Page Content-2 -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <h1 class="h3 mb-2 text-gray-800">댓글</h1>
+                <p class="mb-4">사용자가 작성한 댓글 조회</p>
+
+                <!-- DataTales Example -->
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary">댓글 리스트</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>게시</th>
+                                    <th>댓글내용</th>
+                                    <th>날짜</th>
+                                    <th>옵션</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>코딩잘하는법</td>
+                                    <td>와우 정말 유익하네요!</td>
+                                    <td>2022.12.31</td>
+                                    <td><a class="btn btn-danger" role="button">삭제</a></td>
+                                </tr>
+                                <tr>
+                                    <td>컴공특</td>
+                                    <td>컴하하하하</td>
+                                    <td>2023.01.02</td>
+                                    <td><a class="btn btn-danger" role="button">삭제</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /.container-fluid -->
+
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <head th:replace="fragments/footer :: footer" />
+
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="login.html">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="/vendor/jquery/jquery.min.js"></script>
+<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="/vendor/datatables/jquery.dataTables.min.js"></script>
+<script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="/js/demo/datatables-demo.js"></script>
+
+</body>
+
+</html>

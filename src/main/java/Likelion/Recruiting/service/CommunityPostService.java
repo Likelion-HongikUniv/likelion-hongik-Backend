@@ -13,13 +13,13 @@ public class CommunityPostService {
     private final CommunityRepository communityRepository;
     public List<AdminPost> getAllPostByType(String subCategory){
         //subCategory = noti,free,qna 중 하나!
-        List<AdminPost> postsByType = communityRepository.findByPart("post",subCategory).get();
+         List<AdminPost> postsByType = communityRepository.findByCategoryAndSubCategory("BOARD",subCategory);
         return postsByType;
     }
-    public void deleteAllPostByType(String subCategory){
-        communityRepository.deleteAll("post",subCategory);
+    public void deleteAllPostByType(){
+        communityRepository.deleteAll("BOARD");
     }
-    public void deletePostById(String post_id)
+    public void deletePostById(Long post_id)
     {
         communityRepository.deleteOneById(post_id);
     }

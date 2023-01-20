@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommunityProjectService {
     private final CommunityRepository communityRepository;
-    public List<AdminPost> getProjectByTeam(String team_id){
+    public List<AdminPost> getProjectByTeam(Long team_id){
         List<AdminPost> projects = communityRepository.findAllByTeam(team_id);
         return projects;
     }
@@ -21,11 +21,11 @@ public class CommunityProjectService {
 //        return project;
 //    }
 
-    public void deleteProjectById(String post_id){
-
+    public void deleteProjectById(Long post_id){
+        communityRepository.deleteOneById(post_id);
     }
     public void deleteAllProjectPosts(){
-
+        communityRepository.deleteAll("PROJECT");
     }
     ////팀,post id, 파트, 게시글 제목, 게시글 작성자, date, body
 

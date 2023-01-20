@@ -29,14 +29,15 @@ public class CommunityPostController {
 
     //특정 공지 게시판 글 삭제
     @GetMapping("admin/community/post/{subCategory}/{post_id}")
-    public String deletePost(@PathVariable("subCategory") String subCategory, @PathVariable("post_id") String post_id){
+    public String deletePost(@PathVariable("subCategory") String subCategory, @PathVariable("post_id") Long post_id){
+
         communityPostService.deletePostById(post_id);
         return "redirect:/admin/community/post/"+subCategory;
     }
 
     @GetMapping("admin/community/post/all/{subCategory}")
     public String deleteAllPosts(@PathVariable String subCategory){
-        communityPostService.deleteAllPostByType(subCategory);
+        communityPostService.deleteAllPostByType();
         return "redirect:/admin/community/post/"+subCategory;
     }
 

@@ -12,21 +12,22 @@ public class CommunityAssignmentService {
     ///post id, title, 작성자, date, body 전달
     private final CommunityRepository communityRepository;
     public List<AdminPost> findAllAssignment(){
-        List<AdminPost> ass = communityRepository.findAll("assignment");
+        List<AdminPost> ass = communityRepository.findAll("HOMEWORK");
         return ass;
     }
     public List<AdminPost> findAssignmentByPart(String part){
-        List<AdminPost> ass = communityRepository.findByPart("assignment",part).get();
+        List<AdminPost> ass = communityRepository.findByCategoryAndSubCategory("HOMEWORK",part);
         return ass;
     }
     public List<AdminPost> findAssignmentByUser(String user_name){
-        List<AdminPost> ass = communityRepository.findByUser("assignment",user_name);
+        List<AdminPost> ass = communityRepository.findByUser("HOMEWORK",user_name);
+
         return ass;
     }
     public void deleteAllAssignment(){
-        communityRepository.deleteAll("assignment","all");
+        communityRepository.deleteAll("HOMEWORK");
     }
-    public void deleteAssignment(String post_id){
+    public void deleteAssignment(Long post_id){
         communityRepository.deleteOneById(post_id);
     }
 
