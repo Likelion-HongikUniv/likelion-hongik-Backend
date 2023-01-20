@@ -1,7 +1,8 @@
 package Likelion.Recruiting.repository;
 
-import Likelion.Recruiting.model.Users;
+import Likelion.Recruiting.model.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -13,23 +14,23 @@ public class UserRepository {
 
     private final EntityManager em;
 
-    public Users findOne(Long id) {
-        return em.find(Users.class, id);
+    public User findOne(Long id) {
+        return em.find(User.class, id);
     }
 
-    public void deleteUser(Users user) {
+    public void deleteUser(User user) {
         em.remove(user);
     }
 
-    public List<Users> findAll() {
-        List<Users> result = em.createQuery("select m from Users m", Users.class)
+    public List<User> findAll() {
+        List<User> result = em.createQuery("select m from User m", User.class)
                 .getResultList();
 
         return result;
     }
 
-    public List<Users> findByName(String name) {
-        return em.createQuery("select m from Users m where m.name = :name", Users.class)
+    public List<User> findByName(String name) {
+        return em.createQuery("select m from User m where m.name = :name", User.class)
                 .setParameter("name", name)
                 .getResultList();
     }

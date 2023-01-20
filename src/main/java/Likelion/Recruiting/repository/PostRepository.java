@@ -17,12 +17,16 @@ public class PostRepository {
         return em.find(Post.class, id);
     }
 
-    public void deletePost(Post post) {
-        em.remove(post);
-    }
-
     public List<Post> findAll() {
         List<Post> result = em.createQuery("select m from Post m", Post.class)
+                .getResultList();
+
+        return result;
+    }
+
+    public List<Post> findByUserId(Long userId) {
+        List<Post> result = em.createQuery("select distinct p from Post p, User u where p.user.id = :userId", Post.class)
+                .setParameter("userId", userId)
                 .getResultList();
 
         return result;
@@ -33,4 +37,13 @@ public class PostRepository {
                 .setParameter("id", id)
                 .getResultList();
     }
+
+    public void deletePost(Post post) {
+        em.remove(post);
+    }
+
+    public void deletePosts(List<Post> posts) {
+        for (Post post : posts) { em.remove(post); }
+    }
+
 }
