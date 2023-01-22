@@ -17,13 +17,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@CrossOrigin
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
 public class MypageController {
@@ -34,13 +36,17 @@ public class MypageController {
     private final CommentService commentService;
 
     @GetMapping("/profile")
+//    @ResponseBody
     public NavbarDto getNameandImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
+
 
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
+        System.out.println("email = " + email);
 
         // navbarDto에 넣기
         NavbarDto navbarDto = userService.navProfile(email);
+        System.out.println("navbarDto.getName() = " + navbarDto.getName());
 
         return navbarDto;
     }

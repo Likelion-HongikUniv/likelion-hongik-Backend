@@ -8,6 +8,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -34,7 +35,8 @@ public class SecurityConfig implements WebMvcConfigurer {
     public SecurityFilterChain filterChain(HttpSecurity http) throws
             Exception {
         http.csrf().disable()
-                .cors().and();
+                .cors().configurationSource(corsConfigurationSource())
+                .and();
 //                        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 스프링시큐리티가 세션쿠키방식으로 작동하지 않게 하는 것임.
 
         http.authorizeRequests()
@@ -65,7 +67,7 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         final CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:8080");
+        configuration.addAllowedOriginPattern("*");
         configuration.addExposedHeader("Content-Disposition");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
@@ -81,8 +83,8 @@ public class SecurityConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .exposedHeaders("X-AUTH-TOKEN")
-                .allowCredentials(true)
-                .allowedOrigins("http://localhost:3000");
+//                .allowCredentials(true)
+                .allowedOriginPatterns("*");
 //        WebMvcConfigurer.super.addCorsMappings(registry);
     }
 }
