@@ -51,8 +51,8 @@ public class PostService {
     }
 
 
-    public List<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory){
-        return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory);
+    public Page<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory,Pageable pageable){
+        return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
     }
 
     public Post searchOneId(Long id) {

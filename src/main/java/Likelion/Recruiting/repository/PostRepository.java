@@ -21,8 +21,7 @@ import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post,Long> {
 
-    @Query("select p from Post p join fetch p.author")
-    List<Post> findByMainCategoryAndSubCategory(MainCategory mainCategory, SubCategory subCategory);
+    Page<Post> findByMainCategoryAndSubCategory(MainCategory mainCategory, SubCategory subCategory,Pageable pageable);
 
 
     Page<Post> findAllByAuthor(User user, Pageable pageable);
