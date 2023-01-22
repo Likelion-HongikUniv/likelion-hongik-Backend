@@ -1,25 +1,25 @@
 package Likelion.Recruiting.controller;
 
+import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
+import Likelion.Recruiting.model.Comment;
 import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.User;
-import Likelion.Recruiting.model.dto.DataResponseDto;
-import Likelion.Recruiting.model.dto.PostSimpleDto;
-import Likelion.Recruiting.model.enums.MainCategory;
-import Likelion.Recruiting.model.enums.SubCategory;
-import Likelion.Recruiting.repository.CommentRepository;
-import Likelion.Recruiting.repository.PostRepository;
-import Likelion.Recruiting.repository.ReplyRepository;
-import Likelion.Recruiting.repository.UserRepository;
+
+import Likelion.Recruiting.model.dto.NavbarDto;
+import Likelion.Recruiting.model.dto.PostDetailDto;
+import Likelion.Recruiting.model.dto.PostDto;
+import Likelion.Recruiting.model.dto.ProfileDto;
 import Likelion.Recruiting.service.CommentService;
+import Likelion.Recruiting.service.LikeService;
 import Likelion.Recruiting.service.PostService;
-import Likelion.Recruiting.service.ReplyService;
+
 import Likelion.Recruiting.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class MypageController {
         return navbarDto;
     }
 
-    @ResponseBody
+
     @GetMapping("/mypage/")
     ProfileDto user_info (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
         String email = customOauthUser.getUser().getEmail();
@@ -61,7 +61,6 @@ public class MypageController {
                 user.getPhoneNum());
     }
 
-    @ResponseBody
     @PatchMapping("/mypage/edit/")
     ProfileDto mypage_edit(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
         String email = customOauthUser.getUser().getEmail();

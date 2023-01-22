@@ -1,11 +1,17 @@
 package Likelion.Recruiting.service;
 
 import Likelion.Recruiting.model.*;
+import Likelion.Recruiting.model.dto.PostDto;
 import Likelion.Recruiting.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
