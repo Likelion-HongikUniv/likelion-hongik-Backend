@@ -1,6 +1,7 @@
 package Likelion.Recruiting.controller;
 
 
+import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
 import Likelion.Recruiting.model.*;
 import Likelion.Recruiting.model.dto.CommentDto;
 import Likelion.Recruiting.model.dto.DataResponseDto;
@@ -91,7 +92,7 @@ public class CommunityController {
     //--------------------------------------------------------
 
     @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
-    public DataResponseDto getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header,@PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
+    public DataResponseDto getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
         List<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory));
         String email = customOauthUser.getUser().getEmail();
 
@@ -180,7 +181,7 @@ public class CommunityController {
 
     @GetMapping("/community/post/{postId}/comments")//게시글에 따른 댓글 & 대댓글 불러오기
     public DataResponseDto getSimplePosts(@RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
-        List<Comment> comments = commentRepository.findByPostId(postId);
+        List<Comment> comments = commentRepository.findAllByPostId(postId);
         Long id = Long.valueOf(1);
         User user = userRepository.findById(id).get(); // 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
         List<CommentDto> result = comments.stream()

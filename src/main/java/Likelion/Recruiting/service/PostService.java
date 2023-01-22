@@ -32,6 +32,8 @@ public class PostService {
     @Autowired
     private final PostRepository postRepository;
     @Autowired
+    private final UserRepository userRepository;
+    @Autowired
     private final PostLikeRepository postLikeRepository;
 
     @Transactional

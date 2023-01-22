@@ -10,10 +10,7 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
-
     @Override
     @Query("select u from User u join fetch u.team")
     List<User> findAll();
-
-//    User findById();
 }
