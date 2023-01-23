@@ -42,7 +42,7 @@ public class JwtController {
         response.setHeader("Authorization", token);
         // redirect 할 링크 설정
 //        response.sendRedirect("http://localhost:3000/");
-        String uri;
+    //    String uri;
 //        uri = UriComponentsBuilder.fromUriString("/login").queryParam("JWT", "token").build().toUriString();
 
 

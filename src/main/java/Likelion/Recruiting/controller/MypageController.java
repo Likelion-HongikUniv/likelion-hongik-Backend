@@ -47,7 +47,7 @@ public class MypageController {
 
     @ResponseBody
     @GetMapping("/mypage/")
-    ProfileDto user_info (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
+    ProfileDto user_info (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) throws IOException {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
 
