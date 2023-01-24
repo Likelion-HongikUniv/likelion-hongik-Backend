@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-//@CrossOrigin
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @Controller
 public class indexController {
@@ -66,7 +66,6 @@ public class indexController {
 
         // 처음 로그인 한 것이지 확인하기 == Profile db에 해당 user의 정보가 있는지 확인하기
         Long user_id = user.getId();
-
 
 //        if (user.isJoind() == false && user.getRole() == Role.USER) // 멋사 합격자이면서 추가정보 안 받은 사람 -> 회원가입
         if( user.isJoind() == false){ // 아직 추가 정보 안 받음 -> 멋사 회원가입 전 -> isJoined == true 여야 함
