@@ -1,6 +1,7 @@
 package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
+import Likelion.Recruiting.config.auth.NaverUserImpl;
 import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.User;
@@ -27,9 +28,9 @@ public class indexController {
     private final UserService userService;
 
     @GetMapping("/")
-    String index(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Model model){
+    // 네이버의 경우 !!
+    String index(@AuthenticationPrincipal NaverUserImpl customOauthUser, Model model){
 
-        System.out.println("userDetails = " + customOauthUser);
         if(customOauthUser != null){
             User user = customOauthUser.getUser();
             model.addAttribute("message", user);
@@ -42,6 +43,8 @@ public class indexController {
         return "index2";
     }
 
+
+    //@GetMapping("/oauth2/authorization/naver")
 
     @GetMapping("/loginForm")
     public String loginForm(){
@@ -61,7 +64,7 @@ public class indexController {
 
     @ResponseBody
     @PostMapping("/accounts/detail_info/")
-    IsMemberDto detail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
+    IsMemberDto detail(@AuthenticationPrincipal NaverUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
         // 지금 로그인되어 있는 User 객체 정보 찾기
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);

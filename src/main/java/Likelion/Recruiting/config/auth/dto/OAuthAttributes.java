@@ -38,6 +38,7 @@ public class OAuthAttributes {
         }
         else if (registrationId.equals("naver")){
 //            return ofNaver(userNameAttributeName, attributes);
+            return ofNaver("id", attributes);
         }
         else if (registrationId.equals("github")){
 //            return ofGoogle(userNameAttributeName, attributes);
@@ -54,6 +55,21 @@ public class OAuthAttributes {
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .ltype(LType.GOOGLE)
+                .build();
+    }
+    @SuppressWarnings("unchecked")
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+        /* JSON형태이기 때문에 Map을 통해 데이터를 가져온다. */
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+        System.out.println(response);
+
+        return OAuthAttributes.builder()
+                .name((String) response.get("name"))
+                .email((String) response.get("email"))
+                .picture((String) attributes.get("profile_image"))
+                .attributes(response)
+                .nameAttributeKey(userNameAttributeName)
+                .ltype(LType.NAVER)
                 .build();
     }
 
