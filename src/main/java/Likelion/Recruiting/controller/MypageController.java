@@ -38,15 +38,11 @@ public class MypageController {
     @GetMapping("/profile")
 //    @ResponseBody
     public NavbarDto getNameandImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
-
-
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
-        System.out.println("email = " + email);
 
         // navbarDto에 넣기
         NavbarDto navbarDto = userService.navProfile(email);
-        System.out.println("navbarDto.getName() = " + navbarDto.getName());
 
         return navbarDto;
     }

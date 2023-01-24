@@ -30,13 +30,14 @@ public class OAuthAttributes {
 
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
-        if ("naver".equals(registrationId)) {
+        if (registrationId.equals("kakao")){
+//            return ofKaKao(userNameAttributeName, attributes);
+        }
+        else if (registrationId.equals("naver")){
+//            return ofNaver(userNameAttributeName, attributes);
             return ofNaver("id", attributes);
         }
-        else if ("kakao".equals(registrationId)){
-            return ofKaKao(userNameAttributeName, attributes);
-        }
-//        else if ("google".equals(registrationId)){
+//        if (registrationId.equals("google")){
             return ofGoogle(userNameAttributeName, attributes);
 //        }
     }

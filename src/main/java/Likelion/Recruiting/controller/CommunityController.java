@@ -153,7 +153,8 @@ public class CommunityController {
 
     //----------------------------------------------------------------------------------------------------------------------------
     @GetMapping("/community/post/{postId}")//게시글 상세보기
-    public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
+    public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("postId") Long postId) {
+        System.out.println("postId = " + postId);
         Post post = postService.searchOneId(postId);
         // user insert partition
         String email = customOauthUser.getUser().getEmail();
