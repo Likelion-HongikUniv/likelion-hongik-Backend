@@ -30,32 +30,42 @@ public class OAuthAttributes {
 
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
-        if (registrationId.equals("kakao")){
-//            return ofKaKao(userNameAttributeName, attributes);
+        if (registrationId.equals("google")){
+            return ofGoogle(userNameAttributeName, attributes);
+        }
+        else if (registrationId.equals("kakao")){
+            System.out.println("of의 kakao 속");
+           return ofKaKao("id", attributes);
         }
         else if (registrationId.equals("naver")){
 //            return ofNaver(userNameAttributeName, attributes);
             return ofNaver("id", attributes);
         }
-//        if (registrationId.equals("google")){
-            return ofGoogle(userNameAttributeName, attributes);
-//        }
+        else if (registrationId.equals("github")){
+//            return ofGoogle(userNameAttributeName, attributes);
+        }
+        return null;
     }
 
     private static OAuthAttributes ofKaKao(String userNameAttributeName, Map<String, Object> attributes) {
-
+        System.out.println("ofKakao");
+        Map<String,Object> response = (Map<String, Object>)attributes.get("kakao_account");
+        Map<String,Object> profile = (Map<String, Object>) response.get("profile");
+        System.out.println("response = " + response);
         return OAuthAttributes.builder()
-                .name((String) attributes.get("name"))
-                .email((String) attributes.get("email"))
-                .picture((String) attributes.get("picture"))
+                .name((String) profile.get("nickname"))
+                .email((String) response.get("email"))
+                .picture((String) profile.get("profile_image_url"))
                 .attributes(attributes)
+//                .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .ltype(LType.KAKAO)
                 .build();
+
     }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
-
+        System.out.println(attributes);
         return OAuthAttributes.builder()
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
