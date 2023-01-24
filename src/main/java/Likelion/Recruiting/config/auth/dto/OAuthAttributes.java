@@ -31,10 +31,17 @@ public class OAuthAttributes {
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
         if (registrationId.equals("google")){
-            System.out.println("of if 속");
             return ofGoogle(userNameAttributeName, attributes);
         }
-//        return ofGoogle(userNameAttributeName, attributes);
+        else if (registrationId.equals("kakao")){
+//            return ofKaKao(userNameAttributeName, attributes);
+        }
+        else if (registrationId.equals("naver")){
+//            return ofNaver(userNameAttributeName, attributes);
+        }
+        else if (registrationId.equals("github")){
+//            return ofGoogle(userNameAttributeName, attributes);
+        }
         return null;
     }
 

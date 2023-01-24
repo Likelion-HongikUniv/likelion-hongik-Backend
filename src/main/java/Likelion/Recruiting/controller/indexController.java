@@ -6,11 +6,18 @@ import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.Map;
 
 @CrossOrigin("*")
 @RequiredArgsConstructor
@@ -35,11 +42,6 @@ public class indexController {
         return "index2";
     }
 
-    @GetMapping("/oauth2/authorization/google")
-    public void auth(){
-        System.out.println("auth 속");
-
-    }
 
     @GetMapping("/loginForm")
     public String loginForm(){

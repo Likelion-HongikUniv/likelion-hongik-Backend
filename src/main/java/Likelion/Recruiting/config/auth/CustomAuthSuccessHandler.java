@@ -44,7 +44,6 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // JWT 속 암호화 할 정보들 세팅하기
         String email = user.getEmail();
-//        String email = "tmfrk0426@gmail.com";
         Role role = user.getRole();
 
         // JWT 만들기
@@ -54,8 +53,9 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.setHeader("JWT", token);
 
         String tartgetUri;
-        tartgetUri = UriComponentsBuilder.fromUriString("http://localhost:3000/")
-//                .path("/token")
+        tartgetUri = UriComponentsBuilder
+                .fromUriString("http://localhost:3000/")
+                .path("/ing")
                 .queryParam("token", token)
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, tartgetUri);

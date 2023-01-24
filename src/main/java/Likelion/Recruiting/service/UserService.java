@@ -40,6 +40,8 @@ public class UserService {
                 .id(user.getId())
                 .name(user.getName())
                 .profileImage(user.getProfileImage())
+                .isJoined(user.isJoind())
+                .role(user.getRole())
                 .build();
     }
 }
