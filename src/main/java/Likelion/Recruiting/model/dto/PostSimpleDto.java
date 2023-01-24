@@ -2,6 +2,7 @@ package Likelion.Recruiting.model.dto;
 
 
 import Likelion.Recruiting.model.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;

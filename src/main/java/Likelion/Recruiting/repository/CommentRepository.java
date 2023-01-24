@@ -16,4 +16,6 @@ public interface CommentRepository extends JpaRepository<Comment,Long> {
     List<Comment> findAllDesc(User user);
 
     List<Comment> findByPostId(Long PostId);
+    @Query("select p from Post p join fetch p.author")
+    List<Comment> findAllByPostId(Long postId);
 }

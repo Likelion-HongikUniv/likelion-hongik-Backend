@@ -32,6 +32,8 @@ public class PostService {
     @Autowired
     private final PostRepository postRepository;
     @Autowired
+    private final UserRepository userRepository;
+    @Autowired
     private final PostLikeRepository postLikeRepository;
     private final UserRepository userRepository;
 
@@ -50,8 +52,8 @@ public class PostService {
     }
 
 
-    public List<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory){
-        return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory);
+    public Page<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory,Pageable pageable){
+        return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
     }
 
     public Post searchOneId(Long id) {
