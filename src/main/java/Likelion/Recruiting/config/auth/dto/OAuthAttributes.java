@@ -34,8 +34,13 @@ public class OAuthAttributes {
             return ofGoogle(userNameAttributeName, attributes);
         }
         else if (registrationId.equals("kakao")){
+<<<<<<< HEAD
+            System.out.println("of의 kakao 속");
+           return ofKaKao("id", attributes);
+=======
             //userNameAttributeName -> id
             return ofKaKao(userNameAttributeName, attributes);
+>>>>>>> 6977102bca227a88f9d86118e3e408e18d80899a
         }
         else if (registrationId.equals("naver")){
 //            return ofNaver(userNameAttributeName, attributes);
@@ -48,16 +53,29 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofKaKao(String userNameAttributeName, Map<String, Object> attributes) {
+<<<<<<< HEAD
+        System.out.println("ofKakao");
+        Map<String,Object> response = (Map<String, Object>)attributes.get("kakao_account");
+        Map<String,Object> profile = (Map<String, Object>) response.get("profile");
+        System.out.println("response = " + response);
+        return OAuthAttributes.builder()
+                .name((String) profile.get("nickname"))
+                .email((String) response.get("email"))
+                .picture((String) profile.get("profile_image_url"))
+=======
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
         return OAuthAttributes.builder()
                 .name((String) kakaoProfile.get("nickname"))
                 .email((String) kakaoAccount.get("email"))
                 .picture((String) kakaoProfile.get("thumbnail_image_"))
+>>>>>>> 6977102bca227a88f9d86118e3e408e18d80899a
                 .attributes(attributes)
+//                .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .ltype(LType.KAKAO)
                 .build();
+
     }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
