@@ -40,12 +40,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService implements
         // 어떤 소셜로그인을 사용했는지
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
         System.out.println("registrationId = " + registrationId);
+//        System.out.println(oAuth2User.getAttributes().get("kakao_account"));
         // 로그인을 위한 키
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
                     .getUserInfoEndpoint().getUserNameAttributeName();
-        System.out.println("userNameAttributeName = " + userNameAttributeName);
-        System.out.println("oAuth2User.getAttributes() = " + oAuth2User.getAttributes());
-//        OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, kaka);
+
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
         System.out.println("attributes = " + attributes.getAttributes());
 
