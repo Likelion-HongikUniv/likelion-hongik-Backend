@@ -30,12 +30,10 @@ public class OAuthAttributes {
 
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
-        if (registrationId.equals("google")){
-            System.out.println("of if 속");
-            return ofGoogle(userNameAttributeName, attributes);
+        if ("naver".equals(registrationId)) {
+            return ofNaver("id", attributes);
         }
-//        return ofGoogle(userNameAttributeName, attributes);
-        return null;
+        return ofGoogle(userNameAttributeName, attributes);
     }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
@@ -47,6 +45,21 @@ public class OAuthAttributes {
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .ltype(LType.GOOGLE)
+                .build();
+    }
+    @SuppressWarnings("unchecked")
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+        /* JSON형태이기 때문에 Map을 통해 데이터를 가져온다. */
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+        System.out.println(response);
+
+        return OAuthAttributes.builder()
+                .name((String) response.get("name"))
+                .email((String) response.get("email"))
+                .picture((String) attributes.get("profile_image"))
+                .attributes(response)
+                .nameAttributeKey(userNameAttributeName)
+                .ltype(LType.NAVER)
                 .build();
     }
 
