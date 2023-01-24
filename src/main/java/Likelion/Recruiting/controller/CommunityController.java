@@ -3,9 +3,7 @@ package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
 import Likelion.Recruiting.model.*;
-import Likelion.Recruiting.model.dto.PageResponseDto;
-import Likelion.Recruiting.model.dto.PostDetailDto;
-import Likelion.Recruiting.model.dto.PostSimpleDto;
+import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.*;
@@ -23,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @CrossOrigin("*")
 @RestController
