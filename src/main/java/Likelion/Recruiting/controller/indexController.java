@@ -1,6 +1,7 @@
 package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
+import Likelion.Recruiting.config.auth.NaverUserImpl;
 import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.User;
@@ -20,7 +21,8 @@ public class indexController {
     private final UserService userService;
 
     @GetMapping("/")
-    String index(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Model model){
+    // 네이버의 경우 !!
+    String index(@AuthenticationPrincipal NaverUserImpl customOauthUser, Model model){
 
         System.out.println("userDetails = " + customOauthUser);
         if(customOauthUser != null){
@@ -40,6 +42,8 @@ public class indexController {
         System.out.println("auth 속");
 
     }
+
+    //@GetMapping("/oauth2/authorization/naver")
 
     @GetMapping("/loginForm")
     public String loginForm(){
