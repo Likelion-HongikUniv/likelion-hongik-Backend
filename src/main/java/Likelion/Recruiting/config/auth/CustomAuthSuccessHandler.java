@@ -38,7 +38,8 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 //        clearSession(request);
 
         OAuth2User oAuth2User1 = (OAuth2User) authentication.getPrincipal();
-
+        System.out.println(oAuth2User1);
+//        String registrationId
         // 해당 email을 가진 유저 객체 가져오기
         User user = userRepository.findByEmail(oAuth2User1.getAttributes().get("email").toString()).get();
 
