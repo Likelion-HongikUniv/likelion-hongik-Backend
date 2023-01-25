@@ -33,11 +33,16 @@ public class OAuthAttributes {
         if (registrationId.equals("google")){
             System.out.println("of if 속");
             return ofGoogle(userNameAttributeName, attributes);
+        } else if (registrationId.equals("github")) {
+            System.out.println("깃허브로그인중");
+            return ofGithub(userNameAttributeName, attributes);
         }
-//        return ofGoogle(userNameAttributeName, attributes);
         return null;
     }
 
+    /**
+     * 구글
+     * */
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
 
         return OAuthAttributes.builder()
@@ -47,6 +52,20 @@ public class OAuthAttributes {
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .ltype(LType.GOOGLE)
+                .build();
+    }
+
+    /**
+     * 깃허브
+     */
+    private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
+        return OAuthAttributes.builder()
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .picture((String) attributes.get("picture"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .ltype(LType.GITHUB)
                 .build();
     }
 

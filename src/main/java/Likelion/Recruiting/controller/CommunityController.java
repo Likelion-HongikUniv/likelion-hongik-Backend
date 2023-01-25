@@ -270,11 +270,11 @@ public class CommunityController {
         Reply reply = replyRepository.findById(replyId).get();//예외처리
         Reply deletedReply= replyService.deleteReply(reply);
         if (deletedReply.getIsDeleted() == true)
-            return new CreateResponeseMessage((long)200, "업데이트 성공");
-        else return new CreateResponeseMessage((long)404, "업데이트 실패");
+            return new CreateResponeseMessage((long)200, "삭제 성공");
+        else return new CreateResponeseMessage((long)404, "삭제 실패");
     }
 
-    @PostMapping("/community/reply/{replyId}/like") // 게시글좋아용(이미 있으면 삭제, 없으면 저장)
+    @PostMapping("/community/reply/{replyId}/like") // 답글좋아용(이미 있으면 삭제, 없으면 저장)
     public CreateResponeseMessage likeReply(@RequestHeader("HEADER") String header, @PathVariable("replyId") Long replyId){
         Reply reply= replyRepository.findById(replyId).get();//역시 예외처리는 예외코드로
         Long id = Long.valueOf(1);
