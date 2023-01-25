@@ -25,7 +25,7 @@ public class PostRepository {
     }
 
     public List<Post> findByUserId(Long userId) {
-        List<Post> result = em.createQuery("select distinct p from Post p, User u where p.user.id = :userId", Post.class)
+        List<Post> result = em.createQuery("select distinct p from Post p where p.author.id = :userId", Post.class)
                 .setParameter("userId", userId)
                 .getResultList();
 

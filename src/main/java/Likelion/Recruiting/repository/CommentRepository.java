@@ -24,7 +24,7 @@ public class CommentRepository {
 
     // user_id로 찾기
     public List<Comment> findByUserId(Long userId) {
-        List<Comment> result = em.createQuery("select distinct c from Comment c where c.user.id = :userId", Comment.class)
+        List<Comment> result = em.createQuery("select distinct c from Comment c where c.author.id = :userId", Comment.class)
                 .setParameter("userId", userId)
                 .getResultList();
 
