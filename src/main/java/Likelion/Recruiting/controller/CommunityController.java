@@ -108,7 +108,7 @@ public class CommunityController {
                                           @PathVariable("mainCategory") String mainCategory,
                                           @PathVariable("subCategory") String subCategory) {
         Page<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),pageable);
-        String email = "tmfrk0426@gmail.com";
+        String email = "limch9eri@gmail.com";
         User user = userService.findUser(email); // 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
         Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
         return new PageResponseDto<PostSimpleDto>(result);
@@ -123,10 +123,11 @@ public class CommunityController {
     @PostMapping("/community/posts/{mainCategory}/{subCategory}")
     public CreatePostResponse savePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreatePostRequest request, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
 
-        CreatePostRequest createPostRequest = new CreatePostRequest(request.getTitle(), request.getBody(),request.getImageUrls());
+        CreatePostRequest createPostRequest = new CreatePostRequest(request.getTitle(), request.getBody(),request.getThumbnailImage());
         Post createdPost = Post.builder()
                 .title(createPostRequest.getTitle())
                 .body(createPostRequest.getBody())
+                .thumbnailImage(createPostRequest.getThumbnailImage())
                 .mainCategory(MainCategory.valueOf(mainCategory))
                 .subCategory(SubCategory.valueOf(subCategory))
                 .build();
@@ -134,7 +135,7 @@ public class CommunityController {
         String email = customOauthUser.getUser().getEmail();
         //test
         User user = userService.findUser(email);
-        Post savedPost = postService.createPost(createdPost,user,createPostRequest.getImageUrls());
+        Post savedPost = postService.createPost(createdPost,user);
 
         return new CreatePostResponse(savedPost.getId());
     }
@@ -143,12 +144,12 @@ public class CommunityController {
     static class CreatePostRequest {
         private String title;
         private String body;
-        private List<String> imageUrls= new ArrayList<>();
+        private String thumbnailImage;
 
-        public CreatePostRequest(String title, String body,List<String> imageUrls) {
+        public CreatePostRequest(String title, String body,String thumbnailImage) {
             this.title = title;
             this.body = body;
-            this.imageUrls = imageUrls;
+            this.thumbnailImage = thumbnailImage;
         }
     }
 
