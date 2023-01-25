@@ -73,7 +73,7 @@ public class indexController {
         Long user_id = user.getId();
 
 //        if (user.isJoind() == false && user.getRole() == Role.USER) // 멋사 합격자이면서 추가정보 안 받은 사람 -> 회원가입
-        if( user.isJoind() == false){ // 아직 추가 정보 안 받음 -> 멋사 회원가입 전 -> isJoined == true 여야 함
+        if( user.isJoind() == false&& user.getRole() == Role.USER){ // 아직 추가 정보 안 받음 -> 멋사 회원가입 전 -> isJoined == true 여야 함
             userService.insertDetail(email, profileDto);
             return new IsMemberDto(user.isJoind(), user.getRole()); // false, USER
         }
