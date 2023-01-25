@@ -20,16 +20,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-
-
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@CrossOrigin
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
 public class MypageController {
@@ -40,8 +39,8 @@ public class MypageController {
     private final CommentService commentService;
 
     @GetMapping("/profile")
+//    @ResponseBody
     public NavbarDto getNameandImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
-
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
 
@@ -53,7 +52,7 @@ public class MypageController {
 
 
     @GetMapping("/mypage/")
-    ProfileDto user_info (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
+    ProfileDto user_info (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser)  {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
 

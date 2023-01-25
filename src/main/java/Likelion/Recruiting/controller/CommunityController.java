@@ -108,6 +108,7 @@ public class CommunityController {
             @PageableDefault(page =1,size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable,
             @PathVariable("mainCategory") String mainCategory,
             @PathVariable("subCategory") String subCategory) {
+
         Page<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),pageable);
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email); // 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기

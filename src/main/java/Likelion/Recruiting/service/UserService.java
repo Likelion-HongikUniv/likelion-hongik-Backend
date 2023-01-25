@@ -27,7 +27,6 @@ public class UserService {
 
         // 유저에 추가정보 넣기
         user = user.profileUpdate(profileDto.getNickname(), profileDto.getMajor(), profileDto.getStudentId(), profileDto.getPart(), profileDto.getPhoneNum());
-        System.out.println("user.getMajor() = " + user.getMajor());
         userRepository.save(user);
 
         System.out.println("profile save 완료");
@@ -41,6 +40,8 @@ public class UserService {
                 .id(user.getId())
                 .name(user.getName())
                 .profileImage(user.getProfileImage())
+                .isJoined(user.isJoind())
+                .role(user.getRole())
                 .build();
     }
 }

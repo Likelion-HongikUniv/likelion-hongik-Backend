@@ -59,6 +59,7 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token){
         // token에서 복호화한 email을 가진 user객체를 customOauthUser 형태로 뽑아오기
         CustomOauthUser user = customOAuth2UserService.loadUserByEmail(this.getUserPk(token));
+//        System.out.println("user = " + user.getName());
         return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
 

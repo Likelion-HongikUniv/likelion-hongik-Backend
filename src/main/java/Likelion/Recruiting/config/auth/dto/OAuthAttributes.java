@@ -31,20 +31,39 @@ public class OAuthAttributes {
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes){
         if (registrationId.equals("google")){
-            System.out.println("of if 속");
             return ofGoogle(userNameAttributeName, attributes);
-        } else if (registrationId.equals("github")) {
-            System.out.println("깃허브로그인중");
-            return ofGithub(userNameAttributeName, attributes);
+        }
+        else if (registrationId.equals("kakao")){
+            System.out.println("of의 kakao 속");
+            return ofKaKao("id", attributes);
+        }
+        else if (registrationId.equals("naver")){
+//            return ofNaver(userNameAttributeName, attributes);
+            return ofNaver("id", attributes);
+        }
+        else if (registrationId.equals("github")){
+//            return ofGoogle(userNameAttributeName, attributes);
         }
         return null;
     }
 
-    /**
-     * 구글
-     * */
-    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+    private static OAuthAttributes ofKaKao(String userNameAttributeName, Map<String, Object> attributes) {
+        Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+        Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
+        return OAuthAttributes.builder()
+                .name((String) kakaoProfile.get("nickname"))
+                .email((String) kakaoAccount.get("email"))
+                .picture((String) kakaoProfile.get("thumbnail_image_"))
+                .attributes(attributes)
+//                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .ltype(LType.KAKAO)
+                .build();
 
+    }
+
+    private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+        System.out.println(attributes);
         return OAuthAttributes.builder()
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
@@ -54,18 +73,19 @@ public class OAuthAttributes {
                 .ltype(LType.GOOGLE)
                 .build();
     }
+    @SuppressWarnings("unchecked")
+    private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+        /* JSON형태이기 때문에 Map을 통해 데이터를 가져온다. */
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+        System.out.println(response);
 
-    /**
-     * 깃허브
-     */
-    private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .name((String) attributes.get("name"))
-                .email((String) attributes.get("email"))
-                .picture((String) attributes.get("picture"))
-                .attributes(attributes)
+                .name((String) response.get("name"))
+                .email((String) response.get("email"))
+                .picture((String) attributes.get("profile_image"))
+                .attributes(response)
                 .nameAttributeKey(userNameAttributeName)
-                .ltype(LType.GITHUB)
+                .ltype(LType.NAVER)
                 .build();
     }
 
