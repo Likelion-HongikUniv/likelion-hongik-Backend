@@ -67,10 +67,10 @@ public class LikeService {
                 .comments(p.getComments().size())
                 .build());
 
-        
-        return postDto;
 
+        return postDto;
     }
+
     
     @Transactional
     public void deleteCommentLike(User user, Comment comment){

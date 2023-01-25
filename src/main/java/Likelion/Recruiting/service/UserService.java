@@ -38,6 +38,7 @@ public class UserService {
         User user = userRepository.findByEmail(email).get();
 
         return NavbarDto.builder()
+                .id(user.getId())
                 .name(user.getName())
                 .profileImage(user.getProfileImage())
                 .build();
