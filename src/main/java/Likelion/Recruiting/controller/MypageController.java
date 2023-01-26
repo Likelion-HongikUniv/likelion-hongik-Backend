@@ -32,6 +32,7 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 @RestController
 public class MypageController {
+    //test
 
     private final UserService userService;
     private final PostService postService;
