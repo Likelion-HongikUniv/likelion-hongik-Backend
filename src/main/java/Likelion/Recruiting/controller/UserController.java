@@ -51,7 +51,6 @@ public class UserController {
         form.setMajor(user.getMajor());
         form.setStudentId(user.getStudentId());
         form.setPart(user.getPart());
-        form.setId(user.getId());
 
         model.addAttribute("form", form);
 
@@ -61,8 +60,6 @@ public class UserController {
     @PostMapping("admin/users/{userId}/edit")
     public String updateUser(@PathVariable Long userId, @ModelAttribute("form") UserForm form) {
 
-        User book = new User();
-
         userService.updateUser(userId
                 ,form.getName()
                 ,form.getEmail()
@@ -70,7 +67,6 @@ public class UserController {
                 ,form.getNickname()
                 ,form.getPart()
                 ,form.getStudentId()
-                ,form.getTeam_id()
         );
 
         return "redirect:/admin/users";

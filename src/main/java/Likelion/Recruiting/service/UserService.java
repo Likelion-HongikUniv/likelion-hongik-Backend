@@ -1,5 +1,6 @@
 package Likelion.Recruiting.service;
 
+import Likelion.Recruiting.model.Team;
 import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     @Transactional
-    public void updateUser(Long userId, String name, String email, String major, String nickname, String part, String studentId, Long team_id) {
+    public void updateUser(Long userId, String name, String email, String major, String nickname, String part, String studentId) {
         User findUser = userRepository.findOne(userId);
         findUser.setName(name);
         findUser.setEmail(email);
@@ -24,7 +25,6 @@ public class UserService {
         findUser.setNickname(nickname);
         findUser.setPart(part);
         findUser.setStudentId(studentId);
-        findUser.setId(team_id);
     }
 
     @Transactional

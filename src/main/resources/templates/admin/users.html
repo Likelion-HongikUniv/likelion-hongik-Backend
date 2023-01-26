@@ -40,7 +40,6 @@
                                     <th>이름</th>
                                     <th>전공</th>
                                     <th>파트</th>
-                                    <th>팀</th>
                                     <th>이메일</th>
                                     <th width="10%" class="text-center">활동기록</th>
                                     <th width="10%" class="text-center">수정</th>
@@ -53,7 +52,6 @@
                                     <td th:text="${user?.name}"></td>
                                     <td th:text="${user?.major}"></td>
                                     <td th:text="${user?.part}"></td>
-                                    <td th:text="${user?.team}"></td>
                                     <td th:text="${user?.email}"></td>
                                     <td class="text-center">
                                         <a href="#" th:href="@{users/{id}/writing (id=${user.id})}" class="btn btn-primary" role="button">보기</a>

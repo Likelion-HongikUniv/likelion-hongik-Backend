@@ -24,6 +24,6 @@ public class UserForm {
 
     private String role;
 
-    private Long team_id;
+    private Team team;
 
 }
