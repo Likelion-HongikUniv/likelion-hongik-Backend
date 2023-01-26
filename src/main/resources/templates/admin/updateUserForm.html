@@ -15,53 +15,61 @@
     <div id="content-wrapper" class="d-flex flex-column">
 
         <!-- Main Content -->
-        <div id="content">
+        <div id="content" style="margin-top: 50px">
 
-            <!-- Begin Page Content -->
             <div class="container-fluid">
-                <form th:object="${form}" method="post">
+                <h1 class="h3 mb-2 text-gray-800">정보 수정하기</h1>
+                <p class=""mb-4>수정할 정보를 입력해주세요</p>
+                <div class="card shadow mb-4">
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid" style="margin: 30px 0px">
+                        <form th:object="${form}" method="post">
 
-                    <input type="hidden" th:field="*{id}" />
+                            <input type="hidden" th:field="*{id}" />
 
-                    <div class="form-group">
-                        <label th:for="name">이름</label>
-                        <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요" />
+                            <div class="form-group">
+                                <label th:for="name">이름</label>
+                                <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요" />
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="email">이메일</label>
+                                <input type="text" th:field="*{email}" class="form-control" placeholder="이메일을 입력하세요" />
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="nickname">닉네임</label>
+                                <input type="text" th:field="*{nickname}" class="form-control" placeholder="닉네임을 입력하세요" />
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="major">전공</label>
+                                <input type="text" th:field="*{major}" class="form-control" placeholder="전공을 입력하세요" />
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="studentId">학번</label>
+                                <input type="text" th:field="*{studentId}" class="form-control" placeholder="학번을 입력하세요" />
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="part">파트</label>
+                                <input type="text" th:field="*{part}" class="form-control" placeholder="파트를 입력하세요" />
+                            </div>
+
+                            <div class="form-group">
+                                <label th:for="team_id">팀</label>
+                                <input type="text" th:field="*{team}" class="form-control" placeholder="팀번호를 입력하세요" />
+                            </div>
+
+                            <button type="submit" class="btn btn-primary float-right">Submit</button>
+                        </form>
                     </div>
+                    <!-- /.container-fluid -->
+                </div>
 
-                    <div class="form-group">
-                        <label th:for="email">이메일</label>
-                        <input type="text" th:field="*{email}" class="form-control" placeholder="이메일을 입력하세요" />
-                    </div>
-
-                    <div class="form-group">
-                        <label th:for="nickname">닉네임</label>
-                        <input type="text" th:field="*{nickname}" class="form-control" placeholder="닉네임을 입력하세요" />
-                    </div>
-
-                    <div class="form-group">
-                        <label th:for="major">전공</label>
-                        <input type="text" th:field="*{major}" class="form-control" placeholder="전공을 입력하세요" />
-                    </div>
-
-                    <div class="form-group">
-                        <label th:for="studentId">학번</label>
-                        <input type="text" th:field="*{studentId}" class="form-control" placeholder="학번을 입력하세요" />
-                    </div>
-
-                    <div class="form-group">
-                        <label th:for="part">파트</label>
-                        <input type="text" th:field="*{part}" class="form-control" placeholder="파트를 입력하세요" />
-                    </div>
-
-                    <div class="form-group">
-                        <label th:for="team_id">팀</label>
-                        <input type="text" th:field="*{team}" class="form-control" placeholder="팀번호를 입력하세요" />
-                    </div>
-
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
             </div>
-                <!-- /.container-fluid -->
+
         </div>
         <!-- End of Main Content -->
 
