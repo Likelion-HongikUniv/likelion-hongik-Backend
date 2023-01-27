@@ -3,9 +3,7 @@ package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
 import Likelion.Recruiting.model.*;
-import Likelion.Recruiting.model.dto.PageResponseDto;
-import Likelion.Recruiting.model.dto.PostDetailDto;
-import Likelion.Recruiting.model.dto.PostSimpleDto;
+import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.*;
@@ -23,7 +21,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@CrossOrigin("*")
 @RestController
 @RequiredArgsConstructor
 public class CommunityController {
@@ -118,8 +118,8 @@ public class CommunityController {
 
 
 
-//-------------------------------------------------------------------------------------------------------
-   //카테고리에따른 게시글 저장 api
+    //-------------------------------------------------------------------------------------------------------
+    //카테고리에따른 게시글 저장 api
     @PostMapping("/community/posts/{mainCategory}/{subCategory}")
     public CreatePostResponse savePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreatePostRequest request, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
 
@@ -189,6 +189,17 @@ public class CommunityController {
     }
 
     //------------------------------------댓글------------------------
+
+    @GetMapping("/community/post/{postId}/comments")//게시글에 따른 댓글 & 대댓글 불러오기
+    public DataResponseDto getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);// 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
+        List<CommentDto> result = comments.stream()
+                .map(comment -> new CommentDto(comment,user))
+                .collect(Collectors.toList());
+        return new DataResponseDto(result.size(), result);
+    }
     @PostMapping("/community/post/{postId}")//댓글 저장 api
     public CreatePostResponse saveComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreateCommentReqeust request, @PathVariable("postId") Long postId) {
         Comment createdComment = Comment.builder()
@@ -299,7 +310,7 @@ public class CommunityController {
 
 
     @Data
-     static class CreateResponeseMessage {
+    static class CreateResponeseMessage {
         private Long responseCode;
         private String message;
 
@@ -307,7 +318,7 @@ public class CommunityController {
             this.responseCode = responseCode;
             this.message = message;
         }
+
     }
 }
-
 

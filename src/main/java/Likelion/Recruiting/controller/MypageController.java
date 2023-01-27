@@ -23,14 +23,16 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
-@CrossOrigin
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RestController
 public class MypageController {
+    //test
 
     private final UserService userService;
     private final PostService postService;
@@ -38,8 +40,8 @@ public class MypageController {
     private final CommentService commentService;
 
     @GetMapping("/profile")
+//    @ResponseBody
     public NavbarDto getNameandImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
-
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
 
@@ -51,7 +53,7 @@ public class MypageController {
 
 
     @GetMapping("/mypage/")
-    ProfileDto user_info (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
+    ProfileDto user_info (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser)  {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
 
@@ -77,7 +79,7 @@ public class MypageController {
     }
 
 
-    @GetMapping("/mypage/post")
+    @GetMapping("/mypage/posts")
     public Page<PostDto> getMyPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
                                     @PageableDefault(size=5, sort="createdTime" ,direction = Sort.Direction.DESC) Pageable pageable){
         // 유저의 email 뽑아내기
@@ -101,7 +103,7 @@ public class MypageController {
         return result;
     }
 
-    @GetMapping("/mypage/like")
+    @GetMapping("/mypage/likes")
     public Page<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Pageable pageable){
 
         // 유저의 email 뽑아내기
