@@ -69,7 +69,6 @@ public class PostService {
                 .postId(p.getId())
                 .title(p.getTitle())
                 .author(p.getAuthor().getName())
-                .profileImage(user.getProfileImage())
                 .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
                 .body(p.getBody())
                 .likes(p.getLikeUsers().size())

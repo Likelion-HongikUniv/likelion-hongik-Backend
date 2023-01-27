@@ -76,7 +76,7 @@ public class MypageController {
     }
 
 
-    @GetMapping("/mypage/post")
+    @GetMapping("/mypage/posts")
     public Page<PostDto> getMyPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Pageable pageable){
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
@@ -99,7 +99,7 @@ public class MypageController {
         return result;
     }
 
-    @GetMapping("/mypage/like")
+    @GetMapping("/mypage/likes")
     public Page<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Pageable pageable){
 
         // 유저의 email 뽑아내기

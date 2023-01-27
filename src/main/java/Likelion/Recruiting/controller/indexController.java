@@ -29,7 +29,7 @@ public class indexController {
 
     @GetMapping("/")
     // 네이버의 경우 !!
-    String index(@AuthenticationPrincipal NaverUserImpl customOauthUser, Model model){
+    String index(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Model model){
 
         if(customOauthUser != null){
             User user = customOauthUser.getUser();
@@ -64,7 +64,7 @@ public class indexController {
 
     @ResponseBody
     @PostMapping("/accounts/detail_info/")
-    IsMemberDto detail(@AuthenticationPrincipal NaverUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
+    IsMemberDto detail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
         // 지금 로그인되어 있는 User 객체 정보 찾기
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);

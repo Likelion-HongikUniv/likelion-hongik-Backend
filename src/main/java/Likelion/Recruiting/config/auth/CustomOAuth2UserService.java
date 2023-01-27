@@ -26,8 +26,6 @@ import java.util.Map;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private final HttpSession httpSession;
-
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -39,20 +37,17 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService implements
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
         // 어떤 소셜로그인을 사용했는지
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        System.out.println("registrationId = " + registrationId);
-        // 로그인을 위한 키
+
+        // 로그인을 위한 키 -> google- sub / kakao - id / naver - response
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
                     .getUserInfoEndpoint().getUserNameAttributeName();
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-        System.out.println("attributes = " + attributes.getAttributes());
-
 
         User user = saveOrUpdate(attributes);
         DefaultOAuth2User defaultOAuth2User = new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());
-        System.out.println("defaultOAuth2User = " + defaultOAuth2User.getAttributes());
         return defaultOAuth2User;
 //        return userDetails;
 //        return oAuth2User;
@@ -72,12 +67,4 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService implements
 
         return new CustomOauthUserImpl(user);
     }
-    public CustomOauthUser loadNaverUserByEmail(String email) throws UsernameNotFoundException{
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new customException(ErrorCode.NO_USER));
-
-        return new NaverUserImpl(user);
-    }
-
-
 }
