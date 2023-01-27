@@ -23,14 +23,10 @@
             <!-- Begin Page Content -->
             <div class="container-fluid">
 
-                <!-- Page Heading -->
-                <h1 class="h3 mb-2 text-gray-800">사용자</h1>
-                <p class="mb-4"> 모든 사용자 정보를 보여주는 페이지</p>
-
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">유저 정보</h6>
+                        <h1 class="h3 mb-2 text-gray-800">사용자 정보</h1>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -44,7 +40,6 @@
                                     <th width="10%" class="text-center">활동기록</th>
                                     <th width="10%" class="text-center">수정</th>
                                     <th width="10%" class="text-center">삭제</th>
-
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -54,13 +49,14 @@
                                     <td th:text="${user?.part}"></td>
                                     <td th:text="${user?.email}"></td>
                                     <td class="text-center">
-                                        <a href="#" th:href="@{users/{id}/writing (id=${user.id})}" class="btn btn-primary" role="button">보기</a>
+                                        <a href="#" th:href="@{users/{id}/writing (id=${user.id})}" class="btn btn-secondary" role="button">보기</a>
                                     </td>
                                     <td class="text-center">
                                         <a href="#" th:href="@{users/{id}/edit (id=${user.id})}" class="btn btn-primary" role="button">수정</a>
                                     </td>
                                     <td class="text-center">
                                         <a href="#" th:href="@{users/{id}/delete (id=${user.id})}" class="btn btn-danger" role="button">삭제</a>
+                                        <!--<a class="btn btn-danger" role="button" data-toggle="modal" data-target="#deleteModal" id="userId" th:attr="data-id=${user.id}">삭제</a>-->
                                     </td>
                                 </tr>
                                 </tbody>
@@ -110,6 +106,37 @@
         </div>
     </div>
 </div>
+
+<!--Delete Modal-->
+<div class="modal" id="deleteModal" tabindex="-1"role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">삭제알림창</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>정말로 삭제하시겠습니까?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="clickDel()">삭제</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function clickDel()
+    {
+        var userId = $('#userId').data('id');
+        location.href='users/'+userId+'/delete';
+    }
+</script>
+
 
 <!-- Bootstrap core JavaScript-->
 <script src="/vendor/jquery/jquery.min.js"></script>
