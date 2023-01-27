@@ -28,7 +28,7 @@ public class indexController {
     private final UserService userService;
 
     @GetMapping("/")
-    // 네이버의 경우 !!
+
     String index(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Model model){
 
         if(customOauthUser != null){
@@ -43,8 +43,6 @@ public class indexController {
         return "index2";
     }
 
-
-    //@GetMapping("/oauth2/authorization/naver")
 
     @GetMapping("/loginForm")
     public String loginForm(){

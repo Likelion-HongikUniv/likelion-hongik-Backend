@@ -32,26 +32,18 @@ public class PostService {
     @Autowired
     private final PostRepository postRepository;
     @Autowired
-    private final PostLikeRepository postLikeRepository;
     private final UserRepository userRepository;
 
     @Transactional
-    public Post createPost(Post post, User user, List<String> imageUrls) {
-        List<PostImages> postImages = new ArrayList<>();
-        for (int i = 0; i < imageUrls.size(); i++) {
-            postImages.add(PostImages.builder()
-                    .url(imageUrls.get(i))
-                    .build());
-            postImages.get(i).setPost(post);
-        }
+    public Post createPost(Post post, User user) {
         post.setAuthor(user);
         Post createdPost = postRepository.save(post);
         return createdPost;
     }
 
 
-    public List<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory){
-        return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory);
+    public Page<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory,Pageable pageable){
+        return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
     }
 
     public Post searchOneId(Long id) {

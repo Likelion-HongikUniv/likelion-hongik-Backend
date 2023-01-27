@@ -31,6 +31,8 @@ public class Post {
 
     private String body;
 
+    private String thumbnailImage;
+
     @Enumerated(EnumType.STRING)
     private MainCategory mainCategory;
 
@@ -53,15 +55,11 @@ public class Post {
     )
     private List<PostLike> likeUsers = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true)
-    private List<PostImages> postImages = new ArrayList<>();
-
     @Builder
-    public Post(String title, String body, MainCategory mainCategory, SubCategory subCategory) {
+    public Post(String title, String body, MainCategory mainCategory, SubCategory subCategory, String thumbnailImage) {
         this.title = title;
         this.body = body;
+        this.thumbnailImage = thumbnailImage;
         this.mainCategory = mainCategory;
         this.subCategory = subCategory;
     }

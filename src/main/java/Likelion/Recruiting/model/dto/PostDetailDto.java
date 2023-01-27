@@ -18,7 +18,6 @@ public class PostDetailDto {
     private UserSimpleDto author;
     private String title;
     private String body;
-    private List<String> ImageUrls;
     private LocalDateTime createdTime;
     private Boolean isLiked;
     private Long likeCount;
@@ -29,9 +28,6 @@ public class PostDetailDto {
         this.author = new UserSimpleDto(post.getAuthor().getId(),post.getAuthor().getNickname(),post.getAuthor().getProfileImage(), user);
         this.title = post.getTitle();
         this.body = post.getBody();
-        this.ImageUrls = post.getPostImages().stream()
-                .map(postImages -> postImages.getUrl())
-                .collect(Collectors.toList());
         this.createdTime = post.getCreatedTime();
         this.isLiked = false;
         for(PostLike postLike:post.getLikeUsers()){
@@ -41,26 +37,8 @@ public class PostDetailDto {
             }
         }
         this.likeCount = (long)post.getLikeUsers().size();
+        this.comments = post.getComments().stream()
+                .map(comment -> new CommentDto(comment,user))
+                .collect(Collectors.toList());
     }
-//    public PostDetailDto(Post post, User user) {
-//        this.postId =post.getId();
-//        this.author = new UserSimpleDto(post.getAuthor().getId(),post.getAuthor().getNickname(),post.getAuthor().getProfileImage(), user);
-//        this.title = post.getTitle();
-//        this.body = post.getBody();
-//        this.ImageUrls = post.getPostImages().stream()
-//                .map(postImages -> postImages.getUrl())
-//                .collect(Collectors.toList());
-//        this.createdTime = post.getCreatedTime();
-//        this.isLiked = false;
-//        for(PostLike postLike:post.getLikeUsers()){
-//            if(postLike.getUser().equals(user)) {
-//                this.isLiked = true;
-//                break;
-//            }
-//        }
-//        this.likeCount = (long)post.getLikeUsers().size();
-//        this.comments = post.getComments().stream()
-//                .map(comment -> new CommentDto(comment,user))
-//                .collect(Collectors.toList());
-//    }
 }

@@ -3,13 +3,8 @@ package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
 import Likelion.Recruiting.model.*;
-import Likelion.Recruiting.model.dto.CommentDto;
-import Likelion.Recruiting.model.dto.DataResponseDto;
-import Likelion.Recruiting.model.dto.PostDetailDto;
-import Likelion.Recruiting.model.dto.PostSimpleDto;
-import Likelion.Recruiting.model.enums.LType;
+import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.MainCategory;
-import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.*;
 import Likelion.Recruiting.service.*;
@@ -17,14 +12,16 @@ import Likelion.Recruiting.service.*;
 
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static java.util.stream.Collectors.toList;
 
 @CrossOrigin("*")
 @RestController
@@ -92,16 +89,30 @@ public class CommunityController {
 //    }
     //--------------------------------------------------------
 
-    @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
-    public DataResponseDto getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
-        List<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory));
-        String email = customOauthUser.getUser().getEmail();
+//    @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
+//    public DataResponseDto getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
+//        List<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory));
+//        String email = customOauthUser.getUser().getEmail();
+//
+//        User user = userService.findUser(email); // 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
+//        List<PostSimpleDto> result = posts.stream()
+//                .map(p -> new PostSimpleDto(p,user))
+//                .collect(toList());
+//       return new DataResponseDto(result.size(), result);
+//    }
 
+    @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
+    public PageResponseDto<PostSimpleDto> getSimplePosts(
+                                          @AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
+                                          @RequestHeader("HEADER") String header,
+                                          @PageableDefault(page =1,size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable,
+                                          @PathVariable("mainCategory") String mainCategory,
+                                          @PathVariable("subCategory") String subCategory) {
+        Page<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),pageable);
+        String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email); // 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
-        List<PostSimpleDto> result = posts.stream()
-                .map(p -> new PostSimpleDto(p,user))
-                .collect(toList());
-       return new DataResponseDto(result.size(), result);
+        Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
+        return new PageResponseDto<PostSimpleDto>(result);
     }
 
 
@@ -113,10 +124,11 @@ public class CommunityController {
     @PostMapping("/community/posts/{mainCategory}/{subCategory}")
     public CreatePostResponse savePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreatePostRequest request, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
 
-        CreatePostRequest createPostRequest = new CreatePostRequest(request.getTitle(), request.getBody(),request.getImageUrls());
+        CreatePostRequest createPostRequest = new CreatePostRequest(request.getTitle(), request.getBody(),request.getThumbnailImage());
         Post createdPost = Post.builder()
                 .title(createPostRequest.getTitle())
                 .body(createPostRequest.getBody())
+                .thumbnailImage(createPostRequest.getThumbnailImage())
                 .mainCategory(MainCategory.valueOf(mainCategory))
                 .subCategory(SubCategory.valueOf(subCategory))
                 .build();
@@ -124,7 +136,7 @@ public class CommunityController {
         String email = customOauthUser.getUser().getEmail();
         //test
         User user = userService.findUser(email);
-        Post savedPost = postService.createPost(createdPost,user,createPostRequest.getImageUrls());
+        Post savedPost = postService.createPost(createdPost,user);
 
         return new CreatePostResponse(savedPost.getId());
     }
@@ -133,12 +145,12 @@ public class CommunityController {
     static class CreatePostRequest {
         private String title;
         private String body;
-        private List<String> imageUrls= new ArrayList<>();
+        private String thumbnailImage;
 
-        public CreatePostRequest(String title, String body,List<String> imageUrls) {
+        public CreatePostRequest(String title, String body,String thumbnailImage) {
             this.title = title;
             this.body = body;
-            this.imageUrls = imageUrls;
+            this.thumbnailImage = thumbnailImage;
         }
     }
 
@@ -152,9 +164,17 @@ public class CommunityController {
     }
 
     //----------------------------------------------------------------------------------------------------------------------------
+//    @GetMapping("/community/post/{postId}")//게시글 상세보기
+//    public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
+//        Post post = postService.searchOneId(postId);
+//        // user insert partition
+//        String email = customOauthUser.getUser().getEmail();
+//        User user = userService.findUser(email);
+//        PostDetailDto result = new PostDetailDto(post, user);
+//        return result;
+//    }
     @GetMapping("/community/post/{postId}")//게시글 상세보기
-    public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("postId") Long postId) {
-        System.out.println("postId = " + postId);
+    public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("postId") Long postId) {
         Post post = postService.searchOneId(postId);
         // user insert partition
         String email = customOauthUser.getUser().getEmail();
@@ -162,7 +182,6 @@ public class CommunityController {
         PostDetailDto result = new PostDetailDto(post, user);
         return result;
     }
-
     //---------------------------------------------------------------
 
     @PostMapping("/community/post/{postId}/like") // 게시글좋아용(이미 있으면 삭제, 없으면 저장)
