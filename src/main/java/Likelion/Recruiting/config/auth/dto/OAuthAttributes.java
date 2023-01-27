@@ -48,9 +48,9 @@ public class OAuthAttributes {
 
     private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
-                .name((String) attributes.get("name"))
+                .name((String) attributes.get("login"))
                 .email((String) attributes.get("email"))
-                .picture((String) attributes.get("picture"))
+                .picture((String) attributes.get("avatar_url"))
                 .attributes(attributes)
                 .nameAttributeKey(userNameAttributeName)
                 .ltype(LType.GITHUB)
