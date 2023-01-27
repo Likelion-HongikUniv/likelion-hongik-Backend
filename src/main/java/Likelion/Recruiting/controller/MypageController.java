@@ -52,7 +52,7 @@ public class MypageController {
     }
 
 
-    @GetMapping("/mypage/")
+    @GetMapping("/mypage")
     ProfileDto user_info (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser)  {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
@@ -65,7 +65,7 @@ public class MypageController {
                 user.getPhoneNum());
     }
 
-    @PatchMapping("/mypage/edit/")
+    @PatchMapping("/mypage/edit")
     ProfileDto mypage_edit(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
@@ -91,7 +91,7 @@ public class MypageController {
         return posts;
     }
 
-    @GetMapping("/mypage/comments/")
+    @GetMapping("/mypage/comments")
     List<PostDetailDto> myComments (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
