@@ -42,10 +42,7 @@ public class indexController {
 
         return "index2";
     }
-
-
     //@GetMapping("/oauth2/authorization/naver")
-
     @GetMapping("/loginForm")
     public String loginForm(){
         return "loginForm";

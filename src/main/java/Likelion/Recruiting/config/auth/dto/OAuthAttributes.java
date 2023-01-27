@@ -38,13 +38,24 @@ public class OAuthAttributes {
             return ofKaKao("id", attributes);
         }
         else if (registrationId.equals("naver")){
-//            return ofNaver(userNameAttributeName, attributes);
             return ofNaver("id", attributes);
         }
         else if (registrationId.equals("github")){
-//            return ofGoogle(userNameAttributeName, attributes);
+            return ofGithub("id", attributes);
         }
         return null;
+    }
+
+    private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
+        return OAuthAttributes.builder()
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .picture((String) attributes.get("picture"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .ltype(LType.GITHUB)
+                .build();
+
     }
 
     private static OAuthAttributes ofKaKao(String userNameAttributeName, Map<String, Object> attributes) {
