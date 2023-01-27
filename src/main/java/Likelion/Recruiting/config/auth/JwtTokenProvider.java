@@ -25,7 +25,7 @@ public class JwtTokenProvider {
     private String SECRET_KEY;
 
     // 토큰 유효시간 설정
-    private Long tokenValidTime = 60 * 60 * 1000L;
+    private Long tokenValidTime = 60 * 60 * 1000L; // 1시간
 
     //secretkey를 미리 인코딩 해줌.
     @PostConstruct
@@ -59,11 +59,10 @@ public class JwtTokenProvider {
     public Authentication getAuthentication(String token){
         // token에서 복호화한 email을 가진 user객체를 customOauthUser 형태로 뽑아오기
         CustomOauthUser user = customOAuth2UserService.loadUserByEmail(this.getUserPk(token));
-//        System.out.println("user = " + user.getName());
         return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
 
-    // token에서 user 정보 추출하기
+    // token에서 user email 추출하기
     private String getUserPk(String token) {
         return (String) Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("email");
     }

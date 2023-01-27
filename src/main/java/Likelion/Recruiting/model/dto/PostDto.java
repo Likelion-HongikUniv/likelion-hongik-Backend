@@ -14,7 +14,6 @@ public class PostDto {
     @Size(max = 20)
     private String title;
     private String author;
-    private String profileImage;
     private String time;
     @Size(max = 20)
     private String body;
@@ -22,11 +21,10 @@ public class PostDto {
     private Integer comments;
 
     @Builder
-    public PostDto(Long postId, String title, String author, String profileImage, String time, String body, Integer likes, Integer comments) {
+    public PostDto(Long postId, String title, String author, String time, String body, Integer likes, Integer comments) {
         this.postId = postId;
         this.title = title;
         this.author = author;
-        this.profileImage = profileImage;
         this.time = time;
         this.body = body;
         this.likes = likes;
