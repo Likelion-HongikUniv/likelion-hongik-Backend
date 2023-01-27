@@ -32,6 +32,7 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 @RestController
 public class MypageController {
+    //test
 
     private final UserService userService;
     private final PostService postService;
@@ -78,7 +79,7 @@ public class MypageController {
     }
 
 
-    @GetMapping("/mypage/post")
+    @GetMapping("/mypage/posts")
     public Page<PostDto> getMyPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
                                     @PageableDefault(size=5, sort="createdTime" ,direction = Sort.Direction.DESC) Pageable pageable){
         // 유저의 email 뽑아내기
@@ -102,7 +103,7 @@ public class MypageController {
         return result;
     }
 
-    @GetMapping("/mypage/like")
+    @GetMapping("/mypage/likes")
     public Page<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Pageable pageable){
 
         // 유저의 email 뽑아내기

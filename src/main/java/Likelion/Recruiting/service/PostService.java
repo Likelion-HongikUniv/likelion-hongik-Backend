@@ -33,19 +33,9 @@ public class PostService {
     private final PostRepository postRepository;
     @Autowired
     private final UserRepository userRepository;
-    @Autowired
-    private final PostLikeRepository postLikeRepository;
-//    private final UserRepository userRepository;
 
     @Transactional
-    public Post createPost(Post post, User user, List<String> imageUrls) {
-        List<PostImages> postImages = new ArrayList<>();
-        for (int i = 0; i < imageUrls.size(); i++) {
-            postImages.add(PostImages.builder()
-                    .url(imageUrls.get(i))
-                    .build());
-            postImages.get(i).setPost(post);
-        }
+    public Post createPost(Post post, User user) {
         post.setAuthor(user);
         Post createdPost = postRepository.save(post);
         return createdPost;
