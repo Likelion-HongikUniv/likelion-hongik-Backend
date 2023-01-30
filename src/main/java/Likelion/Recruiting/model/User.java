@@ -123,6 +123,7 @@ public class User {
     public User profileUpdate(String nickname, String major, String studentId, String part, String phoneNum){
         this.nickname =nickname;
         this.major = major;
+        this.isJoind = true;
         this.studentId = studentId;
         this.part = part;
         this.phoneNum = phoneNum;
