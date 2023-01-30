@@ -1,7 +1,8 @@
 package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
-import Likelion.Recruiting.config.auth.NaverUserImpl;
+import Likelion.Recruiting.exception.DuplicationException;
+import Likelion.Recruiting.exception.ErrorCode;
 import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.User;
@@ -60,8 +61,9 @@ public class indexController {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
 
-        // 처음 로그인 한 것이지 확인하기 == Profile db에 해당 user의 정보가 있는지 확인하기
-        Long user_id = user.getId();
+        if (userService.validateNickname(profileDto.getNickname()) != null){ // 닉네임이 중복된다면 에러 메세지를 리턴
+            throw new DuplicationException(ErrorCode.DUPLICATE_NICKNAME.getErrorCode(), ErrorCode.DUPLICATE_NICKNAME.getErrorMessage());
+        }
 
 //        if (user.isJoind() == false && user.getRole() == Role.USER) // 멋사 합격자이면서 추가정보 안 받은 사람 -> 회원가입
         if( user.isJoind() == false&& user.getRole() == Role.USER){ // 아직 추가 정보 안 받음 -> 멋사 회원가입 전 -> isJoined == true 여야 함

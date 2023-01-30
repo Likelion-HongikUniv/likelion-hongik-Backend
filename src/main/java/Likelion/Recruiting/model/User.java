@@ -120,13 +120,12 @@ public class User {
 
         return this;
     }
-    public User profileUpdate(String nickname, String major, String studentId, String part, String phoneNum){
+    public User profileUpdate(String nickname, String major, String studentId, String part){
         this.nickname =nickname;
         this.major = major;
         this.isJoind = true;
         this.studentId = studentId;
         this.part = part;
-        this.phoneNum = phoneNum;
 
         return this;
     }
