@@ -47,28 +47,17 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
-        Map<String, Object> Github_email = (Map<String, Object>) attributes.get("email");
-        if (Github_email.equals("null")) {
-            return OAuthAttributes.builder()
-                    .name((String) attributes.get("login"))
-                    .email("email_null_error")
-                    .picture((String) attributes.get("avatar_url"))
-                    .attributes(attributes)
-                    .nameAttributeKey(userNameAttributeName)
-                    .ltype(LType.GITHUB)
-                    .build();
-        }
-        else {
-            return OAuthAttributes.builder()
-                    .name((String) attributes.get("login"))
-                    .email((String) attributes.get("email"))
-                    .picture((String) attributes.get("avatar_url"))
-                    .attributes(attributes)
-                    .nameAttributeKey(userNameAttributeName)
-                    .ltype(LType.GITHUB)
-                    .build();
-        }
+        return OAuthAttributes.builder()
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .picture((String) attributes.get("picture"))
+                .attributes(attributes)
+                .nameAttributeKey(userNameAttributeName)
+                .ltype(LType.GITHUB)
+                .build();
+
     }
+
 
     private static OAuthAttributes ofKaKao(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");

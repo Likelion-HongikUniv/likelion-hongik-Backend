@@ -23,7 +23,6 @@ public class Team {
     @OneToMany(mappedBy = "team")
     private List<User> userList = new ArrayList<>();
 
-
     public Team(String name) {
         this.name = name;
     }
