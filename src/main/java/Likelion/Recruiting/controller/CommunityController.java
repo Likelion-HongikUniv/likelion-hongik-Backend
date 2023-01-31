@@ -259,7 +259,7 @@ public class CommunityController {
 
     //------------------------------------대댓글------------------------
     @PostMapping("/community/comment/{commentId}")//대댓글 저장 api
-    public CreatePostResponse saveReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreateCommentReqeust request, @PathVariable("commentId") Long commentId) {
+    public CreatePostResponse saveReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreateCommentReqeust request, @PathVariable("commentId") Long commentId) {
         Reply createdReply = Reply.builder()
                 .body(request.getBody())
                 .build();
