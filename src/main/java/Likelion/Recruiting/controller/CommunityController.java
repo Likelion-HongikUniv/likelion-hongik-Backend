@@ -34,19 +34,18 @@ public class CommunityController {
     private final ReplyService replyService;
     private final LikeService likeService;
     private final UserService userService;
-    @Autowired
     private final PostRepository postRepository;
-    @Autowired
+
     private final CommentRepository commentRepository;
-    @Autowired
+
     private final ReplyRepository replyRepository;
-    @Autowired
+
     private final UserRepository userRepository;
-    @Autowired
+
     private final PostLikeRepository postLikeRepository;
-    @Autowired
+
     private final CommentLikeRepository commentLikeRepository;
-    @Autowired
+
     private final ReplyLikeRepository replyLikeRepository;
 
 
