@@ -1,9 +1,9 @@
 package Likelion.Recruiting.config.auth;
 
+import Likelion.Recruiting.config.auth.jwt.JwtTokenProvider;
 import Likelion.Recruiting.model.enums.LType;
 import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.User;
-import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -14,7 +14,6 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
-import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 

@@ -1,5 +1,7 @@
-package Likelion.Recruiting.config.auth;
+package Likelion.Recruiting.config.auth.jwt;
 
+import Likelion.Recruiting.config.auth.CustomOAuth2UserService;
+import Likelion.Recruiting.config.auth.CustomOauthUser;
 import Likelion.Recruiting.model.enums.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

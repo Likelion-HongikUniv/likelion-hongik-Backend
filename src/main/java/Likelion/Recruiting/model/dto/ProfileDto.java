@@ -10,15 +10,14 @@ public class ProfileDto {
     private String major;
     private String studentId;
     private String part;
-    private String phoneNum;
+
 
     @Builder
-    public ProfileDto(String nickname, String major, String studentId, String part, String phoneNum) {
+    public ProfileDto(String nickname, String major, String studentId, String part) {
         this.nickname = nickname;
         this.major = major;
         this.studentId = studentId;
         this.part = part;
-        this.phoneNum = phoneNum;
     }
 
 

@@ -15,6 +15,9 @@ public class RecruitingApplication {
 		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
 		System.out.println("현재 시각은 "+new Date() +"입니다");
 	}
+	static {
+		System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
+	}
 	public static void main(String[] args) {
 
 		SpringApplication.run(RecruitingApplication.class, args);

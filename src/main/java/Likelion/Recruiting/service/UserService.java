@@ -26,10 +26,27 @@ public class UserService {
         User user = userRepository.findByEmail(email).get();
 
         // 유저에 추가정보 넣기
-        user = user.profileUpdate(profileDto.getNickname(), profileDto.getMajor(), profileDto.getStudentId(), profileDto.getPart(), profileDto.getPhoneNum());
+        user = user.profileUpdate(profileDto.getNickname(), profileDto.getMajor(), profileDto.getStudentId(), profileDto.getPart());
         userRepository.save(user);
 
         System.out.println("profile save 완료");
+    }
+    public User editProfile(String email, ProfileDto profileDto){
+        // 해당 유저 찾기
+        User user = userRepository.findByEmail(email).get();
+
+        // 유저에 추가정보 넣기
+        user = user.profileUpdate(profileDto.getNickname(), profileDto.getMajor(), profileDto.getStudentId(), profileDto.getPart());
+        userRepository.save(user);
+
+        System.out.println("profile edit 완료");
+        return user;
+    }
+    public User validateNickname(String nickname){
+        User user = userRepository.findByNickname(nickname);
+        System.out.println("user = " + user);
+
+        return user;
     }
 
     public NavbarDto navProfile(String email){
