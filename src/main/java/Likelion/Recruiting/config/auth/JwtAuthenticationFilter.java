@@ -27,7 +27,6 @@ public class JwtAuthenticationFilter extends GenericFilterBean { // 사용자가
         if ( token != null && jwtTokenProvider.validateToken(token)){
             // 토큰을 인증한다 -> 실제 존재하는 유저의 토큰인지
             Authentication authentication = jwtTokenProvider.getAuthentication(token);
-//            System.out.println("JWF 속 authentication = " + authentication.getPrincipal());
 
             // securityContext에 Authentication 객체를 저장한다.
             // token이 인증된 상태를 유지하도록 context를 유지해줌 -> ???

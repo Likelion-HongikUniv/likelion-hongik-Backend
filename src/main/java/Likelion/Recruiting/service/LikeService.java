@@ -60,7 +60,6 @@ public class LikeService {
         Page<PostDto> postDto = posts.map(p -> PostDto.builder()
                 .title(p.getTitle())
                 .author(p.getAuthor().getName())
-                .profileImage(user.getProfileImage())
                 .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
                 .body(p.getBody())
                 .likes(p.getLikeUsers().size())
