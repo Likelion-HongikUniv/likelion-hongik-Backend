@@ -36,6 +36,8 @@ public class AdminController {
 
 
     //--- User Controller ---//
+
+    // 회원목록 조회
     @GetMapping("admin/users")
     public String userList(Model model) {
         List<User> users = userService.findUsers();
@@ -44,6 +46,7 @@ public class AdminController {
         return "admin/users";
     }
 
+    // 회원 정보 수정 - get : 수정 form 렌더링
     @GetMapping("admin/users/{userId}/edit")
     public String userForm(@PathVariable("userId") Long userId, Model model) {
         User user = (User) userService.findOne(userId);
@@ -62,6 +65,7 @@ public class AdminController {
         return "admin/updateUserForm";
     }
 
+    // 회원 정보 수정 - post : 수정된 내용 저장
     @PostMapping("admin/users/{userId}/edit")
     public String updateUser(@PathVariable Long userId, @ModelAttribute("form") UserForm form) {
 
@@ -76,6 +80,7 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    // 회원 삭제
     @GetMapping("admin/users/{userId}/delete")
     public String deleteUser(@PathVariable("userId") Long userId) {
         userService.deleteUser(userId);
@@ -83,6 +88,7 @@ public class AdminController {
         return "redirect:/admin/users";
     }
 
+    // User가 작성한 글/댓글 조회
     @GetMapping("admin/users/{userId}/writing")
     public String userWriting(@PathVariable("userId") Long userId, Model model) {
         User user = (User) userService.findOne(userId);
@@ -96,7 +102,7 @@ public class AdminController {
         return "admin/userWriting";
     }
 
-
+    // User가 작성한 글/댓글 조회 - 게시글 전체삭제
     @GetMapping("admin/users/{userId}/posts/delete")
     public String postDeleteAll(@PathVariable("userId") Long userId) {
 
@@ -106,10 +112,29 @@ public class AdminController {
 
     }
 
+    // User가 작성한 글/댓글 조회 - 댓글 전체삭제
     @GetMapping("admin/users/{userId}/comments/delete")
     public String commentDeleteAll(@PathVariable("userId") Long userId) {
 
         commentService.deleteCommentByUser(userId);
+
+        return "redirect:/admin/users/{userId}/writing";
+    }
+
+    // User가 작성한 글/댓글 조회 - 게시글 1개 삭제
+    @GetMapping("admin/users/{userId}/posts/{postId}/delete")
+    public String postDelete(@PathVariable("userId") Long userId, @PathVariable("postId") Long postId) {
+
+        postService.deletePostOne(postId);
+
+        return "redirect:/admin/users/{userId}/writing";
+    }
+
+    // User가 작성한 글/댓글 조회 - 댓글 1개 삭제
+    @GetMapping("admin/users/{userId}/comments/{commentId}/delete")
+    public String commentDelete(@PathVariable("userId") Long userId, @PathVariable("commentId") Long commentId) {
+
+        commentService.deleteCommentOne(commentId);
 
         return "redirect:/admin/users/{userId}/writing";
     }

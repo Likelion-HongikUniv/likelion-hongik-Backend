@@ -48,7 +48,7 @@
                                     <td th:text="${post?.createdTime}"></td>
                                     <td th:text="${post?.author.name}"></td>
                                     <td class="text-center">
-                                        <a href="#" th:href="@{a/{id}/c(id=${user.id})}" class="btn btn-danger" role="button">삭제</a>
+                                        <a href="#" th:href="@{posts/{postId}/delete (postId=${post.id})}" class="btn btn-danger" role="button">삭제</a>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -90,8 +90,9 @@
                                     <td th:text="${comment?.body}"></td>
                                     <td th:text="${comment?.createdTime}"></td>
                                     <td th:text="${comment?.author.name}"></td>
-                                    <td class="btn btn-danger" role="button">삭제</td>
-
+                                    <td class="text-center">
+                                        <a th:href="@{comments/{commentId}/delete (commentId=${comment.id})}" class="btn btn-danger" role="button">삭제</a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

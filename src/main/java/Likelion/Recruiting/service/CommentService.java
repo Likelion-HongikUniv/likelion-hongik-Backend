@@ -44,7 +44,7 @@ public class CommentService {
 
     // 댓글 하나 삭제
     @Transactional
-    public void deleteComment(Long commentId) {
+    public void deleteCommentOne(Long commentId) {
 
         Comment findComment = commentRepository.findOne(commentId);
 
