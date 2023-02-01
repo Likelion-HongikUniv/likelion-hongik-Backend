@@ -13,10 +13,10 @@ public class PostRepository {
 
     private final EntityManager em;
 
-    public Post findOne(Long id) {
-        return em.find(Post.class, id);
-    }
+    // post ID로 조회
+    public Post findOne(Long id) { return em.find(Post.class, id); }
 
+    // 전체 게시글 조회
     public List<Post> findAll() {
         List<Post> result = em.createQuery("select m from Post m", Post.class)
                 .getResultList();
@@ -24,6 +24,7 @@ public class PostRepository {
         return result;
     }
 
+    // 작성자의 게시글 조회
     public List<Post> findAllByUser(Long userId) {
         List<Post> result = em.createQuery("select distinct p from Post p where p.author.id = :userId", Post.class)
                 .setParameter("userId", userId)
@@ -32,10 +33,12 @@ public class PostRepository {
         return result;
     }
 
+    // 게시글 1개 삭제
     public void deletePost(Post post) {
         em.remove(post);
     }
 
+    // 게시글 N개 삭제
     public void deletePosts(List<Post> posts) {
         for (Post post : posts) { em.remove(post); }
     }

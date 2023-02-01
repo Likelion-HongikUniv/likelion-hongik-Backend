@@ -13,6 +13,8 @@ public class CommentRepository {
 
     private final EntityManager em;
 
+    // comment ID로 조회
+    public Comment findOne(Long id) { return em.find(Comment.class, id); }
 
     // 모든 댓글 조회
     public List<Comment> findAll() {
@@ -22,7 +24,7 @@ public class CommentRepository {
         return result;
     }
 
-    // user_id로 찾기
+    // 작성자의 댓글 조회
     public List<Comment> findByUserId(Long userId) {
         List<Comment> result = em.createQuery("select distinct c from Comment c where c.author.id = :userId", Comment.class)
                 .setParameter("userId", userId)
@@ -31,20 +33,10 @@ public class CommentRepository {
         return result;
     }
 
-    // comment_id로 찾기
-    public List<Comment> findById(Long id) {
-        return em.createQuery("select c from Comment c where c.id = :id", Comment.class)
-                .setParameter("id", id)
-                .getResultList();
-    }
-
-    // comment_id로 찾기2
-    public Comment findOne(Long id) { return em.find(Comment.class, id); }
-
-    // 댓글 하나 지우기
+    // 댓글 1개 삭제
     public void deleteComment(Comment comment) { em.remove(comment); }
 
-    // 댓글 여러개 지우기
+    // 댓글 N개 삭제
     public void deleteComments(List<Comment> comments) {
         for(Comment comment : comments) {
             em.remove(comment);

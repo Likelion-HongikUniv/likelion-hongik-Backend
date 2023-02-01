@@ -14,19 +14,22 @@ public class UserRepository {
 
     private final EntityManager em;
 
-    public User findOne(Long id) {
-        return em.find(User.class, id);
-    }
+    // User ID로 조회
+    public User findOne(Long id) { return em.find(User.class, id); }
 
-    public void deleteUser(User user) {
-        em.remove(user);
-    }
-
+    // 모든 회원(User) 조회
     public List<User> findAll() {
         List<User> result = em.createQuery("select m from User m", User.class)
                 .getResultList();
 
         return result;
     }
+
+    // 회원 삭제
+    public void deleteUser(User user) {
+        em.remove(user);
+    }
+
+
 
 }
