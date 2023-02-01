@@ -1,6 +1,5 @@
 package Likelion.Recruiting.service;
 
-import Likelion.Recruiting.model.Team;
 import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

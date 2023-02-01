@@ -29,9 +29,4 @@ public class UserRepository {
         return result;
     }
 
-    public List<User> findByName(String name) {
-        return em.createQuery("select m from User m where m.name = :name", User.class)
-                .setParameter("name", name)
-                .getResultList();
-    }
 }

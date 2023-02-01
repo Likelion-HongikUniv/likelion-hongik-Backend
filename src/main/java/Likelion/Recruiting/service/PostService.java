@@ -1,7 +1,6 @@
 package Likelion.Recruiting.service;
 
 import Likelion.Recruiting.model.Post;
-import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ public class PostService {
 
     // 특정 User가 작성한 게시글 조회 (by. userId)
     @Transactional(readOnly = true)
-    public List<Post> findPostsByUserId(Long userId) { return postRepository.findByUserId(userId); }
+    public List<Post> findPostsByUserId(Long userId) { return postRepository.findAllByUser(userId); }
 
     @Transactional
     public void deletePostOne(Long postId) {
@@ -30,7 +29,7 @@ public class PostService {
 
     @Transactional
     public void deletePostByUser(Long userId) {
-        List<Post> findPosts = postRepository.findByUserId(userId);
+        List<Post> findPosts = postRepository.findAllByUser(userId);
 
         postRepository.deletePosts(findPosts);
     }
