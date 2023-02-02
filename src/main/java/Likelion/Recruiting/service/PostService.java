@@ -69,6 +69,22 @@ public class PostService {
         return postDto;
     }
 
+    public Page<PostDto> getPosts(List<Post> posts, Pageable pageable) {
+        Page<Post> postsByComment = postRepository.findByComment(posts, pageable);
+
+        Page<PostDto> result = postsByComment.map(p -> PostDto.builder()
+                        .postId(p.getId())
+                        .title(p.getTitle())
+                        .author(p.getAuthor().getName())
+                        .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
+                        .body(p.getBody())
+                        .likes(p.getLikeUsers().size())
+                        .comments(p.getComments().size())
+                        .build());
+
+        return result;
+    }
+
     public List<Post> findPostAll(){
         return postRepository.findAll();
     }
