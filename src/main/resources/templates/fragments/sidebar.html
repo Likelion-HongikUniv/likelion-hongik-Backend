@@ -7,11 +7,11 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="http://localhost:8080/admin">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/admin">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-moon"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">Mutsa <sup>hongik</sup></div>
+            <div class="sidebar-brand-text mx-3">멋쟁이 사자처럼 <sup>Hongik</sup></div>
         </a>
 
         <!-- Divider -->
@@ -19,7 +19,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item active">
-            <a class="nav-link" href="http://localhost:8080/admin">
+            <a class="nav-link" href="/admin">
                 <i class="fas fa-fw fa-home"></i>
                 <span>메인</span></a>
         </li>
@@ -34,7 +34,7 @@
 
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item">
-            <a class="nav-link" href="http://localhost:8080/admin/users">
+            <a class="nav-link" href="/admin/users">
                 <i class="fas fa-fw fa-user-alt"></i>
                 <span>사용자</span></a>
         </li>
@@ -93,7 +93,7 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">Custom Utilities:</h6>
                     <tr th:each="ass : ${teams}">
-                        <a class="collapse-item" th:href="@{/admin/community/project/projects/{team_id}/{team_name}(team_id = ${ass.getId()}, team_name=${ass.getName()})}">
+                        <a class="collapse-item" th:href="@{/admin/community/project/projects/{team_id}/(team_id = ${ass.getId()})}">
                             <td th:text="${ass.getName()}"></td>
                         </a>
                     </tr>
@@ -105,17 +105,12 @@
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block">
 
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
+<!--        &lt;!&ndash; Sidebar Toggler (Sidebar) &ndash;&gt;-->
+<!--        <div class="text-center d-none d-md-inline">-->
+<!--            <button class="rounded-circle border-0" id="sidebarToggle"></button>-->
+<!--        </div>-->
 
-        <!-- Sidebar Message -->
-        <div class="sidebar-card d-none d-lg-flex">
-            <img class="sidebar-card-illustration mb-2" src="/img/undraw_rocket.svg" alt="...">
-            <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
-            <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
-        </div>
+
 
     </ul>
 

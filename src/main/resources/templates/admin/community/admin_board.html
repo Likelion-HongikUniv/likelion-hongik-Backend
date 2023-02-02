@@ -37,6 +37,7 @@
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">게시판 조회</h6>
+                        <a href="#" th:href="@{/admin/community/post/all/{subCategory}(subCategory=${type})}" class="btn btn-danger" role="button" style="float:right" onclick="return confirm('정말로 삭제 하시겠습니까?')">게시글 전체삭제</a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -52,13 +53,13 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="post : ${posts}">
-                                    <td th:if= "${#strings.length(post.getTitle())>20}" th:text="${#strings.substring(post.getTitle(), 0, 20)}"></td>
+                                    <td th:if= "${#strings.length(post.getTitle())>25}" th:text="${#strings.substring(post.getTitle(), 0, 20)}"></td>
                                     <td th:if= "${#strings.length(post.getTitle())<=20}"th:text="${post.getTitle()}"></td>
-                                    <td th:if= "${#strings.length(post.getTitle())>35}"th:text="${#strings.substring(post.getBody(), 0, 35)}"></td>
-                                    <td th:if= "${#strings.length(post.getTitle())<=35}"th:text="${post.getBody()}"></td>
+                                    <td th:if= "${#strings.length(post.getBody())>35}"th:text="${#strings.substring(post.getBody(), 0, 35)}"></td>
+                                    <td th:if= "${#strings.length(post.getBody())<=35}"th:text="${post.getBody()}"></td>
                                     <td th:text="${post.getWriter()}"></td>
-                                    <td th:text="${post.getDate()}"></td>
-                                    <td> <a th:href="@{/admin/community/post/{subCategory}/{id}(subCategory=${type},id = ${post.getPost_id()})}">삭제</a>
+                                    <td th:text="${post.getDate().get().toLocalDate()}"></td>
+                                    <td> <a th:href="@{/admin/community/post/one/{subCategory}/{id}(subCategory=${type},id = ${post.getPost_id()})}" class="btn btn-danger" role="button" onclick="return confirm('정말로 삭제 하시겠습니까?')">삭제</a>
                                     </td>
                                 </tr>
                                 </tbody>

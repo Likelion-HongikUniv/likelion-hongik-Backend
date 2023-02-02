@@ -24,8 +24,8 @@ public class CommunityAssignmentService {
 
         return ass;
     }
-    public void deleteAllAssignment(){
-        communityRepository.deleteAll("HOMEWORK");
+    public void deleteAllAssignment(String subCategory){
+        communityRepository.deleteAll("HOMEWORK",subCategory);
     }
     public void deleteAssignment(Long post_id){
         communityRepository.deleteOneById(post_id);

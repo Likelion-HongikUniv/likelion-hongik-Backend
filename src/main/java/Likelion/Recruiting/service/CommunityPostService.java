@@ -16,8 +16,8 @@ public class CommunityPostService {
          List<AdminPost> postsByType = communityRepository.findByCategoryAndSubCategory("BOARD",subCategory);
         return postsByType;
     }
-    public void deleteAllPostByType(){
-        communityRepository.deleteAll("BOARD");
+    public void deleteAllPostByType(String subCategory){
+        communityRepository.deleteAll("BOARD",subCategory);
     }
     public void deletePostById(Long post_id)
     {

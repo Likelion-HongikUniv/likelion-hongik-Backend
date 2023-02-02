@@ -35,6 +35,7 @@
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold text-primary">과제 게시물</h6>
+                            <a href="#" th:href="@{/admin/community/assignment/all/{subCategory}(subCategory=${type})}" class="btn btn-danger" role="button" style="float:right" onclick="return confirm('정말로 삭제 하시겠습니까?')">게시글 전체삭제</a>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -52,11 +53,11 @@
                                         <tr th:each="ass : ${assignment}">
                                             <td th:if= "${#strings.length(ass.getTitle())>20}" th:text="${#strings.substring(ass.getTitle(), 0, 20)}"></td>
                                             <td th:if= "${#strings.length(ass.getTitle())<=20}"th:text="${ass.getTitle()}"></td>
-                                            <td th:if= "${#strings.length(ass.getTitle())>35}"th:text="${#strings.substring(ass.getBody(), 0, 35)}"></td>
-                                            <td th:if= "${#strings.length(ass.getTitle())<=35}"th:text="${ass.getBody()}"></td>
+                                            <td th:if= "${#strings.length(ass.getBody())>35}"th:text="${#strings.substring(ass.getBody(), 0, 35)}"></td>
+                                            <td th:if= "${#strings.length(ass.getBody())<=35}"th:text="${ass.getBody()}"></td>
                                             <td th:text="${ass.getWriter()}"></td>
-                                            <td th:text="${ass.getDate()}"></td>
-                                            <td> <a th:href="@{/admin/community/assignment/{id}/{type}(id = ${ass.getPost_id()}, type=${type})}">삭제</a>
+                                            <td th:text="${ass.getDate().get().toLocalDate()}"></td>
+                                            <td> <a th:href="@{/admin/community/assignment/one/{id}/{type}(id = ${ass.getPost_id()}, type=${type})}" class="btn btn-danger" role="button" onclick="return confirm('정말로 삭제 하시겠습니까?')">삭제</a>
                                             </td>
                                         </tr>
                                     </tbody>

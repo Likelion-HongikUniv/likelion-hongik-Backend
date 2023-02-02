@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -50,30 +51,21 @@ public class CommunityAssignmentController {
     }
 
     /// 특정 과제 게시물 삭제하기
-    @GetMapping("admin/community/assignment/{post_id}/{part}")
+    @GetMapping("admin/community/assignment/one/{post_id}/{part}")
     public String deleteAssignmentPost(@PathVariable(value ="post_id") Long post_id,@PathVariable(value = "part") String part,Model model){
 
         communityAssignmentService.deleteAssignment(post_id);
-        System.out.println("딜리트 메소드 호출 완료!");
         return "redirect:/admin/community/assignment/"+part;
     }
     // 모든 과제 게시물 전체 삭제하기
-    @GetMapping("admin/community/assignment/all")
-    public String deleteAllAssignmentPosts(Model model){
-        communityAssignmentService.deleteAllAssignment();
-        model.addAttribute("type","deleteAll");
-        return "admin/community/admin_assignment";
+    @GetMapping("admin/community/assignment/all/{subCategory}")
+    public String deleteAllAssignmentPosts(@PathVariable(value = "subCategory") String subCategory){
+        String part = "";
+        if(Objects.equals(subCategory, "frontend")){part="FRONT";}
+        else if (Objects.equals(subCategory, "backend")) {part="BACKEND";}
+        else if(Objects.equals(subCategory, "design")) {part = "DESIGN";}
+        communityAssignmentService.deleteAllAssignment(part);
+        return "redirect:/admin/community/assignment/"+subCategory;
         //게시물 삭제 후 전체 과제물 조회 페이지로 리다이렉트!
     }
-
-    //학생 이름으로 과제 검색하기
-//    @GetMapping("admin/community/assignment/")
-//    public String getAssignmentPostOfMember(@PathVariable String name,Model model){
-//       List<AdminPost> ass1 = communityAssignmentService.findAssignmentByUser(name);
-//       model.addAttribute("Assignment",ass1);
-//       model.addAttribute("type","name");
-//       return "admin/community/admin_assignment";
-//    }
-
-
 }

@@ -25,8 +25,20 @@ public class CommunityProjectService {
         communityRepository.deleteOneById(post_id);
     }
     public void deleteAllProjectPosts(){
-        communityRepository.deleteAll("PROJECT");
+        communityRepository.deleteAll("PROJECT","PROJECT");
     }
-    ////팀,post id, 파트, 게시글 제목, 게시글 작성자, date, body
 
+    public String getTeamName(Long team_id){
+        return communityRepository.getTeamName(team_id);
+    }
+
+    public void changeTeamName(Long team_id, String team_name) { communityRepository.changeTeamName(team_id,team_name);}
+
+    public void deleteTeam(Long team_id) {
+        communityRepository.deleteTeam(team_id);
+    }
+
+    public void deleteAllTeamProject(Long team_id) {
+        communityRepository.deleteAllTeamProject(team_id);
+    }
 }

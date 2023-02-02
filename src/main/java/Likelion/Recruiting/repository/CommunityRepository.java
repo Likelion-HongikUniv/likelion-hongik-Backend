@@ -1,5 +1,7 @@
 package Likelion.Recruiting.repository;
 
+import Likelion.Recruiting.model.Post;
+import Likelion.Recruiting.model.Team;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import lombok.RequiredArgsConstructor;
@@ -56,8 +58,8 @@ public class CommunityRepository  {
 
     @Transactional
     public void deleteOneById(Long post_id){
-        Query query = em.createQuery("delete from Post p where p.id=:post_id").setParameter("post_id",post_id);
-        int rows = query.executeUpdate();
+        Post post = em.createQuery("select p from Post p where p.id=:post_id",Post.class).setParameter("post_id",post_id).getSingleResult();
+        em.remove(post);
 
     }
 
@@ -75,8 +77,42 @@ public class CommunityRepository  {
 
 
     @Transactional
-    public void deleteAll(String mainCateogry){
-        em.createQuery("delete from Post p" +
-                " where p.mainCategory=:mainCategory").setParameter("mainCategory",MainCategory.valueOf(mainCateogry));
+    public void deleteAll(String mainCateogry, String subCategory){
+        List<Post> posts = em.createQuery(" select p from Post p" +
+                " where p.mainCategory=:mainCategory and p.subCategory=:subCategory", Post.class)
+                .setParameter("mainCategory",MainCategory.valueOf(mainCateogry))
+                .setParameter("subCategory",SubCategory.valueOf(subCategory)).getResultList();
+        posts.stream().forEach(o->em.remove(o));
+    }
+
+    public String getTeamName(Long team_id){
+        Team team = em.createQuery("select t from Team t where t.id=:team_id", Team.class)
+                .setParameter("team_id",team_id)
+                .getSingleResult();
+        return team.getName();
+
+    }
+    @Transactional
+    public void changeTeamName(Long team_id,String team_name){
+        Team team = em.find(Team.class,team_id);
+        team.setName(team_name);
+
+    }
+    @Transactional
+    public void deleteTeam(Long team_id) {
+        Team team = (Team) em.createQuery("select t from Team t where t.id=:team_id")
+                .setParameter("team_id",team_id)
+                .getSingleResult();
+        em.remove(team);
+
+    }
+    @Transactional
+    public void deleteAllTeamProject(Long team_id) {
+        List<Post> posts = em.createQuery("select p from Post p join p.author u join u.team t" +
+                        " where p.mainCategory = :project and t.id =:team_id",Post.class)
+                .setParameter("project",MainCategory.PROJECT)
+                .setParameter("team_id",team_id)
+                .getResultList();
+        posts.stream().forEach(o->em.remove(o));
     }
 }
