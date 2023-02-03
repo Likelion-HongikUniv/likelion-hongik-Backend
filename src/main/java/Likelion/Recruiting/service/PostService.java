@@ -52,6 +52,10 @@ public class PostService {
         postRepository.delete(deletePost);
     }
 
+    public Post findPost(Long postId){
+        return postRepository.findById(postId).get();
+    }
+
 
     public Page<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory,Pageable pageable){
         return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
