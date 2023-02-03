@@ -41,9 +41,9 @@ public class OAuthAttributes {
         else if (registrationId.equals("naver")){
             return ofNaver("id", attributes);
         }
-        // else if (registrationId.equals("github")){
-        //     return ofGithub("id", attributes);
-        // }
+        else if (registrationId.equals("github")){
+             return ofGithub("id", attributes);
+         }
         return null;
     }
 
