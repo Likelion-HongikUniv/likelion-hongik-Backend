@@ -1,4 +1,4 @@
-package Likelion.Recruiting.service;
+package Likelion.Recruiting.service.admin;
 
 import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.repository.admin.UserRepository;

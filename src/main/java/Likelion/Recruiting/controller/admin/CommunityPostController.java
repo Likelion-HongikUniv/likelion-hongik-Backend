@@ -1,7 +1,7 @@
 package Likelion.Recruiting.controller.admin;
 
 import Likelion.Recruiting.repository.admin.AdminPost;
-import Likelion.Recruiting.service.CommunityPostService;
+import Likelion.Recruiting.service.admin.CommunityPostService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
