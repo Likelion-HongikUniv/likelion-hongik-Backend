@@ -47,14 +47,27 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
-        return OAuthAttributes.builder()
-                .name((String) attributes.get("name"))
-                .email((String) attributes.get("email"))
-                .picture((String) attributes.get("picture"))
-                .attributes(attributes)
-                .nameAttributeKey(userNameAttributeName)
-                .ltype(LType.GITHUB)
-                .build();
+        if(attributes.get("email") == null){
+            System.out.println("ofGithub 속");
+            return OAuthAttributes.builder()
+                    .name((String) attributes.get("name"))
+                    .email("empty")
+                    .picture((String) attributes.get("picture"))
+                    .attributes(attributes)
+                    .nameAttributeKey(userNameAttributeName)
+                    .ltype(LType.GITHUB)
+                    .build();
+        }
+        else{
+            return OAuthAttributes.builder()
+                    .name((String) attributes.get("name"))
+                    .email((String) attributes.get("email"))
+                    .picture((String) attributes.get("picture"))
+                    .attributes(attributes)
+                    .nameAttributeKey(userNameAttributeName)
+                    .ltype(LType.GITHUB)
+                    .build();
+        }
 
     }
 

@@ -47,8 +47,12 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
             String email = (String) kakao_account.get("email");
             user = userRepository.findByEmail(email).get();
         }
+        else if(oAuth2User1.getAttributes().get("email") == null){
+            user = userRepository.findByEmail("empty").get();
+        }
         else {
             // 해당 email을 가진 유저 객체 가져오기
+            System.out.println("sdf = " + oAuth2User1.getAttributes());
             user = userRepository.findByEmail(oAuth2User1.getAttributes().get("email").toString()).get();
 
         }
