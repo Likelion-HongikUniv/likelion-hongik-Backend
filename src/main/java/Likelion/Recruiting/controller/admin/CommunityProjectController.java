@@ -1,6 +1,6 @@
-package Likelion.Recruiting.controller;
+package Likelion.Recruiting.controller.admin;
 
-import Likelion.Recruiting.repository.AdminPost;
+import Likelion.Recruiting.repository.admin.AdminPost;
 import Likelion.Recruiting.service.CommunityProjectService;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

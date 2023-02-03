@@ -1,7 +1,7 @@
 package Likelion.Recruiting.service;
 
 import Likelion.Recruiting.model.Post;
-import Likelion.Recruiting.repository.PostRepository;
+import Likelion.Recruiting.repository.admin.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

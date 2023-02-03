@@ -1,4 +1,4 @@
-package Likelion.Recruiting.repository;
+package Likelion.Recruiting.repository.admin;
 
 import lombok.Data;
 

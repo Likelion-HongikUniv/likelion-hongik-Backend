@@ -1,4 +1,4 @@
-package Likelion.Recruiting.controller;
+package Likelion.Recruiting.controller.admin;
 
 import Likelion.Recruiting.model.Comment;
 import Likelion.Recruiting.model.Post;

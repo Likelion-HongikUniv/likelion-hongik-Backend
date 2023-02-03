@@ -1,4 +1,4 @@
-package Likelion.Recruiting.controller;
+package Likelion.Recruiting.controller.admin;
 
 import Likelion.Recruiting.model.Team;
 import lombok.RequiredArgsConstructor;

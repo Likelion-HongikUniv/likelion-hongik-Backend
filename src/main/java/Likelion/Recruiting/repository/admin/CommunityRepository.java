@@ -1,4 +1,4 @@
-package Likelion.Recruiting.repository;
+package Likelion.Recruiting.repository.admin;
 
 import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.Team;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package Likelion.Recruiting.service;
 
-import Likelion.Recruiting.repository.AdminPost;
-import Likelion.Recruiting.repository.CommunityRepository;
+import Likelion.Recruiting.repository.admin.AdminPost;
+import Likelion.Recruiting.repository.admin.CommunityRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;

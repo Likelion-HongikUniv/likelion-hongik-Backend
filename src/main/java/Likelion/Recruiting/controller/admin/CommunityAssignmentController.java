@@ -1,6 +1,6 @@
-package Likelion.Recruiting.controller;
+package Likelion.Recruiting.controller.admin;
 
-import Likelion.Recruiting.repository.AdminPost;
+import Likelion.Recruiting.repository.admin.AdminPost;
 import Likelion.Recruiting.service.CommunityAssignmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
