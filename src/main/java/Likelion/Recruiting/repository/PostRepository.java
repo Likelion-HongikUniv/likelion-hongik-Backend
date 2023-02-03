@@ -24,9 +24,13 @@ public interface PostRepository extends JpaRepository<Post,Long> {
     Page<Post> findByMainCategoryAndSubCategory(MainCategory mainCategory, SubCategory subCategory,Pageable pageable);
 
 
+    Page<Post> findByMainCategoryAndSubCategoryAndAuthor_TeamId(MainCategory mainCategory, SubCategory subCategory,Long teamId,Pageable pageable);
+
     Page<Post> findAllByAuthor(User user, Pageable pageable);
 
     Page<Post> findAllByLikeUsersIn(List<PostLike> postLike, Pageable pageable);
+
+    Page<Post> findByComment(List<Post> post, Pageable pageable);
 
     List<Post> findAll();
 }

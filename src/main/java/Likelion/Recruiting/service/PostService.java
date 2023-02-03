@@ -5,6 +5,7 @@ import Likelion.Recruiting.model.*;
 import Likelion.Recruiting.model.dto.PostDto;
 import Likelion.Recruiting.model.dto.PostDetailDto;
 import Likelion.Recruiting.model.dto.PostSimpleDto;
+import Likelion.Recruiting.model.dto.PostUpdateDto;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.*;
@@ -29,10 +30,13 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class PostService {
 
-    @Autowired
+
     private final PostRepository postRepository;
-    @Autowired
+
     private final UserRepository userRepository;
+    public Post findPost(Long postId){
+        return postRepository.findById(postId).get();
+    }
 
     @Transactional
     public Post createPost(Post post, User user) {
@@ -40,10 +44,23 @@ public class PostService {
         Post createdPost = postRepository.save(post);
         return createdPost;
     }
+    @Transactional
+    public Post updatePost(Post post, PostUpdateDto postUpdateDto){
+        post.update(postUpdateDto);
+        return postRepository.save(post);
+    }
+    @Transactional
+    public void deletePost(Post post){
+        Post deletePost = postRepository.findById(post.getId()).get();
+        postRepository.delete(deletePost);
+    }
 
 
     public Page<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory,Pageable pageable){
         return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
+    }
+    public Page<Post> searchProject(MainCategory mainCategory, SubCategory subCategory, Long teamId,Pageable pageable){
+        return postRepository.findByMainCategoryAndSubCategoryAndAuthor_TeamId(mainCategory,subCategory,teamId,pageable);
     }
 
     public Post searchOneId(Long id) {
@@ -67,6 +84,22 @@ public class PostService {
                 .comments(p.getComments().size())
                 .build());
         return postDto;
+    }
+
+    public Page<PostDto> getPosts(List<Post> posts, Pageable pageable) {
+        Page<Post> postsByComment = postRepository.findByComment(posts, pageable);
+
+        Page<PostDto> result = postsByComment.map(p -> PostDto.builder()
+                        .postId(p.getId())
+                        .title(p.getTitle())
+                        .author(p.getAuthor().getName())
+                        .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
+                        .body(p.getBody())
+                        .likes(p.getLikeUsers().size())
+                        .comments(p.getComments().size())
+                        .build());
+
+        return result;
     }
 
     public List<Post> findPostAll(){
