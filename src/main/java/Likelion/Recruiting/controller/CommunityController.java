@@ -109,7 +109,7 @@ public class CommunityController {
                                           @PathVariable("mainCategory") String mainCategory,
                                           @PathVariable("subCategory") String subCategory) {
         User user = customOauthUser.getUser();
-        Team team = teamService.findByUserId(user.getId());
+        Team team = teamService.findTeam(user.getId());
         Page<Post> posts;
         if (MainCategory.valueOf(mainCategory).equals("PROJECT"))
             posts = postService.searchProject(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),team.getId(),pageable);
