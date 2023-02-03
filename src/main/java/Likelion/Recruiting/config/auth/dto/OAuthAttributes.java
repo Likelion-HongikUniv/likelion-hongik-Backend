@@ -47,21 +47,7 @@ public class OAuthAttributes {
         return null;
     }
 
-<<<<<<< Updated upstream
-    // private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
-    //     return OAuthAttributes.builder()
-    //             .name((String) attributes.get("name"))
-    //             .email((String) attributes.get("email"))
-    //             .picture((String) attributes.get("picture"))
-    //             .attributes(attributes)
-    //             .nameAttributeKey(userNameAttributeName)
-    //             .ltype(LType.GITHUB)
-    //             .build();
 
-    // }
-
-
-=======
     private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
         System.out.println("attributes= " + attributes );
         if (attributes.get("email") == null) {
@@ -85,7 +71,6 @@ public class OAuthAttributes {
                     .build();
         }
     }
->>>>>>> Stashed changes
     private static OAuthAttributes ofKaKao(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
@@ -127,10 +112,7 @@ public class OAuthAttributes {
                 .ltype(LType.NAVER)
                 .build();
     }
-    public void emptyEmail(){
 
-        this.attributes.put("email", "empty");
-    }
     public User toEntity() {
         return User.builder()
                 .name(name)
