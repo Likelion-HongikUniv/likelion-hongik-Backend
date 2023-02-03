@@ -49,9 +49,10 @@ public class OAuthAttributes {
     private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
         if(attributes.get("email") == null){
             System.out.println("ofGithub 속");
+            System.out.println("attributes = " + attributes);
             return OAuthAttributes.builder()
                     .name((String) attributes.get("name"))
-                    .email("empty")
+                    .email(attributes.get("id").toString())
                     .picture((String) attributes.get("picture"))
                     .attributes(attributes)
                     .nameAttributeKey(userNameAttributeName)
