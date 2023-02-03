@@ -98,15 +98,15 @@ public class MypageController {
     }
 
     @GetMapping("/mypage/comments")
-    List<PostDetailDto> myComments (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
+    public Page<PostDto> myComments (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
+                                    @PageableDefault(size=5, sort="createdTime" ,direction = Sort.Direction.DESC) Pageable pageable) {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
 
         List<Comment> comments = commentService.findUser_Comment(user);
         List<Post> post =  postService.findByComment(comments);
-        List<PostDetailDto> result = post.stream()
-                .map(p -> new PostDetailDto(p,user))
-                .collect(toList());
+        Page<PostDto> result = postService.getPosts(post, pageable);
+
         return result;
     }
 
