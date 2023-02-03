@@ -22,7 +22,7 @@ public class CommunityRepository  {
     public List<AdminPost> findAll(String category){
 
         return em.createQuery(
-                "select new Likelion.Recruiting.repository.AdminPost(p.id,p.title,u.name,p.createdTime,p.body,u.part) " +
+                "select new Likelion.Recruiting.repository.admin.AdminPost(p.id,p.title,u.name,p.createdTime,p.body,u.part) " +
                 " from Post p join p.author u" +
                 " where p.mainCategory = :main",AdminPost.class)
                 .setParameter("main",MainCategory.valueOf(category))
@@ -33,7 +33,7 @@ public class CommunityRepository  {
     public List<AdminPost> findByCategoryAndSubCategory(String mainCategory, String subCategory){
 
         return em.createQuery(
-                "select new Likelion.Recruiting.repository.AdminPost(p.id,p.title,u.name,p.createdTime,p.body,u.part) " +
+                "select new Likelion.Recruiting.repository.admin.AdminPost(p.id,p.title,u.name,p.createdTime,p.body,u.part) " +
                 " from Post p join p.author u" +
                 " where p.mainCategory = :mainCategory and p.subCategory = :subCategory", AdminPost.class)
                 .setParameter("mainCategory",MainCategory.valueOf(mainCategory))
@@ -45,7 +45,7 @@ public class CommunityRepository  {
 
    public List<AdminPost> findByUser(String category, String name){
         return em.createQuery(
-                "select new Likelion.Recruiting.repository.AdminPost(p.id,p.title,u.name,p.createdTime,p.body,u.part) " +
+                "select new Likelion.Recruiting.repository.admin.AdminPost(p.id,p.title,u.name,p.createdTime,p.body,u.part) " +
                 " from Post p join p.author u" +
                 " where p.mainCategory = :category and u.name = :name", AdminPost.class)
                 .setParameter("category",MainCategory.valueOf(category))
@@ -64,7 +64,7 @@ public class CommunityRepository  {
 
     public List<AdminPost> findAllByTeam(Long team_id){
         return em.createQuery(
-                "select new Likelion.Recruiting.repository.AdminPost(p.id,p.title,u.name,p.createdTime,p.body,u.part) " +
+                "select new Likelion.Recruiting.repository.admin.AdminPost(p.id,p.title,u.name,p.createdTime,p.body,u.part) " +
                 " from Post p join p.author u join u.team t" +
                 " where p.mainCategory = :project and t.id =:team_id", AdminPost.class)
                 .setParameter("project",MainCategory.PROJECT)
