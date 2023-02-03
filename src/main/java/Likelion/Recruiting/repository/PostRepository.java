@@ -28,7 +28,7 @@ public interface PostRepository extends JpaRepository<Post,Long> {
 
     Page<Post> findAllByLikeUsersIn(List<PostLike> postLike, Pageable pageable);
 
-    Page<Post> findByComment(List<Post> post, Pageable pageable);
+    Page<Post> findAllByCommentsIn(List<Comment> comments, Pageable pageable);
 
     List<Post> findAll();
 }

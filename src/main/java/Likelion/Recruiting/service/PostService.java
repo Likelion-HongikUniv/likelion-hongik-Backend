@@ -33,6 +33,8 @@ public class PostService {
     private final PostRepository postRepository;
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private final CommentRepository commentRepository;
 
     @Transactional
     public Post createPost(Post post, User user) {
@@ -69,8 +71,11 @@ public class PostService {
         return postDto;
     }
 
-    public Page<PostDto> getPosts(List<Post> posts, Pageable pageable) {
-        Page<Post> postsByComment = postRepository.findByComment(posts, pageable);
+    public Page<PostDto> getPosts(Long userId, Pageable pageable) {
+
+        User user = userRepository.findById(userId).get();
+        List<Comment> comments = commentRepository.findByAuthor(user);
+        Page<Post> postsByComment = postRepository.findAllByCommentsIn(comments, pageable);
 
         Page<PostDto> result = postsByComment.map(p -> PostDto.builder()
                         .postId(p.getId())

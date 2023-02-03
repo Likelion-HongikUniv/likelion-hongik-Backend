@@ -30,7 +30,7 @@ public class Reply {
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
 
     @Column(nullable = false)
