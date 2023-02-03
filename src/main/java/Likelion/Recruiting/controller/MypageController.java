@@ -103,30 +103,24 @@ public class MypageController {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
 
-        List<Comment> comments = commentService.findUser_Comment(user);
-        List<Post> post =  postService.findByComment(comments);
-        Page<PostDto> result = postService.getPosts(post, pageable);
+//        List<Comment> comments = commentService.findUser_Comment(user);
+//        List<Post> post =  postService.findByComment(comments);
+        Page<PostDto> result = postService.getPosts(user.getId(), pageable);
 
         return result;
     }
 
     @GetMapping("/mypage/likes")
-    public Page<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, Pageable pageable){
+    public Page<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
+                                         @PageableDefault(size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable){
 
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
 
         Long user_id = userService.findUser(email).getId();
 
-//        List<PostDto> postDtos = likeService.getLikedPost(user_id);
         Page<PostDto> posts = likeService.getLikedPost(user_id, pageable);
 
         return posts;
     }
-
-//    @PostMapping("/accounts/check")
-//    public
-
-
-
 }
