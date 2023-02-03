@@ -17,19 +17,18 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class LikeService {
-    @Autowired
+
     private final PostRepository postRepository;
-    @Autowired
     private final CommentRepository commentRepository;
-    @Autowired
+
     private final ReplyRepository replyRepository;
-    @Autowired
+
     private final UserRepository userRepository;
-    @Autowired
+
     private final PostLikeRepository postLikeRepository;
-    @Autowired
+
     private final CommentLikeRepository commentLikeRepository;
-    @Autowired
+
     private final ReplyLikeRepository replyLikeRepository;
     //---------------게시글 좋아요
     @Transactional
