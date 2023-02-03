@@ -1,6 +1,8 @@
 package Likelion.Recruiting.controller;
 
 import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
+import Likelion.Recruiting.exception.DuplicationException;
+import Likelion.Recruiting.exception.ErrorCode;
 import Likelion.Recruiting.model.Comment;
 import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.User;
@@ -61,21 +63,25 @@ public class MypageController {
                 user.getNickname(),
                 user.getMajor(),
                 user.getStudentId(),
-                user.getPart(),
-                user.getPhoneNum());
+                user.getPart());
     }
 
     @PatchMapping("/mypage/edit")
     ProfileDto mypage_edit(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
         String email = customOauthUser.getUser().getEmail();
-        User user = userService.findUser(email);
-        user = user.profileUpdate(profileDto.getNickname(), profileDto.getMajor(), profileDto.getStudentId(), profileDto.getPart(), profileDto.getPhoneNum());
-        return new ProfileDto(
-                user.getNickname(),
-                user.getMajor(),
-                user.getStudentId(),
-                user.getPart(),
-                user.getPhoneNum());
+
+        if (userService.validateNickname(profileDto.getNickname()) != null){ // 닉네임이 중복된다면 에러 메세지를 리턴
+            throw new DuplicationException(ErrorCode.DUPLICATE_NICKNAME.getErrorCode(), ErrorCode.DUPLICATE_NICKNAME.getErrorMessage());
+        }
+        else {
+            User user = userService.editProfile(email, profileDto);
+
+            return new ProfileDto(
+                    user.getNickname(),
+                    user.getMajor(),
+                    user.getStudentId(),
+                    user.getPart());
+        }
     }
 
 
@@ -92,15 +98,15 @@ public class MypageController {
     }
 
     @GetMapping("/mypage/comments")
-    List<PostDetailDto> myComments (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
+    public Page<PostDto> myComments (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
+                                    @PageableDefault(size=5, sort="createdTime" ,direction = Sort.Direction.DESC) Pageable pageable) {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
 
         List<Comment> comments = commentService.findUser_Comment(user);
         List<Post> post =  postService.findByComment(comments);
-        List<PostDetailDto> result = post.stream()
-                .map(p -> new PostDetailDto(p,user))
-                .collect(toList());
+        Page<PostDto> result = postService.getPosts(post, pageable);
+
         return result;
     }
 
@@ -118,6 +124,8 @@ public class MypageController {
         return posts;
     }
 
+//    @PostMapping("/accounts/check")
+//    public
 
 
 

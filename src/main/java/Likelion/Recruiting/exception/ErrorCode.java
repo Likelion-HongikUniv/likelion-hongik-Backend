@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-@AllArgsConstructor
 public enum ErrorCode {
     ADMIN_TOKEN(1001, "관리자 암호가 일치하지않습니다"),
     SAME_EMAIL(1002, "동일한 이메일이 존재합니다."),
@@ -16,7 +15,6 @@ public enum ErrorCode {
 //    BOARD_NOT_FOUND(1007, "게시글을 찾을 수 없습니다.");
 
     private int errorCode;
-    private HttpStatus httpStatus;
     private String errorMessage;
 
     public String getErrorMessage() {
@@ -31,7 +29,4 @@ public enum ErrorCode {
         this.errorCode = errorCode;
         this.errorMessage = errorMessage;
     }
-
-
-//    private String detail;
 }

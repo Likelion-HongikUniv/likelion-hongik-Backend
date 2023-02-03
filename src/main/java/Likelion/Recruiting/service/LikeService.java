@@ -57,6 +57,7 @@ public class LikeService {
         List<PostLike> postLikes = postLikeRepository.findByUser(user);
         Page<Post> posts = postRepository.findAllByLikeUsersIn(postLikes, pageable);
         Page<PostDto> postDto = posts.map(p -> PostDto.builder()
+                .postId(p.getId())
                 .title(p.getTitle())
                 .author(p.getAuthor().getName())
                 .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))

@@ -13,5 +13,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Override
     @Query("select u from User u join fetch u.team")
     List<User> findAll();
+
+    User findByNickname(String nickname);
     List<User> findAllByTeamId(Long teamId);
 }
