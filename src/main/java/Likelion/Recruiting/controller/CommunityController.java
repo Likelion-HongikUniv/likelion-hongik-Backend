@@ -328,12 +328,12 @@ public class CommunityController {
         Reply reply = replyRepository.findById(replyId).get();//예외처리
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        if(user.getId() == reply.getAuthor().getId())
+        if(user.getId() != reply.getAuthor().getId())
             return new CreateResponeseMessage((long)403, "본인의 댓글이 아닙니다.");
         Reply deletedReply= replyService.deleteReply(reply);
         if (deletedReply.getIsDeleted() == true)
             return new CreateResponeseMessage((long)200, "업데이트 성공");
-        else return new CreateResponeseMessage((long)404, "업데이트 실패");
+        else return new CreateResponeseMessage((long)404, "이미 삭제된 댓글입니다.");
     }
 
     @PostMapping("/community/reply/{replyId}/like") // 게시글좋아용(이미 있으면 삭제, 없으면 저장)
