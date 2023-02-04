@@ -43,6 +43,12 @@ public class PostService {
         return createdPost;
     }
 
+    public PostDetailDto detailPost(Long postId, String email){
+        Post post = postRepository.findById(postId).get();
+        User user = userRepository.findByEmail(email).get();
+
+        return new PostDetailDto(post, user);
+    }
 
     public Page<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory,Pageable pageable){
         return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);

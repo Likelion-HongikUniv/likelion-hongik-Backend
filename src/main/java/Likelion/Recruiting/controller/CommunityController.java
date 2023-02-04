@@ -166,11 +166,13 @@ public class CommunityController {
 
     @GetMapping("/community/post/{postId}")//게시글 상세보기
     public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@PathVariable("postId") Long postId) {
-        Post post = postService.searchOneId(postId);
+//        Post post = postService.searchOneId(postId);
         String email = customOauthUser.getUser().getEmail();
-        User user = userService.findUser(email);
-        PostDetailDto result = new PostDetailDto(post, user);
-        return result;
+//        User user = userService.findUser(email);
+
+        return postService.detailPost(postId, email);
+//        PostDetailDto result = new PostDetailDto(post, user);
+//        return result;
     }
     //---------------------------------------------------------------
 

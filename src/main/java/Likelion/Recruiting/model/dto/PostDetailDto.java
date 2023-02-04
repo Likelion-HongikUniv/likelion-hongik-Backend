@@ -18,7 +18,7 @@ public class PostDetailDto {
     private UserSimpleDto author;
     private String title;
     private String body;
-    private LocalDateTime createdTime;
+    private String createdTime;
     private Boolean isLiked;
     private Long likeCount;
     private List<CommentDto> comments;
@@ -28,7 +28,7 @@ public class PostDetailDto {
         this.author = new UserSimpleDto(post.getAuthor().getId(),post.getAuthor().getNickname(),post.getAuthor().getProfileImage(), user);
         this.title = post.getTitle();
         this.body = post.getBody();
-        this.createdTime = post.getCreatedTime();
+        this.createdTime = post.getCreatedTime().toString();
         this.isLiked = false;
         for(PostLike postLike:post.getLikeUsers()){
             if(postLike.getUser().equals(user)) {
@@ -38,7 +38,7 @@ public class PostDetailDto {
         }
         this.likeCount = (long)post.getLikeUsers().size();
         this.comments = post.getComments().stream()
-                .map(comment -> new CommentDto(comment,user))
+                .map(comment -> new CommentDto(comment, user))
                 .collect(Collectors.toList());
     }
 }

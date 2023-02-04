@@ -12,7 +12,6 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(DuplicationException.class)
     public ResponseEntity<ErrorDto> handleDuplicateNickname(DuplicationException ex){
-        System.out.println("ex = " + ex);
         ErrorDto errorDto = new ErrorDto(ex.getCode(), ex.getMessage());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
