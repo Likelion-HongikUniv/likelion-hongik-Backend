@@ -2,10 +2,7 @@ package Likelion.Recruiting.service;
 
 
 import Likelion.Recruiting.model.*;
-import Likelion.Recruiting.model.dto.PostDto;
-import Likelion.Recruiting.model.dto.PostDetailDto;
-import Likelion.Recruiting.model.dto.PostSimpleDto;
-import Likelion.Recruiting.model.dto.PostUpdateDto;
+import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.*;
@@ -30,18 +27,9 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class PostService {
 
-
     private final PostRepository postRepository;
-
     private final UserRepository userRepository;
-
-    @Autowired
     private final CommentRepository commentRepository;
-
-    public Post findPost(Long postId){
-        return postRepository.findById(postId).get();
-    }
-
 
     @Transactional
     public Post createPost(Post post, User user) {
@@ -60,12 +48,28 @@ public class PostService {
         postRepository.delete(deletePost);
     }
 
-
-    public Page<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory,Pageable pageable){
-        return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
+    public Post findPost(Long postId){
+        return postRepository.findById(postId).get();
     }
-    public Page<Post> searchProject(MainCategory mainCategory, SubCategory subCategory, Long teamId,Pageable pageable){
-        return postRepository.findByMainCategoryAndSubCategoryAndAuthor_TeamId(mainCategory,subCategory,teamId,pageable);
+
+
+    public PageResponseDto<PostSimpleDto> searchCategory(MainCategory mainCategory, SubCategory subCategory,User user,Pageable pageable){
+        Page<Post> posts = postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
+
+        posts.stream().map(p -> p.getComments().stream()
+                .map(c->c.getReplies()));
+        Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
+        return new PageResponseDto<PostSimpleDto>(result);
+    }
+    public PageResponseDto<PostSimpleDto> searchProject(MainCategory mainCategory, SubCategory subCategory, Long teamId,User user,Pageable pageable){
+        Page<Post> posts= postRepository.findByMainCategoryAndSubCategoryAndAuthor_TeamId(mainCategory,subCategory,teamId,pageable);
+        Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
+        return new PageResponseDto<PostSimpleDto>(result);
+    }
+    public PostDetailDto postDetailInfo(Long postId,User user){
+        Post post = postRepository.findById(postId).get();
+        PostDetailDto result = new PostDetailDto(post, user);
+        return result;
     }
 
     public Post searchOneId(Long id) {

@@ -105,19 +105,20 @@ public class CommunityController {
     @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
     public PageResponseDto<PostSimpleDto> getSimplePosts(
                                           @AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
-                                          @PageableDefault(page =1,size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable,
+                                          @PageableDefault(page = 0,size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable,
                                           @PathVariable("mainCategory") String mainCategory,
                                           @PathVariable("subCategory") String subCategory) {
         User user = customOauthUser.getUser();
         Team team = teamService.findTeam(user.getId());
-        Page<Post> posts;
-        if (MainCategory.valueOf(mainCategory).equals("PROJECT"))
-            posts = postService.searchProject(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),team.getId(),pageable);
-        else posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),pageable);
+        PageResponseDto<PostSimpleDto> result;
+        if (MainCategory.PROJECT == MainCategory.valueOf(mainCategory))
+            result = postService.searchProject(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),team.getId(),user,pageable);
+        else result = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),user,pageable);
+
 //        String email = customOauthUser.getUser().getEmail();
 //        User user = userService.findUser(email);
-        Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
-        return new PageResponseDto<PostSimpleDto>(result);
+
+        return result;
     }
 
 
@@ -174,10 +175,7 @@ public class CommunityController {
 
     @GetMapping("/community/post/{postId}")//게시글 상세보기
     public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@PathVariable("postId") Long postId) {
-        Post post = postService.searchOneId(postId);
-        String email = customOauthUser.getUser().getEmail();
-        User user = userService.findUser(email);
-        PostDetailDto result = new PostDetailDto(post, user);
+        PostDetailDto result = postService.postDetailInfo(postId,customOauthUser.getUser());
         return result;
     }
     //---------------------------------------------------------------
