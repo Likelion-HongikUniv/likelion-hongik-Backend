@@ -27,6 +27,7 @@ public class CommentDto {
         this.body = comment.getBody();
         this.isDeleted = comment.getIsDeleted();
         this.createdTime = comment.getCreatedTime();
+        this.isLiked = false;
         for(CommentLike commentLike:comment.getLikeUsers()){
             if(commentLike.getUser().equals(user)) {
                 this.isLiked = true;
