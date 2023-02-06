@@ -46,30 +46,23 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
             String email = (String) kakao_account.get("email");
             user = userRepository.findByEmail(email).get();
         }
-//        else if(oAuth2User1.getAttributes().get("email") == null){ // 깃허브 로그인이라면
-//
-//            user = userRepository.findByEmail(oAuth2User1.getAttributes().get("id").toString()).get();
-//        }
+        else if(oAuth2User1.getAttributes().get("email") == null){ // 깃허브 로그인이라면
+
+            user = userRepository.findByEmail(oAuth2User1.getAttributes().get("id").toString()).get();
+        }
         else {
             // 해당 email을 가진 유저 객체 가져오기
             user = userRepository.findByEmail(oAuth2User1.getAttributes().get("email").toString()).get();
         }
 
-        // JWT 속 암호화 할 정보들 세팅하기
         String email = user.getEmail();
-        Role role = user.getRole();
-
-        // JWT 만들기
-        String token = jwtTokenProvider.createToken(email, role);
-        System.out.println("filter token = " + token);
-
-        response.setHeader("JWT", token);
+        Long userId = userRepository.findByEmail(email).get().getId();
 
         String tartgetUri;
         tartgetUri = UriComponentsBuilder
                 .fromUriString("http://localhost:3000/")
                 .path("/ing")
-                .queryParam("token", token)
+                .queryParam("UID", userId)
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, tartgetUri);
     }

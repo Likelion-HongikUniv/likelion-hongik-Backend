@@ -39,17 +39,16 @@ public class MypageController {
     private final LikeService likeService;
     private final CommentService commentService;
 
-    @GetMapping("/profile")
-//    @ResponseBody
-    public NavbarDto getNameandImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
-        // 유저의 email 뽑아내기
-        String email = customOauthUser.getUser().getEmail();
-
-        // navbarDto에 넣기
-        NavbarDto navbarDto = userService.navProfile(email);
-
-        return navbarDto;
-    }
+//    @GetMapping("/profile")
+//    public NavbarDto getNameandImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
+//        // 유저의 email 뽑아내기
+//        String email = customOauthUser.getUser().getEmail();
+//
+//        // navbarDto에 넣기
+//        NavbarDto navbarDto = userService.navProfile(email);
+//
+//        return navbarDto;
+//    }
 
     @GetMapping("/nickname")
     public ResponseDto validateNickname(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody NicknameDto nickname){
