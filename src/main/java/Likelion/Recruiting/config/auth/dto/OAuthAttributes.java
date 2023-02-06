@@ -34,6 +34,7 @@ public class OAuthAttributes {
             return ofGoogle(userNameAttributeName, attributes);
         }
         else if (registrationId.equals("kakao")){
+            System.out.println("of의 kakao 속");
             return ofKaKao("id", attributes);
         }
         else if (registrationId.equals("naver")){
@@ -73,6 +74,7 @@ public class OAuthAttributes {
     }
 
     private static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
+        System.out.println(attributes);
         return OAuthAttributes.builder()
                 .name((String) attributes.get("name"))
                 .email((String) attributes.get("email"))
@@ -86,6 +88,7 @@ public class OAuthAttributes {
     private static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
         /* JSON형태이기 때문에 Map을 통해 데이터를 가져온다. */
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+        System.out.println(response);
 
         return OAuthAttributes.builder()
                 .name((String) response.get("name"))
