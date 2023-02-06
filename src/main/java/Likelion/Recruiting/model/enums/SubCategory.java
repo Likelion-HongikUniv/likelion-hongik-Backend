@@ -12,10 +12,10 @@ public enum SubCategory {
     NOTICE("SUBCATEGORY_NOTICE", "공지"),
     QNA("SUBCATEGORY_QNA", "질의응답"),
     FREEBOARD("SUBCATEGORY_FREEBOARD", "자유게시판"),
-    FRONT("SUBCATEGORY_FRONT", "프론트"),
+    FRONTEND("SUBCATEGORY_FRONTEND", "프론트엔드"),
     BACKEND("SUBCATEGORY_BACKEND", "백엔드"),
     DESIGN("SUBCATEGORY_DESIGN", "디자인"),
-    PROJECT("SUBCATEGORY_PROJECT", "프로젝트");
+    MEETING("SUBCATEGORY_MEETING", "프로젝트 회의");
 
 
     private final String key;

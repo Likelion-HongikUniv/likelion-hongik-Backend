@@ -31,7 +31,7 @@ public class PostDetailDto {
         this.createdTime = post.getCreatedTime().toString();
         this.isLiked = false;
         for(PostLike postLike:post.getLikeUsers()){
-            if(postLike.getUser().equals(user)) {
+            if(postLike.getUser().getId() == user.getId()) {
                 this.isLiked = true;
                 break;
             }

@@ -2,9 +2,7 @@ package Likelion.Recruiting.service;
 
 
 import Likelion.Recruiting.model.*;
-import Likelion.Recruiting.model.dto.PostDto;
-import Likelion.Recruiting.model.dto.PostDetailDto;
-import Likelion.Recruiting.model.dto.PostSimpleDto;
+import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.*;
@@ -29,11 +27,9 @@ import static java.util.stream.Collectors.toList;
 @RequiredArgsConstructor
 public class PostService {
 
-    @Autowired
     private final PostRepository postRepository;
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
+
     private final CommentRepository commentRepository;
 
     @Transactional
@@ -41,6 +37,20 @@ public class PostService {
         post.setAuthor(user);
         Post createdPost = postRepository.save(post);
         return createdPost;
+    }
+    @Transactional
+    public Post updatePost(Post post, PostUpdateDto postUpdateDto){
+        post.update(postUpdateDto);
+        return postRepository.save(post);
+    }
+    @Transactional
+    public void deletePost(Post post){
+        Post deletePost = postRepository.findById(post.getId()).get();
+        postRepository.delete(deletePost);
+    }
+
+    public Post findPost(Long postId){
+        return postRepository.findById(postId).get();
     }
 
     public PostDetailDto detailPost(Long postId, String email){
@@ -50,8 +60,23 @@ public class PostService {
         return new PostDetailDto(post, user);
     }
 
-    public Page<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory,Pageable pageable){
-        return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
+    public PageResponseDto<PostSimpleDto> searchCategory(MainCategory mainCategory, SubCategory subCategory,User user,Pageable pageable){
+        Page<Post> posts = postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
+
+        posts.stream().map(p -> p.getComments().stream()
+                .map(c->c.getReplies()));
+        Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
+        return new PageResponseDto<PostSimpleDto>(result);
+    }
+    public PageResponseDto<PostSimpleDto> searchProject(MainCategory mainCategory, SubCategory subCategory, Long teamId,User user,Pageable pageable){
+        Page<Post> posts= postRepository.findByMainCategoryAndSubCategoryAndAuthor_TeamId(mainCategory,subCategory,teamId,pageable);
+        Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
+        return new PageResponseDto<PostSimpleDto>(result);
+    }
+    public PostDetailDto postDetailInfo(Long postId,User user){
+        Post post = postRepository.findById(postId).get();
+        PostDetailDto result = new PostDetailDto(post, user);
+        return result;
     }
 
     public Post searchOneId(Long id) {

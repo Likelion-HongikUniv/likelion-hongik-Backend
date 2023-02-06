@@ -40,37 +40,50 @@ public class OAuthAttributes {
         else if (registrationId.equals("naver")){
             return ofNaver("id", attributes);
         }
-        else if (registrationId.equals("github")){
-            return ofGithub("id", attributes);
-        }
+//        else if (registrationId.equals("github")){
+//            return ofGithub("id", attributes);
+//        }
         return null;
     }
 
-    private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
-        if(attributes.get("email") == null){
-            System.out.println("ofGithub 속");
-            System.out.println("attributes = " + attributes);
-            return OAuthAttributes.builder()
-                    .name((String) attributes.get("name"))
-                    .email(attributes.get("id").toString())
-                    .picture((String) attributes.get("picture"))
-                    .attributes(attributes)
-                    .nameAttributeKey(userNameAttributeName)
-                    .ltype(LType.GITHUB)
-                    .build();
-        }
-        else{
-            return OAuthAttributes.builder()
-                    .name((String) attributes.get("name"))
-                    .email((String) attributes.get("email"))
-                    .picture((String) attributes.get("picture"))
-                    .attributes(attributes)
-                    .nameAttributeKey(userNameAttributeName)
-                    .ltype(LType.GITHUB)
-                    .build();
-        }
+//    private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
+//        if(attributes.get("email") == null){
+//            System.out.println("ofGithub 속");
+//            System.out.println("attributes = " + attributes);
+//            return OAuthAttributes.builder()
+//                    .name((String) attributes.get("name"))
+//                    .email(attributes.get("id").toString())
+//                    .picture((String) attributes.get("picture"))
+//                    .attributes(attributes)
+//                    .nameAttributeKey(userNameAttributeName)
+//                    .ltype(LType.GITHUB)
+//                    .build();
+//        }
+//        else{
+//            return OAuthAttributes.builder()
+//                    .name((String) attributes.get("name"))
+//                    .email((String) attributes.get("email"))
+//                    .picture((String) attributes.get("picture"))
+//                    .attributes(attributes)
+//                    .nameAttributeKey(userNameAttributeName)
+//                    .ltype(LType.GITHUB)
+//                    .build();
+//        }
+//
+//    }
 
-    }
+//    private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
+//        return OAuthAttributes.builder()
+//                .name((String) attributes.get("name"))
+//                .email((String) attributes.get("email"))
+//                .picture((String) attributes.get("picture"))
+//                .attributes(attributes)
+//                .nameAttributeKey(userNameAttributeName)
+//                .ltype(LType.GITHUB)
+//                .build();
+//
+//    }
+
 
     private static OAuthAttributes ofKaKao(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
