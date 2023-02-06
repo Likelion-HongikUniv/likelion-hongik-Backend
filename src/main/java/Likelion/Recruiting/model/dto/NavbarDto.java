@@ -3,9 +3,10 @@ package Likelion.Recruiting.model.dto;
 import Likelion.Recruiting.model.enums.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
-@Getter
+@Data
 public class NavbarDto {
 
     @JsonProperty("id")

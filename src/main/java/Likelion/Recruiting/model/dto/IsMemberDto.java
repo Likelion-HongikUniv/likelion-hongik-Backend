@@ -2,7 +2,9 @@ package Likelion.Recruiting.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import Likelion.Recruiting.model.enums.Role;
+import lombok.Data;
 
+@Data
 public class IsMemberDto {
 
     @JsonProperty("isJoined")

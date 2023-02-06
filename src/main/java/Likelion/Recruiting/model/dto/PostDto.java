@@ -2,12 +2,13 @@ package Likelion.Recruiting.model.dto;
 
 import Likelion.Recruiting.model.Post;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
 import javax.validation.constraints.Size;
 
-@Getter
+@Data
 public class PostDto {
 
     private Long postId;

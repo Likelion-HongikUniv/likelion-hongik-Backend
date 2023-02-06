@@ -50,7 +50,7 @@ public class MypageController {
 //        return navbarDto;
 //    }
 
-    @GetMapping("/nickname")
+    @PostMapping("/nickname")
     public ResponseDto validateNickname(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody NicknameDto nickname){
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();

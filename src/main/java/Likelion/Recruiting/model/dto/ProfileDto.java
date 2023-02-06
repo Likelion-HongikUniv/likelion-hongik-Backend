@@ -1,9 +1,10 @@
 package Likelion.Recruiting.model.dto;
 
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
-@Getter
+@Data
 public class ProfileDto {
 
     private String nickname;
