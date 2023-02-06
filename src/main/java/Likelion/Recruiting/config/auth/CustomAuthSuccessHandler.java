@@ -28,46 +28,41 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    private final RequestCache requestCache = new HttpSessionRequestCache();
-    private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        // 로그인 실패 후 성공 시 남아있는 에러 세션 제거
-//        clearSession(request);
+
         System.out.println("handler속");
+        // 로그인 성공한 authentication 객체를 소셜로그인 객체인 OAuth2User로 변경하기
         OAuth2User oAuth2User1 = (OAuth2User) authentication.getPrincipal();
-//        System.out.println("oAuth2User1 att = " + oAuth2User1.getAttributes());
-//        System.out.println("oAuth2User1 name= " + oAuth2User1.getName());
+
+        // 일단 빈 user 객체 생성하기 -> 밑 if문 마다 생성하지 않기 위해서 -> 정보 덮여쓰기가 나을 거 같아서 이렇게 함.
         User user = new User("", "", LType.GOOGLE, Role.GUEST, "");
-        if (oAuth2User1.getAttributes().get("kakao_account") != null){
+
+        if (oAuth2User1.getAttributes().get("kakao_account") != null){ // 카카오 로그인이라면
             Map<String, Object> kakao_account = (Map<String, Object>) oAuth2User1.getAttributes().get("kakao_account");
             String email = (String) kakao_account.get("email");
             user = userRepository.findByEmail(email).get();
         }
+        else if(oAuth2User1.getAttributes().get("email") == null){ // 깃허브 로그인이라면
+
+            user = userRepository.findByEmail(oAuth2User1.getAttributes().get("id").toString()).get();
+        }
         else {
             // 해당 email을 가진 유저 객체 가져오기
             user = userRepository.findByEmail(oAuth2User1.getAttributes().get("email").toString()).get();
-
         }
 
-        // JWT 속 암호화 할 정보들 세팅하기
         String email = user.getEmail();
-        Role role = user.getRole();
-
-        // JWT 만들기
-        String token = jwtTokenProvider.createToken(email, role);
-        System.out.println("filter token = " + token);
-
-        response.setHeader("JWT", token);
+        Long userId = userRepository.findByEmail(email).get().getId();
 
         String tartgetUri;
         tartgetUri = UriComponentsBuilder
                 .fromUriString("http://localhost:3000/")
                 .path("/ing")
-                .queryParam("token", token)
+                .queryParam("UID", userId)
                 .build().toUriString();
         getRedirectStrategy().sendRedirect(request, response, tartgetUri);
     }

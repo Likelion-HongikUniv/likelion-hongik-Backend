@@ -23,13 +23,16 @@ public class NavbarDto {
     @JsonProperty("role")
     private Role role;
 
-    @Builder
+    @JsonProperty("JWT")
+    private String JWT;
 
-    public NavbarDto(Long id, String name, String profileImage, boolean isJoined, Role role) {
+    @Builder
+    public NavbarDto(Long id, String name, String profileImage, boolean isJoined, Role role, String JWT) {
         this.id = id;
         this.name = name;
         this.profileImage = profileImage;
         this.isJoined = isJoined;
         this.role = role;
+        this.JWT = JWT;
     }
 }

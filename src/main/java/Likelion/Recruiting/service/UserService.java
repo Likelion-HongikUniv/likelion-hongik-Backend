@@ -1,9 +1,11 @@
 package Likelion.Recruiting.service;
 
+import Likelion.Recruiting.config.auth.jwt.JwtTokenProvider;
 import Likelion.Recruiting.model.Team;
 import Likelion.Recruiting.model.dto.NavbarDto;
 import Likelion.Recruiting.model.dto.ProfileDto;
 import Likelion.Recruiting.model.dto.TeamMemberResponseDto;
+import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.repository.TeamRepository;
 import Likelion.Recruiting.repository.UserRepository;
 import Likelion.Recruiting.model.User;
@@ -21,6 +23,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+
+
     public User findUser(String email){
         return userRepository.findByEmail(email).get();
     }
@@ -55,9 +60,15 @@ public class UserService {
         return user;
     }
 
-    public NavbarDto navProfile(String email){
+    public NavbarDto takeJwt(Long uid){
         // 해당 유저 찾기
-        User user = userRepository.findByEmail(email).get();
+        User user = userRepository.findById(uid).get();
+
+        String email = user.getEmail();
+        Role role = user.getRole();
+
+        // JWT 만들기
+        String token = jwtTokenProvider.createToken(email, role);
 
         return NavbarDto.builder()
                 .id(user.getId())
@@ -65,6 +76,7 @@ public class UserService {
                 .profileImage(user.getProfileImage())
                 .isJoined(user.isJoind())
                 .role(user.getRole())
+                .JWT(token)
                 .build();
     }
 
