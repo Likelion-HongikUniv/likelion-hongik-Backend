@@ -72,11 +72,11 @@ public class Post {
     }
 
     public void update(PostUpdateDto postUpdateDto){
-        if(postUpdateDto.getTitle().isEmpty())
+        if(postUpdateDto.getTitle() != null)
             this.title = postUpdateDto.getTitle();
-        if(postUpdateDto.getBody().isEmpty())
+        if(postUpdateDto.getBody() != null)
             this.body = postUpdateDto.getBody();
-        if(postUpdateDto.getThumbnailImage().isEmpty())
+        if(postUpdateDto.getThumbnailImage() != null)
             this.thumbnailImage = postUpdateDto.getThumbnailImage();
     }
 

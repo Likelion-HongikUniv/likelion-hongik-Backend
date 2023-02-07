@@ -182,11 +182,10 @@ public class CommunityController {
     //---------------------------------------------------------------
     //게시글 수정
     @PatchMapping("/community/post/{postId}")
-    public CreateResponeseMessage updatePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody EditPostRequest request, @PathVariable("postId") Long postId){
+    public CreateResponeseMessage updatePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody PostUpdateDto postUpdateDto, @PathVariable("postId") Long postId){
         Post post = postService.findPost(postId);//예외처리
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        PostUpdateDto postUpdateDto = new PostUpdateDto(request.getTitle(),request.getBody(),request.getThumbnailImage());
         if(user.getId() == post.getAuthor().getId()){
             postService.updatePost(post,postUpdateDto);
             return new CreateResponeseMessage((long)200, "업데이트 성공");
@@ -200,6 +199,10 @@ public class CommunityController {
         private String title;
         private String body;
         private String thumbnailImage;
+
+        public EditPostRequest(String body) {
+            this.body = body;
+        }
     }
 
     @DeleteMapping("/community/post/{postId}")

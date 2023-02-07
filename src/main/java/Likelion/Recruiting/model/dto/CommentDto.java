@@ -29,7 +29,7 @@ public class CommentDto {
         this.createdTime = comment.getCreatedTime();
         this.isLiked = false;
         for(CommentLike commentLike:comment.getLikeUsers()){
-            if(commentLike.getUser().equals(user)) {
+            if(commentLike.getUser().getId() == user.getId()) {
                 this.isLiked = true;
                 break;
             }
