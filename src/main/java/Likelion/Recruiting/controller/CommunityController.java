@@ -109,10 +109,11 @@ public class CommunityController {
                                           @PathVariable("mainCategory") String mainCategory,
                                           @PathVariable("subCategory") String subCategory) {
         User user = customOauthUser.getUser();
-        Team team = teamService.findTeam(user.getId());
         PageResponseDto<PostSimpleDto> result;
-        if (MainCategory.PROJECT == MainCategory.valueOf(mainCategory))
-            result = postService.searchProject(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),team.getId(),user,pageable);
+        if (MainCategory.PROJECT == MainCategory.valueOf(mainCategory)) {
+            Team team = teamService.findTeam(user.getId());
+            result = postService.searchProject(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory), team.getId(), user, pageable);
+        }
         else result = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),user,pageable);
 
 //        String email = customOauthUser.getUser().getEmail();
