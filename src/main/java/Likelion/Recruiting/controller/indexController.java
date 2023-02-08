@@ -38,22 +38,6 @@ public class indexController {
     }
 
 
-    @GetMapping("/loginForm")
-    public String loginForm(){
-        return "loginForm";
-    }
-
-    @GetMapping("/user")
-    public @ResponseBody String user(@AuthenticationPrincipal OAuth2User userDetails){
-
-        return "users";
-    }
-
-    @GetMapping("/admin")
-    public @ResponseBody String admin(){
-        return "admin";
-    }
-
     @ResponseBody
     @PostMapping("/accounts/detail_info/")
     IsMemberDto detail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
@@ -61,11 +45,6 @@ public class indexController {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
 
-        if (userService.validateNickname(profileDto.getNickname()) != null){ // 닉네임이 중복된다면 에러 메세지를 리턴
-            throw new DuplicationException(ErrorCode.DUPLICATE_NICKNAME.getErrorCode(), ErrorCode.DUPLICATE_NICKNAME.getErrorMessage());
-        }
-
-//        if (user.isJoind() == false && user.getRole() == Role.USER) // 멋사 합격자이면서 추가정보 안 받은 사람 -> 회원가입
         if( user.isJoind() == false&& user.getRole() == Role.USER){ // 아직 추가 정보 안 받음 -> 멋사 회원가입 전 -> isJoined == true 여야 함
             userService.insertDetail(email, profileDto);
             return new IsMemberDto(user.isJoind(), user.getRole()); // true, USER
