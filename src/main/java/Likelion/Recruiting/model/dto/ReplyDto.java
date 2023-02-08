@@ -24,7 +24,7 @@ public class ReplyDto {
         this.createdTime = reply.getCreatedTime();
         this.isLiked = false;
         for(ReplyLike replyLike:reply.getLikeUsers()){
-            if(replyLike.getUser().equals(user)) {
+            if(replyLike.getUser().getId() == user.getId()) {
                 this.isLiked = true;
                 break;
             }

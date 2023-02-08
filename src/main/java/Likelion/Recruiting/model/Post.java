@@ -2,6 +2,7 @@ package Likelion.Recruiting.model;
 
 
 
+import Likelion.Recruiting.model.dto.PostUpdateDto;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import lombok.*;
@@ -29,6 +30,7 @@ public class Post {
 
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String body;
 
     private String thumbnailImage;
@@ -69,6 +71,14 @@ public class Post {
         user.getPosts().add(this);
     }
 
+    public void update(PostUpdateDto postUpdateDto){
+        if(postUpdateDto.getTitle() != null)
+            this.title = postUpdateDto.getTitle();
+        if(postUpdateDto.getBody() != null)
+            this.body = postUpdateDto.getBody();
+        if(postUpdateDto.getThumbnailImage() != null)
+            this.thumbnailImage = postUpdateDto.getThumbnailImage();
+    }
 
     public void changeMainCategory(MainCategory mainCategory){
         this.mainCategory = mainCategory;

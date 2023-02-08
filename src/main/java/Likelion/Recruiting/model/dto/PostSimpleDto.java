@@ -28,7 +28,7 @@ public class PostSimpleDto {
         this.thumbNailImage = post.getThumbnailImage();
         this.isLiked = false;
         for(PostLike postLike:post.getLikeUsers()){
-            if(postLike.getUser().equals(user)) {
+            if(postLike.getUser().getId() == user.getId()) {
                 this.isLiked = true;
                 break;
             }

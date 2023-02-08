@@ -19,6 +19,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.PostUpdate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,19 +35,19 @@ public class CommunityController {
     private final ReplyService replyService;
     private final LikeService likeService;
     private final UserService userService;
-    @Autowired
+    private final TeamService teamService;
     private final PostRepository postRepository;
-    @Autowired
+
     private final CommentRepository commentRepository;
-    @Autowired
+
     private final ReplyRepository replyRepository;
-    @Autowired
+
     private final UserRepository userRepository;
-    @Autowired
+
     private final PostLikeRepository postLikeRepository;
-    @Autowired
+
     private final CommentLikeRepository commentLikeRepository;
-    @Autowired
+
     private final ReplyLikeRepository replyLikeRepository;
 
 
@@ -104,14 +105,21 @@ public class CommunityController {
     @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
     public PageResponseDto<PostSimpleDto> getSimplePosts(
                                           @AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
-                                          @PageableDefault(page =1,size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable,
+                                          @PageableDefault(page = 0,size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable,
                                           @PathVariable("mainCategory") String mainCategory,
                                           @PathVariable("subCategory") String subCategory) {
-        Page<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),pageable);
-        String email = customOauthUser.getUser().getEmail();
-        User user = userService.findUser(email);
-        Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
-        return new PageResponseDto<PostSimpleDto>(result);
+        User user = customOauthUser.getUser();
+        PageResponseDto<PostSimpleDto> result;
+        if (MainCategory.PROJECT == MainCategory.valueOf(mainCategory)) {
+            Team team = teamService.findTeam(user.getId());
+            result = postService.searchProject(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory), team.getId(), user, pageable);
+        }
+        else result = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),user,pageable);
+
+//        String email = customOauthUser.getUser().getEmail();
+//        User user = userService.findUser(email);
+
+        return result;
     }
 
 
@@ -121,7 +129,7 @@ public class CommunityController {
     //-------------------------------------------------------------------------------------------------------
     //카테고리에따른 게시글 저장 api
     @PostMapping("/community/posts/{mainCategory}/{subCategory}")
-    public CreatePostResponse savePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreatePostRequest request, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
+    public CreatePostResponse savePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreatePostRequest request, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
 
         CreatePostRequest createPostRequest = new CreatePostRequest(request.getTitle(), request.getBody(),request.getThumbnailImage());
         Post createdPost = Post.builder()
@@ -137,7 +145,7 @@ public class CommunityController {
         User user = userService.findUser(email);
         Post savedPost = postService.createPost(createdPost,user);
 
-        return new CreatePostResponse(savedPost.getId());
+        return new CreatePostResponse(savedPost.getId(),"게시글 작성 성공");
     }
 
     @Data
@@ -156,9 +164,11 @@ public class CommunityController {
     @Data
     static class CreatePostResponse {
         private Long id;
+        private String message;
 
-        public CreatePostResponse(Long id) {
+        public CreatePostResponse(Long id, String message) {
             this.id = id;
+            this.message = message;
         }
     }
 
@@ -166,12 +176,47 @@ public class CommunityController {
 
     @GetMapping("/community/post/{postId}")//게시글 상세보기
     public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@PathVariable("postId") Long postId) {
-        Post post = postService.searchOneId(postId);
-        String email = customOauthUser.getUser().getEmail();
-        User user = userService.findUser(email);
-        PostDetailDto result = new PostDetailDto(post, user);
+        PostDetailDto result = postService.postDetailInfo(postId,customOauthUser.getUser());
         return result;
     }
+    //---------------------------------------------------------------
+    //게시글 수정
+    @PatchMapping("/community/post/{postId}")
+    public CreateResponeseMessage updatePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody PostUpdateDto postUpdateDto, @PathVariable("postId") Long postId){
+        Post post = postService.findPost(postId);//예외처리
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
+        if(user.getId() == post.getAuthor().getId()){
+            postService.updatePost(post,postUpdateDto);
+            return new CreateResponeseMessage((long)200, "업데이트 성공");
+        }
+        else return new CreateResponeseMessage((long)403, "본인의 게시글이 아닙니다.");
+    }
+
+    @Data
+    @NoArgsConstructor
+    static class EditPostRequest {
+        private String title;
+        private String body;
+        private String thumbnailImage;
+
+        public EditPostRequest(String body) {
+            this.body = body;
+        }
+    }
+
+    @DeleteMapping("/community/post/{postId}")
+    public CreateResponeseMessage deletePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("postId") Long postId){
+        Post post = postRepository.findById(postId).get();//예외처리
+        String email = customOauthUser.getUser().getEmail();
+        User user = userService.findUser(email);
+        if(user.getId() == post.getAuthor().getId()) {
+            postService.deletePost(post);
+            return new CreateResponeseMessage((long) 200, "업데이트 성공");
+        }
+        else return new CreateResponeseMessage((long)403, "본인의 게시글이 아닙니다.");
+    }
+
     //---------------------------------------------------------------
 
     @PostMapping("/community/post/{postId}/like") // 게시글좋아용(이미 있으면 삭제, 없으면 저장)
@@ -209,7 +254,7 @@ public class CommunityController {
         User user = userService.findUser(email);
         Post post = postRepository.findById(postId).get();//역시 예외처리는 예외코드로
         Comment savedComment = commentService.createComment(createdComment,post,user);
-        return new CreatePostResponse(savedComment.getId());
+        return new CreatePostResponse(savedComment.getId(), "댓글 작성 성공");
     }
     @PatchMapping("/community/comment/{commentId}") //예외처리~~~
     public CreateResponeseMessage updateComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody CreateCommentReqeust request, @PathVariable("commentId") Long commentId){
@@ -223,15 +268,15 @@ public class CommunityController {
         else return new CreateResponeseMessage((long)403, "본인의 댓글이 아닙니다.");
     }
     @DeleteMapping("/community/comment/{commentId}") //예외처리~~~
-    public CreateResponeseMessage updateComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("commentId") Long commentId){
+    public CreateResponeseMessage deleteComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("commentId") Long commentId){
         Comment comment = commentRepository.findById(commentId).get();//예외처리
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
         if(user.getId() == comment.getAuthor().getId()) {
             Comment deletedComment = commentService.deleteComment(comment);
             if (deletedComment.getIsDeleted() == true)
-                return new CreateResponeseMessage((long) 200, "업데이트 성공");
-            else return new CreateResponeseMessage((long) 404, "업데이트 실패");
+                return new CreateResponeseMessage((long) 200, "삭제 성공");
+            else return new CreateResponeseMessage((long) 404, "이미 삭제된 댓글입니다.");
         }
         else return new CreateResponeseMessage((long)403, "본인의 댓글이 아닙니다.");
     }
@@ -243,7 +288,7 @@ public class CommunityController {
 
     }
 
-    @PostMapping("/community/comment/{commentId}/like") // 게시글좋아용(이미 있으면 삭제, 없으면 저장)
+    @PostMapping("/community/comment/{commentId}/like") //댓글좋아용(이미 있으면 삭제, 없으면 저장)
     public CreateResponeseMessage likeComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("commentId") Long commentId){
         Comment comment = commentRepository.findById(commentId).get();//역시 예외처리는 예외코드로
         String email = customOauthUser.getUser().getEmail();
@@ -260,7 +305,7 @@ public class CommunityController {
 
     //------------------------------------대댓글------------------------
     @PostMapping("/community/comment/{commentId}")//대댓글 저장 api
-    public CreatePostResponse saveReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @RequestBody CreateCommentReqeust request, @PathVariable("commentId") Long commentId) {
+    public CreatePostResponse saveReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreateCommentReqeust request, @PathVariable("commentId") Long commentId) {
         Reply createdReply = Reply.builder()
                 .body(request.getBody())
                 .build();
@@ -269,7 +314,7 @@ public class CommunityController {
         User user = userService.findUser(email);
         Comment comment = commentRepository.findById(commentId).get();//역시 예외처리는 예외코드로
         Reply savedReply = replyService.createReply(createdReply,comment,user);
-        return new CreatePostResponse(savedReply.getId());
+        return new CreatePostResponse(savedReply.getId(),"대댓글 작성 성공");
     }
     @PatchMapping("/community/reply/{replyId}") //예외처리~~~
     public CreateResponeseMessage updateReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreateCommentReqeust request, @PathVariable("replyId") Long replyId){
@@ -287,12 +332,12 @@ public class CommunityController {
         Reply reply = replyRepository.findById(replyId).get();//예외처리
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        if(user.getId() == reply.getAuthor().getId())
+        if(user.getId() != reply.getAuthor().getId())
             return new CreateResponeseMessage((long)403, "본인의 댓글이 아닙니다.");
         Reply deletedReply= replyService.deleteReply(reply);
         if (deletedReply.getIsDeleted() == true)
             return new CreateResponeseMessage((long)200, "업데이트 성공");
-        else return new CreateResponeseMessage((long)404, "업데이트 실패");
+        else return new CreateResponeseMessage((long)404, "이미 삭제된 댓글입니다.");
     }
 
     @PostMapping("/community/reply/{replyId}/like") // 게시글좋아용(이미 있으면 삭제, 없으면 저장)
