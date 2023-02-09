@@ -8,6 +8,7 @@ import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.User;
 
 import Likelion.Recruiting.model.dto.*;
+import Likelion.Recruiting.repository.UserRepository;
 import Likelion.Recruiting.service.CommentService;
 import Likelion.Recruiting.service.LikeService;
 import Likelion.Recruiting.service.PostService;
