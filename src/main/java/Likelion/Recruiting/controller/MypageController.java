@@ -50,7 +50,7 @@ public class MypageController {
 //        return navbarDto;
 //    }
 
-    @GetMapping("/nickname")
+    @PostMapping("/nickname")
     public ResponseDto validateNickname(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody NicknameDto nickname){
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
@@ -67,6 +67,14 @@ public class MypageController {
         }
     }
 
+    @GetMapping("/userinfo")
+    UserAllDto allOfUser(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser)  {
+        // 유저의 email 뽑아내기
+        String email = customOauthUser.getUser().getEmail();
+        System.out.println("email = " + email);
+
+        return userService.getAllAboutUser(email);
+    }
 
 
     @GetMapping("/mypage")
@@ -85,18 +93,13 @@ public class MypageController {
     ProfileDto mypage_edit(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
         String email = customOauthUser.getUser().getEmail();
 
-        if (userService.validateNickname(profileDto.getNickname()) != null){ // 닉네임이 중복된다면 에러 메세지를 리턴
-            throw new DuplicationException(ErrorCode.DUPLICATE_NICKNAME.getErrorCode(), ErrorCode.DUPLICATE_NICKNAME.getErrorMessage());
-        }
-        else {
-            User user = userService.editProfile(email, profileDto);
+        User user = userService.editProfile(email, profileDto);
 
-            return new ProfileDto(
-                    user.getNickname(),
-                    user.getMajor(),
-                    user.getStudentId(),
-                    user.getPart());
-        }
+        return new ProfileDto(
+                user.getNickname(),
+                user.getMajor(),
+                user.getStudentId(),
+                user.getPart());
     }
 
 

@@ -2,10 +2,10 @@ package Likelion.Recruiting.config.auth.jwt;
 
 import Likelion.Recruiting.config.auth.CustomOAuth2UserService;
 import Likelion.Recruiting.config.auth.CustomOauthUser;
+import Likelion.Recruiting.exception.ErrorCode;
+import Likelion.Recruiting.exception.JWTException;
 import Likelion.Recruiting.model.enums.Role;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -69,6 +69,8 @@ public class JwtTokenProvider {
         return (String) Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().get("email");
     }
 
+
+
     // request의 Header에서 JWT만 뽑아오기
     public String resolveToken(HttpServletRequest request){
         return request.getHeader("JWT");
@@ -79,8 +81,12 @@ public class JwtTokenProvider {
             Claims claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken).getBody();
             // 지금과 비교했을 때 토큰의 만료시간이 전(before)인가? -> 토큰이 만료 되었으면 true / 안 됐으면 false 반환
             return !claims.getExpiration().before(new Date());
-        } catch (Exception e){
-            return false;
+        } catch (ExpiredJwtException e){
+            System.out.println("1e = " + e.getMessage());
+            throw new JWTException("토큰 기한 만료", ErrorCode.EXPIRED_JWT.getErrorCode());
+        } catch (SignatureException e){
+            System.out.println("2e = " + e.getClass());
+            throw new JWTException("사용자 인증 실패", ErrorCode.NOT_VALIDATE_JWT.getErrorCode());
         }
     }
 

@@ -1,10 +1,13 @@
 package Likelion.Recruiting.service;
 
 import Likelion.Recruiting.config.auth.jwt.JwtTokenProvider;
+import Likelion.Recruiting.exception.ErrorCode;
+import Likelion.Recruiting.exception.UserException;
 import Likelion.Recruiting.model.Team;
 import Likelion.Recruiting.model.dto.NavbarDto;
 import Likelion.Recruiting.model.dto.ProfileDto;
 import Likelion.Recruiting.model.dto.TeamMemberResponseDto;
+import Likelion.Recruiting.model.dto.UserAllDto;
 import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.repository.TeamRepository;
 import Likelion.Recruiting.repository.UserRepository;
@@ -89,5 +92,48 @@ public class UserService {
                 .memberCount((long)teamMembers.size())
                 .users(teamMembers)
                 .build();
+    }
+
+    public UserAllDto getAllAboutUser(String email){
+        User user = userRepository.findByEmail(email).get();
+
+        if (user.isJoind() == true && user.getRole() == Role.USER){ // 추가 정보 받은 멋사회원이라면
+            if(user.getTeam() != null) {
+                return UserAllDto.builder()
+                        .userId(user.getId())
+                        .username(user.getName())
+                        .nickname(user.getNickname())
+                        .profileImageSrc(user.getProfileImage())
+                        .role(user.getRole())
+                        .major(user.getMajor())
+                        .part(user.getPart())
+                        .studentId(user.getStudentId())
+                        .team(user.getTeam().getName())
+                        .build();
+            }
+            else {
+                return UserAllDto.builder()
+                        .userId(user.getId())
+                        .username(user.getName())
+                        .nickname(user.getNickname())
+                        .profileImageSrc(user.getProfileImage())
+                        .role(user.getRole())
+                        .major(user.getMajor())
+                        .part(user.getPart())
+                        .studentId(user.getStudentId())
+                        .team(null)
+                        .build();
+            }
+        }
+        else if(user.isJoind() == false && user.getRole() == Role.USER){
+            System.out.println("false user");
+            throw new UserException(ErrorCode.NO_DATA_USER.getErrorCode(), ErrorCode.NO_DATA_USER.getErrorMessage());
+
+        }
+        else{
+            System.out.println("false guest");
+            throw new UserException(ErrorCode.NOT_USER.getErrorCode(), ErrorCode.NOT_USER.getErrorMessage());
+        }
+
     }
 }
