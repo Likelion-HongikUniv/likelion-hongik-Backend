@@ -42,7 +42,6 @@ public class OAuthAttributes {
             return ofNaver("id", attributes);
         }
         else if (registrationId.equals("github")){
-<<<<<<< HEAD
             return ofGithub("id", attributes);
         }
         return null;
@@ -53,9 +52,9 @@ public class OAuthAttributes {
             System.out.println("ofGithub 속");
             System.out.println("attributes = " + attributes);
             return OAuthAttributes.builder()
-                    .name((String) attributes.get("login"))
+                    .name((String) attributes.get("name"))
                     .email(attributes.get("id").toString())
-                    .picture((String) attributes.get("avatar_url"))
+                    .picture((String) attributes.get("picture"))
                     .attributes(attributes)
                     .nameAttributeKey(userNameAttributeName)
                     .ltype(LType.GITHUB)
@@ -63,9 +62,9 @@ public class OAuthAttributes {
         }
         else{
             return OAuthAttributes.builder()
-                    .name((String) attributes.get("login"))
+                    .name((String) attributes.get("name"))
                     .email((String) attributes.get("email"))
-                    .picture((String) attributes.get("avatar_url"))
+                    .picture((String) attributes.get("picture"))
                     .attributes(attributes)
                     .nameAttributeKey(userNameAttributeName)
                     .ltype(LType.GITHUB)
@@ -74,13 +73,6 @@ public class OAuthAttributes {
 
     }
 
-=======
-             return ofGithub("id", attributes);
-         }
-        return null;
-    }
-
->>>>>>> bbbf4a23108bd6d5b28668f47dc7728d8f35f053
 
     private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
         System.out.println("attributes= " + attributes );
