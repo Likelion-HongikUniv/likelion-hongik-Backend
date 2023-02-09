@@ -53,9 +53,9 @@ public class OAuthAttributes {
             System.out.println("ofGithub 속");
             System.out.println("attributes = " + attributes);
             return OAuthAttributes.builder()
-                    .name((String) attributes.get("name"))
+                    .name((String) attributes.get("login"))
                     .email(attributes.get("id").toString())
-                    .picture((String) attributes.get("picture"))
+                    .picture((String) attributes.get("avatar_url"))
                     .attributes(attributes)
                     .nameAttributeKey(userNameAttributeName)
                     .ltype(LType.GITHUB)
@@ -63,9 +63,9 @@ public class OAuthAttributes {
         }
         else{
             return OAuthAttributes.builder()
-                    .name((String) attributes.get("name"))
+                    .name((String) attributes.get("login"))
                     .email((String) attributes.get("email"))
-                    .picture((String) attributes.get("picture"))
+                    .picture((String) attributes.get("avatar_url"))
                     .attributes(attributes)
                     .nameAttributeKey(userNameAttributeName)
                     .ltype(LType.GITHUB)
