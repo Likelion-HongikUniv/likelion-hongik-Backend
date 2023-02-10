@@ -1,7 +1,8 @@
 package Likelion.Recruiting.service.admin;
 
 import Likelion.Recruiting.model.User;
-import Likelion.Recruiting.repository.admin.UserRepository;
+import Likelion.Recruiting.model.dto.UserAllDto;
+import Likelion.Recruiting.repository.admin.AdminUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,25 +12,24 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class UserService {
+public class AdminUserService {
 
-    private final UserRepository userRepository;
+    private final AdminUserRepository adminUserRepository;
 
     // 회원 정보 수정
     @Transactional
     public void updateUser(
             Long userId,
-            String name,
-            String email,
-            String major,
+            String username,
             String nickname,
+            String major,
             String part,
             String studentId) {
-        User findUser = userRepository.findOne(userId);
-        findUser.setName(name);
-        findUser.setEmail(email);
-        findUser.setMajor(major);
+
+        User findUser = adminUserRepository.findOne(userId);
+        findUser.setName(username);
         findUser.setNickname(nickname);
+        findUser.setMajor(major);
         findUser.setPart(part);
         findUser.setStudentId(studentId);
     }
@@ -38,20 +38,20 @@ public class UserService {
     @Transactional
     public void deleteUser(Long userId) {
 
-        User findUser = userRepository.findOne(userId);
+        User findUser = adminUserRepository.findOne(userId);
 
-        userRepository.deleteUser(findUser);
+        adminUserRepository.deleteUser(findUser);
     }
 
     // 회원 전체 조회
     @Transactional(readOnly = true)
     public List<User> findUsers() {
-        return userRepository.findAll();
+        return adminUserRepository.findAll();
     }
 
     // 회원 1명 조회
     @Transactional(readOnly = true)
     public User findOne(Long userId) {
-        return userRepository.findOne(userId);
+        return adminUserRepository.findOne(userId);
     }
 }

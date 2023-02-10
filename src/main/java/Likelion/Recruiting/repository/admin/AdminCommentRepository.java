@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class CommentRepository {
+public class AdminCommentRepository {
 
     private final EntityManager em;
 
