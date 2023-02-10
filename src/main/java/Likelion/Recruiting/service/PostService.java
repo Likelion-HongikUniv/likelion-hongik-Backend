@@ -2,15 +2,11 @@ package Likelion.Recruiting.service;
 
 
 import Likelion.Recruiting.model.*;
-import Likelion.Recruiting.model.dto.PostDto;
-import Likelion.Recruiting.model.dto.PostDetailDto;
-import Likelion.Recruiting.model.dto.PostSimpleDto;
-import Likelion.Recruiting.model.dto.PostUpdateDto;
+import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import Likelion.Recruiting.repository.PostRepository;
 import Likelion.Recruiting.repository.UserRepository;
 import org.springframework.data.domain.Page;
@@ -19,24 +15,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostService {
 
-
     private final PostRepository postRepository;
-
     private final UserRepository userRepository;
-    public Post findPost(Long postId){
-        return postRepository.findById(postId).get();
-    }
+
+    private final CommentRepository commentRepository;
 
     @Transactional
     public Post createPost(Post post, User user) {
@@ -55,29 +45,52 @@ public class PostService {
         postRepository.delete(deletePost);
     }
 
-
-    public Page<Post> searchCategory(MainCategory mainCategory, SubCategory subCategory,Pageable pageable){
-        return postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
+    public Post findPost(Long postId){
+        return postRepository.findById(postId).get();
     }
-    public Page<Post> searchProject(MainCategory mainCategory, SubCategory subCategory, Long teamId,Pageable pageable){
-        return postRepository.findByMainCategoryAndSubCategoryAndAuthor_TeamId(mainCategory,subCategory,teamId,pageable);
+
+    public PostDetailDto detailPost(Long postId, String email){
+        Post post = postRepository.findById(postId).get();
+        User user = userRepository.findByEmail(email).get();
+
+        return new PostDetailDto(post, user);
+    }
+
+    public PageResponseDto<PostSimpleDto> searchCategory(MainCategory mainCategory, SubCategory subCategory,User user,Pageable pageable){
+        Page<Post> posts = postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
+
+        posts.stream().map(p -> p.getComments().stream()
+                .map(c->c.getReplies()));
+        Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
+        return new PageResponseDto<PostSimpleDto>(result);
+    }
+    public PageResponseDto<PostSimpleDto> searchProject(MainCategory mainCategory, SubCategory subCategory, Long teamId,User user,Pageable pageable){
+        Page<Post> posts= postRepository.findByMainCategoryAndSubCategoryAndAuthor_TeamId(mainCategory,subCategory,teamId,pageable);
+        Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
+        return new PageResponseDto<PostSimpleDto>(result);
+    }
+    public PostDetailDto postDetailInfo(Long postId,User user){
+        Post post = postRepository.findById(postId).get();
+        PostDetailDto result = new PostDetailDto(post, user);
+        return result;
     }
 
     public Post searchOneId(Long id) {
         return postRepository.findById(id).get();
     }
 
-
-    public Page<PostDto> getMyAllPost(String email, Pageable pageable){
+// ------------------------- 내가 쓴 게시글 가져오기 ------------------------- //
+    public Page<MypagePostDto> getMyAllPost(String email, Pageable pageable){
         // 해당 이메일가진 User 객체 가져오기
         User user = userRepository.findByEmail(email).get();
 
         Page<Post> posts = postRepository.findAllByAuthor(user, pageable);
 
-        Page<PostDto> postDto = posts.map(p -> PostDto.builder()
+        Page<MypagePostDto> postDto = posts.map(p -> MypagePostDto.builder()
                 .postId(p.getId())
                 .title(p.getTitle())
                 .author(p.getAuthor().getName())
+                .authorImage(p.getAuthor().getProfileImage())
                 .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
                 .body(p.getBody())
                 .likes(p.getLikeUsers().size())
@@ -86,13 +99,18 @@ public class PostService {
         return postDto;
     }
 
-    public Page<PostDto> getPosts(List<Post> posts, Pageable pageable) {
-        Page<Post> postsByComment = postRepository.findByComment(posts, pageable);
+// ------------------------- 내가 쓴 댓글이 있는 게시글 가져오기 ------------------------- //
+    public Page<MypagePostDto> getPosts(Long userId, Pageable pageable) {
 
-        Page<PostDto> result = postsByComment.map(p -> PostDto.builder()
+        User user = userRepository.findById(userId).get();
+        List<Comment> comments = commentRepository.findByAuthor(user);
+        Page<Post> postsByComment = postRepository.findAllByCommentsIn(comments, pageable);
+
+        Page<MypagePostDto> result = postsByComment.map(p -> MypagePostDto.builder()
                         .postId(p.getId())
                         .title(p.getTitle())
                         .author(p.getAuthor().getName())
+                        .authorImage(p.getAuthor().getProfileImage())
                         .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
                         .body(p.getBody())
                         .likes(p.getLikeUsers().size())

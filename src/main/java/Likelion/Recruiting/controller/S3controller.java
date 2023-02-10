@@ -22,9 +22,19 @@ import java.util.UUID;
 public class S3controller {
     private final PreSignedUrlService preSignedUrlService;
 
-    @GetMapping("/pre-signed-url/postImage")//카테고리에따른 게시글 가져오는 api
+    @GetMapping("/pre-signed-url/postImage")
     public String getPostImagePresignedUrl() {
         UUID uuid = UUID.randomUUID();
         return preSignedUrlService.getPreSignedUrl("mutsa-recruiting", "post-image", uuid.toString());
+    }
+    @GetMapping("/pre-signed-url/profileImage")
+    public String getProfileImagePresignedUrl() {
+        UUID uuid = UUID.randomUUID();
+        return preSignedUrlService.getPreSignedUrl("mutsa-recruiting", "profile-image", uuid.toString());
+    }
+    @GetMapping("/pre-signed-url/thumbnailImage")
+    public String getthumbnailImagePresignedUrl() {
+        UUID uuid = UUID.randomUUID();
+        return preSignedUrlService.getPreSignedUrl("mutsa-recruiting", "thumbnail-image", uuid.toString());
     }
 }

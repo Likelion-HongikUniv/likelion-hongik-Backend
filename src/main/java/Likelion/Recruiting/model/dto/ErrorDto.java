@@ -1,9 +1,15 @@
 package Likelion.Recruiting.model.dto;
 
 import Likelion.Recruiting.exception.ErrorCode;
-import lombok.Getter;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
+import net.minidev.json.JSONObject;
 
-@Getter
+import java.util.HashMap;
+import java.util.Map;
+
+@Data
 public class ErrorDto {
 
     private int code;
@@ -12,5 +18,24 @@ public class ErrorDto {
     public ErrorDto(int code, String message) {
         this.code = code;
         this.message = message;
+    }
+
+    public Map convertToJson(int code, String message) {
+        Map classMap = new HashMap();
+
+        classMap.put("code", code);
+        classMap.put("message", message);
+
+        return classMap;
+    }
+    public String convertObjectToJsonString(ErrorDto errorCode) {
+        ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = null;
+        try {
+            jsonStr = mapper.writeValueAsString(errorCode);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return jsonStr;
     }
 }

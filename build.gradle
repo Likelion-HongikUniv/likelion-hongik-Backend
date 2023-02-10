@@ -8,6 +8,12 @@ group = 'com.recruit'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
 repositories {
 	mavenCentral()
 }
@@ -16,6 +22,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-mustache' // 템플릿 엔진
 	implementation 'org.springframework.boot:spring-boot-starter-security' //Oauth 관련
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -42,8 +49,6 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/org.webjars/js-cookie
 	implementation group: 'org.webjars', name: 'js-cookie', version: '2.1.0'
-
-
 }
 
 tasks.named('test') {

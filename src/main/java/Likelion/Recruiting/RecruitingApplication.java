@@ -6,6 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.TimeZone;
+import org.springframework.context.annotation.Bean;
+import org.springframework.web.filter.HiddenHttpMethodFilter;
 
 @SpringBootApplication
 public class RecruitingApplication {
@@ -18,9 +20,14 @@ public class RecruitingApplication {
 	static {
 		System.setProperty("com.amazonaws.sdk.disableEc2Metadata", "true");
 	}
-	public static void main(String[] args) {
 
+	public static void main(String[] args) {
 		SpringApplication.run(RecruitingApplication.class, args);
+	}
+
+	@Bean
+	public HiddenHttpMethodFilter hiddenHttpMethodFilter(){
+		return new HiddenHttpMethodFilter();
 	}
 
 }

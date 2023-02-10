@@ -1,9 +1,14 @@
 package Likelion.Recruiting.service;
 
+import Likelion.Recruiting.config.auth.jwt.JwtTokenProvider;
+import Likelion.Recruiting.exception.ErrorCode;
+import Likelion.Recruiting.exception.UserException;
 import Likelion.Recruiting.model.Team;
 import Likelion.Recruiting.model.dto.NavbarDto;
 import Likelion.Recruiting.model.dto.ProfileDto;
 import Likelion.Recruiting.model.dto.TeamMemberResponseDto;
+import Likelion.Recruiting.model.dto.UserAllDto;
+import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.repository.TeamRepository;
 import Likelion.Recruiting.repository.UserRepository;
 import Likelion.Recruiting.model.User;
@@ -21,6 +26,9 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+
+
     public User findUser(String email){
         return userRepository.findByEmail(email).get();
     }
@@ -37,6 +45,8 @@ public class UserService {
 
         System.out.println("profile save 완료");
     }
+
+    @Transactional
     public User editProfile(String email, ProfileDto profileDto){
         // 해당 유저 찾기
         User user = userRepository.findByEmail(email).get();
@@ -45,19 +55,31 @@ public class UserService {
         user = user.profileUpdate(profileDto.getNickname(), profileDto.getMajor(), profileDto.getStudentId(), profileDto.getPart());
         userRepository.save(user);
 
-        System.out.println("profile edit 완료");
         return user;
     }
     public User validateNickname(String nickname){
         User user = userRepository.findByNickname(nickname);
-        System.out.println("user = " + user);
 
         return user;
     }
 
-    public NavbarDto navProfile(String email){
+//    @Transactional
+//    public User editProfileImage(String email){
+//        // 해당 유저 찾기
+//        User user = userRepository.findByEmail(email).get();
+//
+//
+//    }
+
+    public NavbarDto takeJwt(Long uid){
         // 해당 유저 찾기
-        User user = userRepository.findByEmail(email).get();
+        User user = userRepository.findById(uid).get();
+
+        String email = user.getEmail();
+        Role role = user.getRole();
+
+        // JWT 만들기
+        String token = jwtTokenProvider.createToken(email, role);
 
         return NavbarDto.builder()
                 .id(user.getId())
@@ -65,6 +87,7 @@ public class UserService {
                 .profileImage(user.getProfileImage())
                 .isJoined(user.isJoind())
                 .role(user.getRole())
+                .JWT(token)
                 .build();
     }
 
@@ -77,5 +100,48 @@ public class UserService {
                 .memberCount((long)teamMembers.size())
                 .users(teamMembers)
                 .build();
+    }
+
+    public UserAllDto getAllAboutUser(String email){
+        User user = userRepository.findByEmail(email).get();
+
+        if (user.isJoind() == true && user.getRole() == Role.USER){ // 추가 정보 받은 멋사회원이라면
+            if(user.getTeam() != null) {
+                return UserAllDto.builder()
+                        .userId(user.getId())
+                        .username(user.getName())
+                        .nickname(user.getNickname())
+                        .profileImageSrc(user.getProfileImage())
+                        .role(user.getRole())
+                        .major(user.getMajor())
+                        .part(user.getPart())
+                        .studentId(user.getStudentId())
+                        .team(user.getTeam().getName())
+                        .build();
+            }
+            else {
+                return UserAllDto.builder()
+                        .userId(user.getId())
+                        .username(user.getName())
+                        .nickname(user.getNickname())
+                        .profileImageSrc(user.getProfileImage())
+                        .role(user.getRole())
+                        .major(user.getMajor())
+                        .part(user.getPart())
+                        .studentId(user.getStudentId())
+                        .team(null)
+                        .build();
+            }
+        }
+        else if(user.isJoind() == false && user.getRole() == Role.USER){
+            System.out.println("false user");
+            throw new UserException(ErrorCode.NO_DATA_USER.getErrorCode(), ErrorCode.NO_DATA_USER.getErrorMessage());
+
+        }
+        else{
+            System.out.println("false guest");
+            throw new UserException(ErrorCode.NOT_USER.getErrorCode(), ErrorCode.NOT_USER.getErrorMessage());
+        }
+
     }
 }

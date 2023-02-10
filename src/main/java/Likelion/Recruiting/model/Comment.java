@@ -30,7 +30,7 @@ public class Comment {
     @JoinColumn(name = "post_id",nullable = false)
     private Post post;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String body;
 
     @Column(nullable = false)

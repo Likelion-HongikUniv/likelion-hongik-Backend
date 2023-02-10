@@ -1,5 +1,7 @@
 package Likelion.Recruiting.config.auth.jwt;
 
+import Likelion.Recruiting.exception.ErrorCode;
+import Likelion.Recruiting.exception.customException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
