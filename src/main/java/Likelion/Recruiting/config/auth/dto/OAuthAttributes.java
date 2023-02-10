@@ -40,24 +40,36 @@ public class OAuthAttributes {
         else if (registrationId.equals("naver")){
             return ofNaver("id", attributes);
         }
-//        else if (registrationId.equals("github")){
-//            return ofGithub("id", attributes);
-//        }
+        else if (registrationId.equals("github")){
+             return ofGithub("id", attributes);
+         }
         return null;
     }
 
-//    private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
-//        return OAuthAttributes.builder()
-//                .name((String) attributes.get("name"))
-//                .email((String) attributes.get("email"))
-//                .picture((String) attributes.get("picture"))
-//                .attributes(attributes)
-//                .nameAttributeKey(userNameAttributeName)
-//                .ltype(LType.GITHUB)
-//                .build();
-//
-//    }
 
+    private static OAuthAttributes ofGithub(String userNameAttributeName, Map<String, Object> attributes) {
+        System.out.println("attributes= " + attributes );
+        if (attributes.get("email") == null) {
+            System.out.println("ofGithub 속");
+            return OAuthAttributes.builder()
+                    .name((String) attributes.get("login"))
+                    .email(attributes.get("id").toString())
+                    .picture((String) attributes.get("avatar_url"))
+                    .attributes(attributes)
+                    .nameAttributeKey(userNameAttributeName)
+                    .ltype(LType.GITHUB)
+                    .build();
+        } else {
+            return OAuthAttributes.builder()
+                    .name((String) attributes.get("login"))
+                    .email((String) attributes.get("email"))
+                    .picture((String) attributes.get("avatar_url"))
+                    .attributes(attributes)
+                    .nameAttributeKey(userNameAttributeName)
+                    .ltype(LType.GITHUB)
+                    .build();
+        }
+    }
     private static OAuthAttributes ofKaKao(String userNameAttributeName, Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>) kakaoAccount.get("profile");
