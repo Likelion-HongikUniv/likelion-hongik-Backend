@@ -1,4 +1,4 @@
-package Likelion.Recruiting.security;
+package Likelion.Recruiting.config.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,11 +22,9 @@ public class SecurityConfig2 {
                 .and()
                 .formLogin();
 
+
         return http.build();
 
     }
 
 }
-
-
-

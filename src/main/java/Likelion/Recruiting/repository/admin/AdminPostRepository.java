@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
-public class PostRepository {
+public class AdminPostRepository {
 
     private final EntityManager em;
 

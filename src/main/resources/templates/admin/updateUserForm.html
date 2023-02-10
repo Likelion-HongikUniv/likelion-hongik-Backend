@@ -25,16 +25,11 @@
                     <div class="container-fluid" style="margin: 30px 0px">
                         <form th:object="${form}" method="post">
 
-                            <input type="hidden" th:field="*{id}" />
+                            <input type="hidden" th:field="*{userId}" />
 
                             <div class="form-group">
                                 <label th:for="name">이름</label>
-                                <input type="text" th:field="*{name}" class="form-control" placeholder="이름을 입력하세요" />
-                            </div>
-
-                            <div class="form-group">
-                                <label th:for="email">이메일</label>
-                                <input type="text" th:field="*{email}" class="form-control" placeholder="이메일을 입력하세요" />
+                                <input type="text" th:field="*{username}" class="form-control" placeholder="이름을 입력하세요" />
                             </div>
 
                             <div class="form-group">

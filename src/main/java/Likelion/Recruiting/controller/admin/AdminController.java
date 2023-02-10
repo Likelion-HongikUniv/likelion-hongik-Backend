@@ -1,12 +1,11 @@
 package Likelion.Recruiting.controller.admin;
 
-import Likelion.Recruiting.model.Comment;
-import Likelion.Recruiting.model.Post;
-import Likelion.Recruiting.model.User;
-import Likelion.Recruiting.model.UserForm;
-import Likelion.Recruiting.service.admin.CommentService;
-import Likelion.Recruiting.service.admin.PostService;
-import Likelion.Recruiting.service.admin.UserService;
+import Likelion.Recruiting.model.*;
+import Likelion.Recruiting.model.dto.UserAllDto;
+import Likelion.Recruiting.model.enums.Role;
+import Likelion.Recruiting.service.admin.AdminCommentService;
+import Likelion.Recruiting.service.admin.AdminPostService;
+import Likelion.Recruiting.service.admin.AdminUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,14 +17,14 @@ import java.util.List;
 @Slf4j
 public class AdminController {
 
-    private final UserService userService;
-    private final PostService postService;
-    private final CommentService commentService;
+    private final AdminUserService adminUserService;
+    private final AdminPostService adminPostService;
+    private final AdminCommentService adminCommentService;
 
-    public AdminController(UserService userService, PostService postService, CommentService commentService) {
-        this.userService = userService;
-        this.postService = postService;
-        this.commentService = commentService;
+    public AdminController(AdminUserService adminUserService, AdminPostService adminPostService, AdminCommentService adminCommentService) {
+        this.adminUserService = adminUserService;
+        this.adminPostService = adminPostService;
+        this.adminCommentService = adminCommentService;
 
     }
 
@@ -40,7 +39,7 @@ public class AdminController {
     // 회원목록 조회
     @GetMapping("admin/users")
     public String userList(Model model) {
-        List<User> users = userService.findUsers();
+        List<User> users = adminUserService.findUsers();
         model.addAttribute("users", users);
 
         return "admin/users";
@@ -49,16 +48,17 @@ public class AdminController {
     // 회원 정보 수정 - get : 수정 form 렌더링
     @GetMapping("admin/users/{userId}/edit")
     public String userForm(@PathVariable("userId") Long userId, Model model) {
-        User user = (User) userService.findOne(userId);
+        User user = (User) adminUserService.findOne(userId);
 
-        User form = new User();
-        form.setId(user.getId());
-        form.setName(user.getName());
-        form.setEmail(user.getEmail());
-        form.setNickname(user.getNickname());
-        form.setMajor(user.getMajor());
-        form.setStudentId(user.getStudentId());
-        form.setPart(user.getPart());
+        //UserAllDto form = new UserAllDto(id, username, nickname, profileImageSrc, role, major, part, studentId, team);
+        UserAllDto form = UserAllDto.builder()
+                .userId(user.getId())
+                .username(user.getName())
+                .nickname(user.getNickname())
+                .major(user.getMajor())
+                .part(user.getPart())
+                .studentId(user.getStudentId())
+                .build();
 
         model.addAttribute("form", form);
 
@@ -67,13 +67,12 @@ public class AdminController {
 
     // 회원 정보 수정 - post : 수정된 내용 저장
     @PostMapping("admin/users/{userId}/edit")
-    public String updateUser(@PathVariable Long userId, @ModelAttribute("form") UserForm form) {
+    public String updateUser(@PathVariable Long userId, @ModelAttribute("form") UserAllDto form) {
 
-        userService.updateUser(userId
-                ,form.getName()
-                ,form.getEmail()
-                ,form.getMajor()
+        adminUserService.updateUser(userId
+                ,form.getUsername()
                 ,form.getNickname()
+                ,form.getMajor()
                 ,form.getPart()
                 ,form.getStudentId());
 
@@ -83,7 +82,7 @@ public class AdminController {
     // 회원 삭제
     @GetMapping("admin/users/{userId}/delete")
     public String deleteUser(@PathVariable("userId") Long userId) {
-        userService.deleteUser(userId);
+        adminUserService.deleteUser(userId);
 
         return "redirect:/admin/users";
     }
@@ -91,9 +90,9 @@ public class AdminController {
     // User가 작성한 글/댓글 조회
     @GetMapping("admin/users/{userId}/writing")
     public String userWriting(@PathVariable("userId") Long userId, Model model) {
-        User user = (User) userService.findOne(userId);
-        List<Post> posts = postService.findPostsByUserId(userId);
-        List<Comment> comments = commentService.findCommentsByUserId(userId);
+        User user = (User) adminUserService.findOne(userId);
+        List<Post> posts = adminPostService.findPostsByUserId(userId);
+        List<Comment> comments = adminCommentService.findCommentsByUserId(userId);
 
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
@@ -106,7 +105,7 @@ public class AdminController {
     @GetMapping("admin/users/{userId}/posts/delete")
     public String postDeleteAll(@PathVariable("userId") Long userId) {
 
-        postService.deletePostByUser(userId);
+        adminPostService.deletePostByUser(userId);
 
         return "redirect:/admin/users/{userId}/writing";
 
@@ -116,7 +115,7 @@ public class AdminController {
     @GetMapping("admin/users/{userId}/comments/delete")
     public String commentDeleteAll(@PathVariable("userId") Long userId) {
 
-        commentService.deleteCommentByUser(userId);
+        adminCommentService.deleteCommentByUser(userId);
 
         return "redirect:/admin/users/{userId}/writing";
     }
@@ -125,7 +124,7 @@ public class AdminController {
     @GetMapping("admin/users/{userId}/posts/{postId}/delete")
     public String postDelete(@PathVariable("userId") Long userId, @PathVariable("postId") Long postId) {
 
-        postService.deletePostOne(postId);
+        adminPostService.deletePostOne(postId);
 
         return "redirect:/admin/users/{userId}/writing";
     }
@@ -134,7 +133,7 @@ public class AdminController {
     @GetMapping("admin/users/{userId}/comments/{commentId}/delete")
     public String commentDelete(@PathVariable("userId") Long userId, @PathVariable("commentId") Long commentId) {
 
-        commentService.deleteCommentOne(commentId);
+        adminCommentService.deleteCommentOne(commentId);
 
         return "redirect:/admin/users/{userId}/writing";
     }
