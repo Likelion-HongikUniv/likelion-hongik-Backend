@@ -59,10 +59,17 @@ public class UserService {
     }
     public User validateNickname(String nickname){
         User user = userRepository.findByNickname(nickname);
-        System.out.println("user = " + user);
 
         return user;
     }
+
+//    @Transactional
+//    public User editProfileImage(String email){
+//        // 해당 유저 찾기
+//        User user = userRepository.findByEmail(email).get();
+//
+//
+//    }
 
     public NavbarDto takeJwt(Long uid){
         // 해당 유저 찾기
