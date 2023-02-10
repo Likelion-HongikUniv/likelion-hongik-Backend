@@ -38,6 +38,12 @@ public class indexController {
     }
 
 
+    @GetMapping("/loginForm")
+    public String loginForm(){
+//        System.out.println("여기는 로그인 폼이지롱~");
+        return "loginForm";
+    }
+
     @ResponseBody
     @PostMapping("/accounts/detail_info/")
     IsMemberDto detail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){

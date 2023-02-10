@@ -60,7 +60,7 @@ public class CustomAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         String tartgetUri;
         tartgetUri = UriComponentsBuilder
-                .fromUriString("http://localhost:3000/")
+                .fromUriString("http://likelionhongik.com/")
                 .path("/ing")
                 .queryParam("UID", userId)
                 .build().toUriString();
