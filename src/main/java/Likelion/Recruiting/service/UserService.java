@@ -45,6 +45,8 @@ public class UserService {
 
         System.out.println("profile save 완료");
     }
+
+    @Transactional
     public User editProfile(String email, ProfileDto profileDto){
         // 해당 유저 찾기
         User user = userRepository.findByEmail(email).get();
@@ -53,15 +55,21 @@ public class UserService {
         user = user.profileUpdate(profileDto.getNickname(), profileDto.getMajor(), profileDto.getStudentId(), profileDto.getPart());
         userRepository.save(user);
 
-        System.out.println("profile edit 완료");
         return user;
     }
     public User validateNickname(String nickname){
         User user = userRepository.findByNickname(nickname);
-        System.out.println("user = " + user);
 
         return user;
     }
+
+//    @Transactional
+//    public User editProfileImage(String email){
+//        // 해당 유저 찾기
+//        User user = userRepository.findByEmail(email).get();
+//
+//
+//    }
 
     public NavbarDto takeJwt(Long uid){
         // 해당 유저 찾기

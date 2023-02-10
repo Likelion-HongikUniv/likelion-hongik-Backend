@@ -7,7 +7,6 @@ import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import Likelion.Recruiting.repository.PostRepository;
 import Likelion.Recruiting.repository.UserRepository;
 import org.springframework.data.domain.Page;
@@ -16,11 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)
@@ -83,17 +79,18 @@ public class PostService {
         return postRepository.findById(id).get();
     }
 
-
-    public Page<PostDto> getMyAllPost(String email, Pageable pageable){
+// ------------------------- 내가 쓴 게시글 가져오기 ------------------------- //
+    public Page<MypagePostDto> getMyAllPost(String email, Pageable pageable){
         // 해당 이메일가진 User 객체 가져오기
         User user = userRepository.findByEmail(email).get();
 
         Page<Post> posts = postRepository.findAllByAuthor(user, pageable);
 
-        Page<PostDto> postDto = posts.map(p -> PostDto.builder()
+        Page<MypagePostDto> postDto = posts.map(p -> MypagePostDto.builder()
                 .postId(p.getId())
                 .title(p.getTitle())
                 .author(p.getAuthor().getName())
+                .authorImage(p.getAuthor().getProfileImage())
                 .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
                 .body(p.getBody())
                 .likes(p.getLikeUsers().size())
@@ -102,16 +99,18 @@ public class PostService {
         return postDto;
     }
 
-    public Page<PostDto> getPosts(Long userId, Pageable pageable) {
+// ------------------------- 내가 쓴 댓글이 있는 게시글 가져오기 ------------------------- //
+    public Page<MypagePostDto> getPosts(Long userId, Pageable pageable) {
 
         User user = userRepository.findById(userId).get();
         List<Comment> comments = commentRepository.findByAuthor(user);
         Page<Post> postsByComment = postRepository.findAllByCommentsIn(comments, pageable);
 
-        Page<PostDto> result = postsByComment.map(p -> PostDto.builder()
+        Page<MypagePostDto> result = postsByComment.map(p -> MypagePostDto.builder()
                         .postId(p.getId())
                         .title(p.getTitle())
                         .author(p.getAuthor().getName())
+                        .authorImage(p.getAuthor().getProfileImage())
                         .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
                         .body(p.getBody())
                         .likes(p.getLikeUsers().size())

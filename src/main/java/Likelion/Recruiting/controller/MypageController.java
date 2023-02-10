@@ -3,8 +3,6 @@ package Likelion.Recruiting.controller;
 import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
 import Likelion.Recruiting.exception.DuplicationException;
 import Likelion.Recruiting.exception.ErrorCode;
-import Likelion.Recruiting.model.Comment;
-import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.User;
 
 import Likelion.Recruiting.model.dto.*;
@@ -22,11 +20,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @CrossOrigin("*")
 @RequiredArgsConstructor
@@ -71,9 +64,16 @@ public class MypageController {
     UserAllDto allOfUser(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser)  {
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
-        System.out.println("email = " + email);
 
         return userService.getAllAboutUser(email);
+    }
+
+    @PostMapping("/mypage/edit/profileImage")
+    void editProfileImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
+        // 유저의 email 뽑아내기
+        String email = customOauthUser.getUser().getEmail();
+
+
     }
 
 
@@ -105,39 +105,37 @@ public class MypageController {
 
     @GetMapping("/mypage/posts")
 
-    public Page<PostDto> getMyPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
-                                    @PageableDefault(size=5, sort="createdTime" ,direction = Sort.Direction.DESC) Pageable pageable){
+    public Page<MypagePostDto> getMyPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
+                                          @PageableDefault(size=5, sort="createdTime" ,direction = Sort.Direction.DESC) Pageable pageable){
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
 
-        Page<PostDto> posts = postService.getMyAllPost(email, pageable);
+        Page<MypagePostDto> posts = postService.getMyAllPost(email, pageable);
 
         return posts;
     }
 
     @GetMapping("/mypage/comments")
-    public Page<PostDto> myComments (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
-                                    @PageableDefault(size=5, sort="createdTime" ,direction = Sort.Direction.DESC) Pageable pageable) {
+    public Page<MypagePostDto> myComments (@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
+                                           @PageableDefault(size=5, sort="createdTime" ,direction = Sort.Direction.DESC) Pageable pageable) {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
 
-//        List<Comment> comments = commentService.findUser_Comment(user);
-//        List<Post> post =  postService.findByComment(comments);
-        Page<PostDto> result = postService.getPosts(user.getId(), pageable);
+        Page<MypagePostDto> result = postService.getPosts(user.getId(), pageable);
 
         return result;
     }
 
     @GetMapping("/mypage/likes")
-    public Page<PostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
-                                         @PageableDefault(size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable){
+    public Page<MypagePostDto> getMyLikedPosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
+                                               @PageableDefault(size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable){
 
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
 
         Long user_id = userService.findUser(email).getId();
 
-        Page<PostDto> posts = likeService.getLikedPost(user_id, pageable);
+        Page<MypagePostDto> posts = likeService.getLikedPost(user_id, pageable);
 
         return posts;
     }

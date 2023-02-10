@@ -1,21 +1,13 @@
 package Likelion.Recruiting.service;
 
 import Likelion.Recruiting.model.*;
-import Likelion.Recruiting.model.dto.PostDto;
-import Likelion.Recruiting.model.enums.MainCategory;
-import Likelion.Recruiting.model.enums.SubCategory;
 import Likelion.Recruiting.repository.CommentRepository;
-import Likelion.Recruiting.repository.PostRepository;
-import Likelion.Recruiting.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Service
 @Transactional(readOnly = true)

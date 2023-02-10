@@ -1,7 +1,7 @@
 package Likelion.Recruiting.service;
 
 import Likelion.Recruiting.model.*;
-import Likelion.Recruiting.model.dto.PostDto;
+import Likelion.Recruiting.model.dto.MypagePostDto;
 import Likelion.Recruiting.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,16 +51,18 @@ public class LikeService {
         commentLikeRepository.save(createdCommentLike);
 
     }
-    
-    public Page<PostDto> getLikedPost(Long userId, Pageable pageable){
+
+// ------------------------- 내가 좋아요 누른 게시글 가져오기 ------------------------- //
+    public Page<MypagePostDto> getLikedPost(Long userId, Pageable pageable){
 
         User user = userRepository.findById(userId).get();
         List<PostLike> postLikes = postLikeRepository.findByUser(user);
         Page<Post> posts = postRepository.findAllByLikeUsersIn(postLikes, pageable);
-        Page<PostDto> postDto = posts.map(p -> PostDto.builder()
+        Page<MypagePostDto> postDto = posts.map(p -> MypagePostDto.builder()
                 .postId(p.getId())
                 .title(p.getTitle())
                 .author(p.getAuthor().getName())
+                .authorImage(p.getAuthor().getProfileImage())
                 .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
                 .body(p.getBody())
                 .likes(p.getLikeUsers().size())
