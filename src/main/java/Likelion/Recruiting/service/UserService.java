@@ -63,13 +63,14 @@ public class UserService {
         return user;
     }
 
-//    @Transactional
-//    public User editProfileImage(String email){
-//        // 해당 유저 찾기
-//        User user = userRepository.findByEmail(email).get();
-//
-//
-//    }
+    @Transactional
+    public User editProfileImage(String email, String profileUrl){
+        // 해당 유저 찾기
+        User user = userRepository.findByEmail(email).get();
+
+        user.update(user.getName(),profileUrl);
+        return user;
+    }
 
     public NavbarDto takeJwt(Long uid){
         // 해당 유저 찾기
