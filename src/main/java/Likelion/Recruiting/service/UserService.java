@@ -52,9 +52,10 @@ public class UserService {
         User user = userRepository.findByEmail(email).get();
 
         // 유저에 추가정보 넣기
+//        user = user.profileEdit(profileDto.getNickname(), profileDto.getMajor(), profileDto.getPart());
         user = user.profileUpdate(profileDto.getNickname(), profileDto.getMajor(), profileDto.getStudentId(), profileDto.getPart());
         userRepository.save(user);
-
+        System.out.println("user.getNickname() = " + user.getNickname());
         return user;
     }
     public User validateNickname(String nickname){

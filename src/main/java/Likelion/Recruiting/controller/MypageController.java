@@ -22,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
+//@CrossOrigin(allowedHeaders = "*")
 @RequiredArgsConstructor
 @RestController
 public class MypageController {
@@ -91,10 +92,10 @@ public class MypageController {
                 user.getPart());
     }
 
-    @PatchMapping("/mypage/edit")
+    @PutMapping("/mypage/edit")
     ProfileDto mypage_edit(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
         String email = customOauthUser.getUser().getEmail();
-
+//        System.out.println("my edit email = " + email);
         User user = userService.editProfile(email, profileDto);
 
         return new ProfileDto(
