@@ -16,8 +16,10 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.http.HttpSession;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -26,6 +28,7 @@ import java.util.Map;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
+
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -43,10 +46,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService implements
 
                     .getUserInfoEndpoint().getUserNameAttributeName();
 
-
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
+        System.out.println("save 전");
         User user = saveOrUpdate(attributes);
+        System.out.println("save 후");
+
         DefaultOAuth2User defaultOAuth2User = new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
                 attributes.getAttributes(),
                 attributes.getNameAttributeKey());

@@ -109,10 +109,11 @@ public class CommunityController {
                                           @PathVariable("mainCategory") String mainCategory,
                                           @PathVariable("subCategory") String subCategory) {
         User user = customOauthUser.getUser();
-        Team team = teamService.findTeam(user.getId());
         PageResponseDto<PostSimpleDto> result;
-        if (MainCategory.PROJECT == MainCategory.valueOf(mainCategory))
-            result = postService.searchProject(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),team.getId(),user,pageable);
+        if (MainCategory.PROJECT == MainCategory.valueOf(mainCategory)) {
+            Team team = teamService.findTeam(user.getId());
+            result = postService.searchProject(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory), team.getId(), user, pageable);
+        }
         else result = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),user,pageable);
 
 //        String email = customOauthUser.getUser().getEmail();
@@ -181,11 +182,10 @@ public class CommunityController {
     //---------------------------------------------------------------
     //게시글 수정
     @PatchMapping("/community/post/{postId}")
-    public CreateResponeseMessage updatePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody EditPostRequest request, @PathVariable("postId") Long postId){
+    public CreateResponeseMessage updatePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody PostUpdateDto postUpdateDto, @PathVariable("postId") Long postId){
         Post post = postService.findPost(postId);//예외처리
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        PostUpdateDto postUpdateDto = new PostUpdateDto(request.getTitle(),request.getBody(),request.getThumbnailImage());
         if(user.getId() == post.getAuthor().getId()){
             postService.updatePost(post,postUpdateDto);
             return new CreateResponeseMessage((long)200, "업데이트 성공");
@@ -199,6 +199,10 @@ public class CommunityController {
         private String title;
         private String body;
         private String thumbnailImage;
+
+        public EditPostRequest(String body) {
+            this.body = body;
+        }
     }
 
     @DeleteMapping("/community/post/{postId}")
