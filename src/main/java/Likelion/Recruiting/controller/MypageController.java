@@ -69,11 +69,12 @@ public class MypageController {
     }
 
     @PostMapping("/mypage/edit/profileImage")
-    void editProfileImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody String profileUrl){
+    void editProfileImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileUrlDto profileUrl){
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
+        System.out.println("profileUrl = " + profileUrl.getUrl());
 
-        User user = userService.editProfileImage(email, profileUrl);
+        User user = userService.editProfileImage(email, profileUrl.getUrl());
         System.out.println("user.getProfileImage() = " + user.getProfileImage());
     }
 

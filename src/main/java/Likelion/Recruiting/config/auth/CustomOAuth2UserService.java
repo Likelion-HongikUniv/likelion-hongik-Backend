@@ -43,14 +43,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService implements
 
         // 로그인을 위한 키 -> google- sub / kakao - id / naver - response
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails()
-
                     .getUserInfoEndpoint().getUserNameAttributeName();
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        System.out.println("save 전");
         User user = saveOrUpdate(attributes);
-        System.out.println("save 후");
 
         DefaultOAuth2User defaultOAuth2User = new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
                 attributes.getAttributes(),
@@ -62,7 +59,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService implements
 
     private User saveOrUpdate(OAuthAttributes attributes) {
         User user = userRepository.findByEmail(attributes.getEmail())
-                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
+//                .map(entity -> entity.update(attributes.getName(), attributes.getPicture()))
                 .orElse(attributes.toEntity());
 
         return userRepository.save(user);

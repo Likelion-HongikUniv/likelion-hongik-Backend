@@ -69,6 +69,7 @@ public class UserService {
         User user = userRepository.findByEmail(email).get();
 
         user.update(user.getName(),profileUrl);
+        userRepository.save(user);
         return user;
     }
 
