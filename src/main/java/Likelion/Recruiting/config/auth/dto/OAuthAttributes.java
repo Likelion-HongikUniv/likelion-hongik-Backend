@@ -5,7 +5,6 @@ import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.model.enums.LType;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.util.ObjectUtils;
 
 import java.util.Map;
 
@@ -124,5 +123,4 @@ public class OAuthAttributes {
                 .profileImage(picture)
                 .build();
     }
-
 }

@@ -22,6 +22,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin("*")
+//@CrossOrigin(allowedHeaders = "*")
 @RequiredArgsConstructor
 @RestController
 public class MypageController {
@@ -69,11 +70,13 @@ public class MypageController {
     }
 
     @PostMapping("/mypage/edit/profileImage")
-    void editProfileImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser){
+    void editProfileImage(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileUrlDto profileUrl){
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
+        System.out.println("profileUrl = " + profileUrl.getUrl());
 
-
+        User user = userService.editProfileImage(email, profileUrl.getUrl());
+        System.out.println("user.getProfileImage() = " + user.getProfileImage());
     }
 
 
@@ -89,10 +92,10 @@ public class MypageController {
                 user.getPart());
     }
 
-    @PatchMapping("/mypage/edit")
+    @PutMapping("/mypage/edit")
     ProfileDto mypage_edit(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody ProfileDto profileDto){
         String email = customOauthUser.getUser().getEmail();
-
+//        System.out.println("my edit email = " + email);
         User user = userService.editProfile(email, profileDto);
 
         return new ProfileDto(

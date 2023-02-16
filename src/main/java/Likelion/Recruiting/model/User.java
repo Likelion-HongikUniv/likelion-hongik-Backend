@@ -127,6 +127,14 @@ public class User {
 
         return this;
     }
+    public User profileEdit(String nickname, String major, String part){
+        this.nickname =nickname;
+        this.major = major;
+        this.isJoind = true;
+        this.part = part;
+
+        return this;
+    }
     public String getRoleKey(){
         // user.getRole() == USER, GUEST
         // user.getRoleKey() == ROLE_USER, ROLE_GUEST
