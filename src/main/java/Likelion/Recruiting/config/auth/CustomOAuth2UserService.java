@@ -48,6 +48,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService implements
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         User user = saveOrUpdate(attributes);
+//        if (user.getId() == 39){
+//            throw new Exception()
+//        }
 
         DefaultOAuth2User defaultOAuth2User = new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(user.getRoleKey())),
                 attributes.getAttributes(),
