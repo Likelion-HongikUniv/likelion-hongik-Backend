@@ -11,16 +11,12 @@ import Likelion.Recruiting.service.*;
 
 
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.PostUpdate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,58 +46,6 @@ public class CommunityController {
 
     private final ReplyLikeRepository replyLikeRepository;
 
-
-
-    //-------------------야매 유저생성-------------
-//    @PostMapping("/makeUser")
-//    public CreatePostResponse makeUser(@RequestBody CreateUserRequest request) {
-//        User user = User.builder()
-//                .name(request.getName())
-//                .email(request.getEmail())
-//                .lType(LType.KAKAO)
-//                .role(Role.USER)
-//                .build();
-//        user.profileUpdate(request.getNickname(), request.getMajor(), request.getStudentId(), request.getPart(), request.getPhoneNum());
-//        User savedUser = userRepository.save(user);
-//        return new CreatePostResponse(savedUser.getId());
-//    }
-//
-//    @Data
-//    static class CreateUserRequest{
-//        private String name;
-//        private String email;
-//        private String profileImage;
-//        private String nickname;
-//        private String major;
-//        private String studentId;
-//        private String part;
-//        private String phoneNum;
-//
-//        public CreateUserRequest(String name, String email, String profileImage, String nickname, String major, String studentId, String part, String phoneNum) {
-//            this.name = name;
-//            this.email = email;
-//            this.profileImage = profileImage;
-//            this.nickname = nickname;
-//            this.major = major;
-//            this.studentId = studentId;
-//            this.part = part;
-//            this.phoneNum = phoneNum;
-//        }
-//    }
-    //--------------------------------------------------------
-
-//    @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
-//    public DataResponseDto getSimplePosts(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestHeader("HEADER") String header, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
-//        List<Post> posts = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory));
-//        String email = customOauthUser.getUser().getEmail();
-//
-//        User user = userService.findUser(email); // 옵셔널이므로 id없을시 예외처리할때 예외코드날아감 -->try catch쓰기
-//        List<PostSimpleDto> result = posts.stream()
-//                .map(p -> new PostSimpleDto(p,user))
-//                .collect(toList());
-//       return new DataResponseDto(result.size(), result);
-//    }
-
     @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
     public PageResponseDto<PostSimpleDto> getSimplePosts(
                                           @AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
@@ -112,13 +56,9 @@ public class CommunityController {
         PageResponseDto<PostSimpleDto> result;
         if (MainCategory.PROJECT == MainCategory.valueOf(mainCategory)) {
             Team team = teamService.findTeam(user.getId());
-            result = postService.searchProject(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory), team.getId(), user, pageable);
+            result = postService.findProjectByCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory), team.getId(), user, pageable);
         }
-        else result = postService.searchCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),user,pageable);
-
-//        String email = customOauthUser.getUser().getEmail();
-//        User user = userService.findUser(email);
-
+        else result = postService.findPostByCategory(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),user,pageable);
         return result;
     }
 
@@ -232,6 +172,27 @@ public class CommunityController {
 
         return new CreateResponeseMessage((long)200, "좋아요 성공");
     }
+
+    @GetMapping("/community/posts/{mainCategory}/{subCategory}/search")//카테고리에따른 게시글 가져오는 api
+    public PageResponseDto<PostSimpleDto> searchPostOrProject(
+            @AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
+            @PageableDefault(page = 0,size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable,
+            @PathVariable("mainCategory") String mainCategory,
+            @PathVariable("subCategory") String subCategory,
+            @RequestParam("search") String search) {
+        User user = customOauthUser.getUser();
+        PageResponseDto<PostSimpleDto> result;
+        System.out.println(search);
+        if (MainCategory.PROJECT == MainCategory.valueOf(mainCategory)) {
+            Team team = teamService.findTeam(user.getId());
+            result = postService.searchProject(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory), team.getId(), user, search, pageable);
+        }
+        else result = postService.searchPost(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),user, search,pageable);
+        return result;
+    }
+
+
+
 
     //------------------------------------댓글------------------------
 
