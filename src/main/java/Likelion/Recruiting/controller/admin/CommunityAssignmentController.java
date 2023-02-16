@@ -36,7 +36,7 @@ public class CommunityAssignmentController {
     //프론트엔드 과제 조회
     @GetMapping("admin/community/assignment/frontend")
     public String getFrontendAssignmentPost(Model model){
-        List<AdminPost> ass = communityAssignmentService.findAssignmentByPart("FRONT");
+        List<AdminPost> ass = communityAssignmentService.findAssignmentByPart("FRONTEND");
         model.addAttribute("assignment", ass);
         model.addAttribute("type", "frontend");
         return "admin/community/admin_assignment";
