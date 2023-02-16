@@ -18,7 +18,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ReplyService {
-    @Autowired
+
     private final ReplyRepository replyRepository;
 
     @Transactional
