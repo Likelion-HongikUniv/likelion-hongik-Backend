@@ -56,7 +56,7 @@ public class PostService {
         return new PostDetailDto(post, user);
     }
 
-    public PageResponseDto<PostSimpleDto> searchCategory(MainCategory mainCategory, SubCategory subCategory,User user,Pageable pageable){
+    public PageResponseDto<PostSimpleDto> findPostByCategory(MainCategory mainCategory, SubCategory subCategory, User user, Pageable pageable){
         Page<Post> posts = postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
 
         posts.stream().map(p -> p.getComments().stream()
@@ -64,7 +64,7 @@ public class PostService {
         Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
         return new PageResponseDto<PostSimpleDto>(result);
     }
-    public PageResponseDto<PostSimpleDto> searchProject(MainCategory mainCategory, SubCategory subCategory, Long teamId,User user,Pageable pageable){
+    public PageResponseDto<PostSimpleDto> findProjectByCategory(MainCategory mainCategory, SubCategory subCategory, Long teamId, User user, Pageable pageable){
         Page<Post> posts= postRepository.findByMainCategoryAndSubCategoryAndAuthor_TeamId(mainCategory,subCategory,teamId,pageable);
         Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
         return new PageResponseDto<PostSimpleDto>(result);
