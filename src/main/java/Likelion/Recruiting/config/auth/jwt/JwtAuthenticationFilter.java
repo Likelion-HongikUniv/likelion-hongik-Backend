@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequiredArgsConstructor
@@ -22,8 +23,16 @@ public class JwtAuthenticationFilter extends GenericFilterBean { // 사용자가
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
+//        HttpServletRequest req = (HttpServletRequest) request;
+//        HttpServletResponse res = (HttpServletResponse) response;
+        
         // header에서 jwt를 받아온다.
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
+
+//        res.setHeader("Access-Control-Allow-Origin", req.getHeader("Origin"));
+//        System.out.println("req.getHeader(\"Origin\") = " + req.getHeader("Origin"));
+//        res.setHeader("Access-Control-Allow-Credentials", "true");
+//        res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT, PATCH");
 
         // 토큰이 유효한지 검사한다.
         if ( token != null && jwtTokenProvider.validateToken(token)){
