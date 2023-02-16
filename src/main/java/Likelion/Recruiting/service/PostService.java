@@ -58,14 +58,23 @@ public class PostService {
 
     public PageResponseDto<PostSimpleDto> findPostByCategory(MainCategory mainCategory, SubCategory subCategory, User user, Pageable pageable){
         Page<Post> posts = postRepository.findByMainCategoryAndSubCategory(mainCategory,subCategory,pageable);
-
-        posts.stream().map(p -> p.getComments().stream()
-                .map(c->c.getReplies()));
         Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
         return new PageResponseDto<PostSimpleDto>(result);
     }
     public PageResponseDto<PostSimpleDto> findProjectByCategory(MainCategory mainCategory, SubCategory subCategory, Long teamId, User user, Pageable pageable){
         Page<Post> posts= postRepository.findByMainCategoryAndSubCategoryAndAuthor_TeamId(mainCategory,subCategory,teamId,pageable);
+        Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
+        return new PageResponseDto<PostSimpleDto>(result);
+    }
+
+    public PageResponseDto<PostSimpleDto> searchPost(MainCategory mainCategory, SubCategory subCategory, User user,String search, Pageable pageable){
+        Page<Post> posts = postRepository.searchPost(mainCategory,subCategory,search,pageable);
+        Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
+        return new PageResponseDto<PostSimpleDto>(result);
+    }
+
+    public PageResponseDto<PostSimpleDto> searchProject(MainCategory mainCategory, SubCategory subCategory, Long teamId, User user,String search, Pageable pageable){
+        Page<Post> posts= postRepository.searchProject(mainCategory,subCategory,teamId,search,pageable);
         Page<PostSimpleDto> result = posts.map(p-> new PostSimpleDto(p,user));
         return new PageResponseDto<PostSimpleDto>(result);
     }

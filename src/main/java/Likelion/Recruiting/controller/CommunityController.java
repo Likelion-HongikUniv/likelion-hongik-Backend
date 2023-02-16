@@ -173,6 +173,27 @@ public class CommunityController {
         return new CreateResponeseMessage((long)200, "좋아요 성공");
     }
 
+    @GetMapping("/community/posts/{mainCategory}/{subCategory}/search")//카테고리에따른 게시글 가져오는 api
+    public PageResponseDto<PostSimpleDto> searchPostOrProject(
+            @AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
+            @PageableDefault(page = 0,size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable,
+            @PathVariable("mainCategory") String mainCategory,
+            @PathVariable("subCategory") String subCategory,
+            @RequestParam("search") String search) {
+        User user = customOauthUser.getUser();
+        PageResponseDto<PostSimpleDto> result;
+        System.out.println(search);
+        if (MainCategory.PROJECT == MainCategory.valueOf(mainCategory)) {
+            Team team = teamService.findTeam(user.getId());
+            result = postService.searchProject(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory), team.getId(), user, search, pageable);
+        }
+        else result = postService.searchPost(MainCategory.valueOf(mainCategory), SubCategory.valueOf(subCategory),user, search,pageable);
+        return result;
+    }
+
+
+
+
     //------------------------------------댓글------------------------
 
     @GetMapping("/community/post/{postId}/comments")//게시글에 따른 댓글 & 대댓글 불러오기
