@@ -56,19 +56,19 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="project : ${projects}">
+                                <tr th:each="post : ${projects}">
 
-                                    <td th:if= "${#strings.length(project.getTitle())>15}"th:text="${#strings.substring(project.getTitle(),0,15)}"></td>
-                                    <td th:if= "${#strings.length(project.getTitle())<=15}"th:text="${project.getTitle()}"></td>
-                                    <td th:if= "${#strings.length(project.getBody())>25}"th:text="${#strings.substring(project.getBody(),0,25)}"></td>
-                                    <td th:if= "${#strings.length(project.getBody())<=25}"th:text="${project.getBody()}"></td>
-                                    <td th:text="${project.getWriter()}"></td>
-                                    <td th:text="${project.getPart()}"></td>
-                                    <td th:if="${project.getDate()!=null}" th:text="${project.getDate().toLocalDate()}"></td>
-                                    <td th:if="${project.getDate()==null}" th:text="none"></td>
-                                    <td th:if="${project.getDate()!=null}"><a th:title="${project.getTitle()}" th:body="${project.getBody()}" th:writer="${project.getWriter()}" th:if="${project.getDate()!= null}" th:date="${project.getDate().toLocalDate()}" th:onclick="openPop(this.getAttribute('title'),this.getAttribute('body'),this.getAttribute('writer'),this.getAttribute('date'))" class="btn btn-primary" role="button"> 보기 </a></td>
-                                    <td th:if="${project.getDate()==null}"><a th:title="${project.getTitle()}" th:body="${project.getBody()}" th:writer="${project.getWriter()}" th:if="${project.getDate()== null}" th:date="none" th:onclick="openPop(this.getAttribute('title'),this.getAttribute('body'),this.getAttribute('writer'),this.getAttribute('date'))" class="btn btn-primary" role="button"> 보기 </a></td>
-                                    <td><a th:href="@{/admin/community/project/one/{team_id}/{post_id}(team_id = ${team_id},post_id = ${project.getPost_id()})}" class="btn btn-danger" role="button" >삭제</a>
+                                    <td th:if= "${post.getTitle()!=null and #strings.length(post.getTitle())>15   }" th:text="${#strings.substring(post.getTitle(), 0, 15)}"></td>
+                                    <td th:if= "${post.getTitle()!=null and #strings.length(post.getTitle())<=15}"th:text="${post.getTitle()}"></td>
+                                    <td th:if="${post.getTitle()==null}" th:text="none"></td>
+                                    <td th:if= "${post.getBody()!=null and #strings.length(post.getBody())>20}"th:text="${#strings.substring(post.getBody(), 0, 20)}"></td>
+                                    <td th:if= "${post.getBody()!=null and #strings.length(post.getBody())<=20}"th:text="${post.getBody()}"></td>
+                                    <td th:if="${post.getBody()==null}" th:text="none"></td>
+                                    <td th:text="${#strings.defaultString(post.getWriter(),' ')}"></td>
+                                    <td th:text="${#strings.defaultString(post.getPart(),' ')}"></td>
+                                    <td th:text="${#strings.defaultString(post.getDate().toLocalDate(),' ')}"></td>
+                                    <td><a th:title="${#strings.defaultString(post.getTitle(),' ')}" th:body="${#strings.defaultString(post.getBody(),' ')}" th:writer="${#strings.defaultString(post.getWriter(),' ')}"  th:date="${#strings.defaultString(post.getDate().toLocalDate(),' ')}" th:onclick="openPop(this.getAttribute('title'),this.getAttribute('body'),this.getAttribute('writer'),this.getAttribute('date'))" class="btn btn-primary" role="button"> 보기 </a></td>
+                                    <td> <a th:href="@{/admin/community/project/one/{team_id}/{post_id}(team_id=${team_id},post_id = ${post.getPost_id()})}" class="btn btn-danger" role="button" onclick="return confirm('정말로 삭제 하시겠습니까?')">삭제</a>
                                     </td>
 
                                 </tr>

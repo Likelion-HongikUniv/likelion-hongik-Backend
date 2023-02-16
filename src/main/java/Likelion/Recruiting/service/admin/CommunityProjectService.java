@@ -24,9 +24,6 @@ public class CommunityProjectService {
     public void deleteProjectById(Long post_id){
         communityRepository.deleteOneById(post_id);
     }
-    public void deleteAllProjectPosts(){
-        communityRepository.deleteAll("PROJECT","PROJECT");
-    }
 
     public String getTeamName(Long team_id){
         return communityRepository.getTeamName(team_id);

@@ -51,17 +51,17 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="ass : ${assignment}">
-                                            <td th:if= "${#strings.length(ass.getTitle())>20}" th:text="${#strings.substring(ass.getTitle(), 0, 20)}"></td>
-                                            <td th:if= "${#strings.length(ass.getTitle())<=20}"th:text="${ass.getTitle()}"></td>
-                                            <td th:if= "${#strings.length(ass.getBody())>35}"th:text="${#strings.substring(ass.getBody(), 0, 35)}"></td>
-                                            <td th:if= "${#strings.length(ass.getBody())<=35}"th:text="${ass.getBody()}"></td>
-                                            <td th:text="${ass.getWriter()}"></td>
-                                            <td th:if = "${ass.getDate()!=null}"th:text="${ass.getDate().toLocalDate()}"></td>
-                                            <td th:if ="${ass.getDate()==null}" th:text="none"></td>
-                                            <td th:if = "${ass.getDate()!=null}"><a th:title="${ass.getTitle()}" th:body="${ass.getBody()}" th:writer="${ass.getWriter()}" th:date="${ass.getDate().toLocalDate()}" th:onclick="openPop(this.getAttribute('title'),this.getAttribute('body'),this.getAttribute('writer'),this.getAttribute('date'))" class="btn btn-primary" role="button"> 보기 </a></td>
-                                            <td th:if = "${ass.getDate()==null}"><a th:title="${ass.getTitle()}" th:body="${ass.getBody()}" th:writer="${ass.getWriter()}" th:date="none" th:onclick="openPop(this.getAttribute('title'),this.getAttribute('body'),this.getAttribute('writer'),this.getAttribute('date'))" class="btn btn-primary" role="button"> 보기 </a></td>
-                                            <td> <a th:href="@{/admin/community/assignment/one/{id}/{type}(id = ${ass.getPost_id()}, type=${type})}" class="btn btn-danger" role="button" onclick="return confirm('정말로 삭제 하시겠습니까?')">삭제</a>
+                                        <tr th:each="post : ${assignment}">
+                                            <td th:if= "${post.getTitle()!=null and #strings.length(post.getTitle())>15   }" th:text="${#strings.substring(post.getTitle(), 0, 15)}"></td>
+                                            <td th:if= "${post.getTitle()!=null and #strings.length(post.getTitle())<=15}"th:text="${post.getTitle()}"></td>
+                                            <td th:if="${post.getTitle()==null}" th:text="none"></td>
+                                            <td th:if= "${post.getBody()!=null and #strings.length(post.getBody())>20}"th:text="${#strings.substring(post.getBody(), 0, 20)}"></td>
+                                            <td th:if= "${post.getBody()!=null and #strings.length(post.getBody())<=20}"th:text="${post.getBody()}"></td>
+                                            <td th:if="${post.getBody()==null}" th:text="none"></td>
+                                            <td th:text="${#strings.defaultString(post.getWriter(),' ')}"></td>
+                                            <td th:text="${#strings.defaultString(post.getDate().toLocalDate(),' ')}"></td>
+                                            <td><a th:title="${#strings.defaultString(post.getTitle(),' ')}" th:body="${#strings.defaultString(post.getBody(),' ')}" th:writer="${#strings.defaultString(post.getWriter(),' ')}"  th:date="${#strings.defaultString(post.getDate().toLocalDate(),' ')}" th:onclick="openPop(this.getAttribute('title'),this.getAttribute('body'),this.getAttribute('writer'),this.getAttribute('date'))" class="btn btn-primary" role="button"> 보기 </a></td>
+                                            <td> <a th:href="@{/admin/community/assignment/one/{post_id}/{part}(post_id=${post.getPost_id()},part = ${type})}" class="btn btn-danger" role="button" onclick="return confirm('정말로 삭제 하시겠습니까?')">삭제</a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -89,18 +89,7 @@
 
 <!--게시물 보기 팝업창 영역!!-->
 <div class="popup_layer" id="popup_layer" style="display: none;">
-    <!--    <div class="popup_box">-->
-    <!--        <div style="height: 10px; width: 375px; float: top;">-->
-    <!--            <a href="javascript:closePop();" role="button" style="margin-left: 6px; color: #293c74; font-size: 20px">x</a>-->
-    <!--        </div>-->
-    <!--        &lt;!&ndash;팝업 컨텐츠 영역&ndash;&gt;-->
-    <!--        <div class="popup_cont">-->
-    <!--            <h4> 게시물 상세보기</h4>-->
-    <!--            <hr>-->
-    <!--            <p value=""></p>-->
-    <!--            제목 : <p th:text="${project.getTitle()}"></p>-->
-    <!--        </div>-->
-    <!--    </div>-->
+
 </div>
 
     <!-- Scroll to Top Button-->
