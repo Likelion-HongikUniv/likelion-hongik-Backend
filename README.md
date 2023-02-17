@@ -49,30 +49,28 @@
 
 ## 📂 폴더 구조
 ```
-├── 📂build
-│   ├── 📂classes
-│   │   └── 📂java
-│   ├── 📂generated
-│   │   └── 📂sources
-│   ├── 📂resources
-│   │   └── 📂main
-│   └── 📂tmp
-│       ├── 📂compileJava
-│       └── 📂compileTestJava
-├── 📂build.gradle
-├── 📂gradle
-│   └── 📂wrapper
-│       ├── 📂gradle-wrapper.jar
-│       └── 📂gradle-wrapper.properties
-├── 📂gradlew
-├── 📂gradlew.bat
-├── 📂settings.gradle
-└── 📂src
-    ├── 📂main
-    │   ├── 📂java
-    │   └── 📂resources
-    └── 📂test
-        └── 📂java
-
-
+┣  📂. build
+┃  ┣ 📂classes
+┃  ┃ ┗ 📂java
+┃  ┣ 📂generated
+┃  ┃ ┗ 📂sources
+┃  ┣ 📂resources
+┃  ┃ ┗ 📂main
+┃  ┗ 📂tmp
+┃    ┣ 📂compileJava
+┃    ┗ 📂compileTestJava
+┣  📂build.gradle
+┣  📂gradle
+┃  ┗ 📂wrapper
+┃    ┣ 📂gradle-wrapper.jar
+┃    ┗ 📂gradle-wrapper.properties
+┣ 📂gradlew
+┣ 📂gradlew.bat
+┣ 📂settings.gradle
+┗ 📂src
+  ┣ 📂main
+  ┃ ┣ 📂java
+  ┃ ┗ 📂resources
+  ┗ 📂test
+    ┗ 📂java
 ```
