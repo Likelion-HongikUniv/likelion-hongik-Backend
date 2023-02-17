@@ -90,7 +90,18 @@
 
 <!--게시물 보기 팝업창 영역!!-->
 <div class="popup_layer" id="popup_layer" style="display: none;">
-
+        <div class="popup_box">
+                <a href="javascript:closePop();" role="button" style="float: top; float:right; margin-right:10px; color: #293c74; font-size: 20px">x</a>
+            <div class="popup_cont">
+                    <h4>
+                        <div id = "popup-title"></div>
+                    </h4>
+                    <div id="popup-writer"></div>
+                    <div id = "popup-date"></div>
+                    <hr>
+                        <div id="popup-body"></div>
+            </div>
+        </div>
 </div>
 
 <!-- End of Page Wrapper -->
@@ -144,24 +155,12 @@
 
 
         const element = document.getElementById("popup_layer");
-        element.innerHTML =
-            '    <div class="popup_box">\n' +
-            '        <div style="height: 10px; width: 375px; float: top;">\n' +
-            '            <a href="javascript:closePop();" role="button" style="margin-left: 6px; color: #293c74; font-size: 20px">x</a>\n' +
-            '        </div>\n' +
-            '        <div class="popup_cont">\n' +
-            '            <h4>' + title+'</h4>'+
-            '            작성자 : '+writer+
-            '    <br>\n ' +
-            '            날짜 : '+ date +
-            '      <hr>\n'+ body +
-            '            <br>\n' +
-            '        </div>\n' +
-            '    </div>\n' ;
+        document.getElementById("popup-title").innerText = title;
+        document.getElementById("popup-writer").innerText=writer;
+        document.getElementById("popup-date").innerText=date;
+        document.getElementById("popup-body").innerText = body;
         element.style.display="block";
-
     }
-
     //팝업 닫기
     function closePop() {
         document.getElementById("popup_layer").style.display = "none";
