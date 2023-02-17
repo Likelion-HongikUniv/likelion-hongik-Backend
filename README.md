@@ -15,9 +15,9 @@
 <br/>  
 
 ## 👩🏻‍💻 팀원 소개
-|이준영|김민영|이지민|신수진|이가현|김슬기|신동렬
-|:-:|:-:|:-:|:-:|:-:|:-:|:-:| 
-|[@Jun-0727](https://github.com/Jun-0727)|[@myqewr](https://github.com/myqewr)|[@dlwlals1289](https://github.com/dlwlals1289)|[@lemoncurdyogurt](https://github.com/lemoncurdyogurt)|[@gahyun02](https://github.com/gahyun02)|[@seulgi99](https://github.com/seulgi99)|[@shinddong](https://github.com/shinddong)|
+|이태휘|이준영|김민영|이지민|신수진|이가현|김슬기|신동렬
+|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:| 
+|[@THLcode](https://github.com/THLcode)|[@Jun-0727](https://github.com/Jun-0727)|[@myqewr](https://github.com/myqewr)|[@dlwlals1289](https://github.com/dlwlals1289)|[@lemoncurdyogurt](https://github.com/lemoncurdyogurt)|[@gahyun02](https://github.com/gahyun02)|[@seulgi99](https://github.com/seulgi99)|[@shinddong](https://github.com/shinddong)|
 <br />
 
 
