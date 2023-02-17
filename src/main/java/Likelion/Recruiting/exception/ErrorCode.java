@@ -15,9 +15,10 @@ public enum ErrorCode {
     EXPIRED_JWT(1007, "jwt가 만료되었습니다."),
     NOT_VALIDATE_JWT(1008, "jwt가 올바르지 않습니다."),
     NOT_USER(1009, "멋사회원이 아닙니다."),
-    NO_DATA_USER(1010, "추가정보가 없는 멋사 회원입니다.");
+    NO_DATA_USER(1010, "추가정보가 없는 멋사 회원입니다."),
 //    BOARD_NOT_FOUND(1007, "게시글을 찾을 수 없습니다.");
-
+//-----------------------------------------------------------
+    NO_TEAM(400,"회원팀의 팀이 존재하지 않습니다.");
     private int errorCode;
     private String errorMessage;
 

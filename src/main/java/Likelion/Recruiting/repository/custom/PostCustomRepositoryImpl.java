@@ -34,7 +34,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository{
                                         .or(post.body.contains(search))))
                         .offset(pageable.getOffset())
                         .orderBy(post.id.desc())
-                        .limit(pageable.getPageSize() + 1)
+                        .limit(pageable.getPageSize())
                         .fetch();
 
         long count = queryFactory
@@ -62,7 +62,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository{
                                         .or(post.body.contains(search))))
                         .offset(pageable.getOffset())
                         .orderBy(post.id.desc())
-                        .limit(pageable.getPageSize() + 1)
+                        .limit(pageable.getPageSize())
                         .fetch();
 
         long count = queryFactory

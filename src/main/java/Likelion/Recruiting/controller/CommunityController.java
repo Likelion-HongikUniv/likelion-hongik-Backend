@@ -69,9 +69,9 @@ public class CommunityController {
     //-------------------------------------------------------------------------------------------------------
     //카테고리에따른 게시글 저장 api
     @PostMapping("/community/posts/{mainCategory}/{subCategory}")
-    public CreatePostResponse savePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreatePostRequest request, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
+    public CreatePostResponse savePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreatePostRequest createPostRequest, @PathVariable("mainCategory") String mainCategory, @PathVariable("subCategory") String subCategory) {
 
-        CreatePostRequest createPostRequest = new CreatePostRequest(request.getTitle(), request.getBody(),request.getThumbnailImage());
+
         Post createdPost = Post.builder()
                 .title(createPostRequest.getTitle())
                 .body(createPostRequest.getBody())
@@ -89,6 +89,7 @@ public class CommunityController {
     }
 
     @Data
+    @NoArgsConstructor
     static class CreatePostRequest {
         private String title;
         private String body;
@@ -102,6 +103,7 @@ public class CommunityController {
     }
 
     @Data
+    @NoArgsConstructor
     static class CreatePostResponse {
         private Long id;
         private String message;

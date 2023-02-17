@@ -1,5 +1,7 @@
 package Likelion.Recruiting.service;
 
+import Likelion.Recruiting.exception.ErrorCode;
+import Likelion.Recruiting.exception.community.CommunityException;
 import Likelion.Recruiting.model.Team;
 import Likelion.Recruiting.repository.TeamRepository;
 import Likelion.Recruiting.repository.UserRepository;
@@ -16,6 +18,6 @@ public class TeamService {
 
     public Team findTeam(Long userId){
         Long teamId = userRepository.findById(userId).get().getTeam().getId();
-        return teamRepository.findById(teamId).get();
+        return teamRepository.findById(teamId).orElseThrow(() -> new CommunityException(ErrorCode.NO_TEAM));
     }
 }
