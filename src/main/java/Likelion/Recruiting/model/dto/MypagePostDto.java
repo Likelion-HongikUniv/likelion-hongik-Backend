@@ -2,10 +2,15 @@ package Likelion.Recruiting.model.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Size;
 
 @Data
+@Getter
+@Builder
+@NoArgsConstructor
 public class MypagePostDto {
 
     private Long postId;
