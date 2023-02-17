@@ -2,11 +2,16 @@ package Likelion.Recruiting.model.dto;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 import java.net.http.HttpResponse;
 
 @Data
+@Getter
+@Builder
+@NoArgsConstructor
 public class ResponseDto {
 
     private int code;

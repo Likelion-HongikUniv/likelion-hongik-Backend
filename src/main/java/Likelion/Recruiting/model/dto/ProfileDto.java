@@ -1,15 +1,21 @@
 package Likelion.Recruiting.model.dto;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 @Data
+@Getter
+@Builder
+@NoArgsConstructor
 public class ProfileDto {
 
+    @JsonProperty("nickname")
     private String nickname;
+    @JsonProperty("major")
     private String major;
+    @JsonProperty("studentId")
     private String studentId;
+    @JsonProperty("part")
     private String part;
 
 

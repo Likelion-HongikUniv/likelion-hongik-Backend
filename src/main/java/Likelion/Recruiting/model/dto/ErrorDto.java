@@ -3,13 +3,19 @@ package Likelion.Recruiting.model.dto;
 import Likelion.Recruiting.exception.ErrorCode;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import net.minidev.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Data
+@Getter
+@Builder
+@NoArgsConstructor
 public class ErrorDto {
 
     private int code;

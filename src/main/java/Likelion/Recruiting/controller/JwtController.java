@@ -18,4 +18,7 @@ public class JwtController {
     public NavbarDto testOAuthLogin(@RequestBody Long uid) throws IOException {
         return userService.takeJwt(uid);
     }
+
+//    @PostMapping("/refresh")
+//    public RefreshDto takeRefreshToken(@RequestBody Long)
 }
