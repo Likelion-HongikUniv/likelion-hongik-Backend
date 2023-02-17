@@ -41,7 +41,7 @@
 |Deploy|![Amazon EC2](https://img.shields.io/badge/Amazon_EC2-FF9900?style=for-the-badge&logo=AmazonEC2&logoColor=white)|
 |Database|![MySQL](https://img.shields.io/badge/MySQL-4479A1.svg?style=for-the-badge&logo=MySQL&logoColor=white)  ![RDS](https://img.shields.io/badge/Amazon_RDS-527FFF.svg?style=for-the-badge&logo=AmazonRDS&logoColor=white) |
 |Programming Language|![Java](https://img.shields.io/badge/JAVA-007396.svg?&style=for-the-badge&logo=JAVA&logoColor=white)|
-|Cloud storage|![Amazon S3](https://img.shields.io/badge/-Amazon_S3-569A31?style=for-the-badge&logo=AmazonS3&logoColor=white)|
+|Cloud Storage|![Amazon S3](https://img.shields.io/badge/-Amazon_S3-569A31?style=for-the-badge&logo=AmazonS3&logoColor=white)|
 |Version Control|![Git](https://img.shields.io/badge/git-%23F05033.svg?style=for-the-badge&logo=git&logoColor=white) ![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white) |
 <br />
 
