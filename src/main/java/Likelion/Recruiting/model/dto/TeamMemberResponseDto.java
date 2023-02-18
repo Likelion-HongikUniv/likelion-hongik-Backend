@@ -14,7 +14,7 @@ public class TeamMemberResponseDto {
     private String teamName;
     private Long memberCount;
 
-    private List<TeamMemberDto> members = new ArrayList<>();
+    private List<MembeSimpleDto> members = new ArrayList<>();
 
     @Builder
     public TeamMemberResponseDto(Long teamId, String teamName, Long memberCount, List<User> users) {
@@ -22,7 +22,7 @@ public class TeamMemberResponseDto {
         this.teamName = teamName;
         this.memberCount = memberCount;
         this.members = users.stream()
-                .map(u -> TeamMemberDto.builder()
+                .map(u -> MembeSimpleDto.builder()
                         .userId(u.getId())
                         .userName(u.getName())
                         .profileImage(u.getProfileImage())
