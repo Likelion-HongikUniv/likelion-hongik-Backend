@@ -3,12 +3,14 @@ package Likelion.Recruiting.service;
 import Likelion.Recruiting.config.auth.jwt.JwtTokenProvider;
 import Likelion.Recruiting.exception.ErrorCode;
 import Likelion.Recruiting.exception.UserException;
+import Likelion.Recruiting.model.RefreshToken;
 import Likelion.Recruiting.model.Team;
 import Likelion.Recruiting.model.dto.NavbarDto;
 import Likelion.Recruiting.model.dto.ProfileDto;
 import Likelion.Recruiting.model.dto.TeamMemberResponseDto;
 import Likelion.Recruiting.model.dto.UserAllDto;
 import Likelion.Recruiting.model.enums.Role;
+import Likelion.Recruiting.repository.RefreshTokenRepository;
 import Likelion.Recruiting.repository.TeamRepository;
 import Likelion.Recruiting.repository.UserRepository;
 import Likelion.Recruiting.model.User;
@@ -27,6 +29,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final TeamRepository teamRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 
 
     public User findUser(String email){
@@ -74,25 +77,7 @@ public class UserService {
         return user;
     }
 
-    public NavbarDto takeJwt(Long uid){
-        // 해당 유저 찾기
-        User user = userRepository.findById(uid).get();
 
-        String email = user.getEmail();
-        Role role = user.getRole();
-
-        // JWT 만들기
-        String token = jwtTokenProvider.createToken(email, role);
-
-        return NavbarDto.builder()
-                .id(user.getId())
-                .name(user.getName())
-                .profileImage(user.getProfileImage())
-                .isJoined(user.isJoind())
-                .role(user.getRole())
-                .JWT(token)
-                .build();
-    }
 
     public TeamMemberResponseDto getTeamMembers(Long teamId){
         List<User> teamMembers = userRepository.findAllByTeamId(teamId);
