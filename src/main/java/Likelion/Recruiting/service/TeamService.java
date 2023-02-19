@@ -17,7 +17,11 @@ public class TeamService {
     private final UserRepository userRepository;
 
     public Team findTeam(Long userId){
-        Long teamId = userRepository.findById(userId).get().getTeam().getId();
-        return teamRepository.findById(teamId).orElseThrow(() -> new CommunityException(ErrorCode.NO_TEAM));
+        try {
+            return userRepository.findById(userId).get().getTeam();
+        }
+        catch(NullPointerException e){
+            throw new CommunityException(ErrorCode.NO_TEAM);
+        }
     }
 }

@@ -1,7 +1,9 @@
 package Likelion.Recruiting.exception.community;
 
 import Likelion.Recruiting.exception.ErrorCode;
+import lombok.Getter;
 
+@Getter
 public class CommunityException extends RuntimeException {
 
     private int code;

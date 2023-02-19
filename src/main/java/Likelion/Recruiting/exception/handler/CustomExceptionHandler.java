@@ -1,6 +1,8 @@
 package Likelion.Recruiting.exception.handler;
 
 import Likelion.Recruiting.exception.*;
+import Likelion.Recruiting.exception.community.CommunityErrorDto;
+import Likelion.Recruiting.exception.community.CommunityException;
 import Likelion.Recruiting.model.dto.ErrorDto;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.security.web.DefaultRedirectStrategy;
@@ -33,6 +35,13 @@ public class CustomExceptionHandler {
     public ResponseEntity<ErrorDto> expiredRT(RefreshException ex){
         ErrorDto errorDto = new ErrorDto(ex.getCode(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
+    }
+
+    @ExceptionHandler(CommunityException.class)
+    public ResponseEntity<CommunityErrorDto> communityError(CommunityException ex){
+        System.out.println("community exception");
+        CommunityErrorDto communityErrorDto = new CommunityErrorDto(ex);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(communityErrorDto);
     }
 
 }

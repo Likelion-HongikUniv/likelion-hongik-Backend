@@ -124,15 +124,10 @@ public class CommunityController {
     //---------------------------------------------------------------
     //게시글 수정
     @PatchMapping("/community/post/{postId}")
-    public CreateResponeseMessage updatePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody PostUpdateDto postUpdateDto, @PathVariable("postId") Long postId){
-        Post post = postService.findPost(postId);//예외처리
+    public CreateResponseMessage updatePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody PostUpdateDto postUpdateDto, @PathVariable("postId") Long postId){
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        if(user.getId() == post.getAuthor().getId()){
-            postService.updatePost(post,postUpdateDto);
-            return new CreateResponeseMessage((long)200, "업데이트 성공");
-        }
-        else return new CreateResponeseMessage((long)403, "본인의 게시글이 아닙니다.");
+        return postService.updatePost(postId,user.getId(),postUpdateDto);
     }
 
     @Data
@@ -148,21 +143,16 @@ public class CommunityController {
     }
 
     @DeleteMapping("/community/post/{postId}")
-    public CreateResponeseMessage deletePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("postId") Long postId){
-        Post post = postRepository.findById(postId).get();//예외처리
+    public CreateResponseMessage deletePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("postId") Long postId){
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        if(user.getId() == post.getAuthor().getId()) {
-            postService.deletePost(post);
-            return new CreateResponeseMessage((long) 200, "업데이트 성공");
-        }
-        else return new CreateResponeseMessage((long)403, "본인의 게시글이 아닙니다.");
+        return postService.deletePost(postId,user.getId());
     }
 
     //---------------------------------------------------------------
 
     @PostMapping("/community/post/{postId}/like") // 게시글좋아용(이미 있으면 삭제, 없으면 저장)
-    public CreateResponeseMessage likePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@PathVariable("postId") Long postId){
+    public CreateResponseMessage likePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@PathVariable("postId") Long postId){
         Post post = postRepository.findById(postId).get();//역시 예외처리는 예외코드로
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
@@ -172,7 +162,7 @@ public class CommunityController {
         }
         else likeService.deletePostLike(user,post);
 
-        return new CreateResponeseMessage((long)200, "좋아요 성공");
+        return new CreateResponseMessage((long)200, "좋아요 성공");
     }
 
     @GetMapping("/community/posts/{mainCategory}/{subCategory}/search")//카테고리에따른 게시글 가져오는 api
@@ -209,7 +199,7 @@ public class CommunityController {
         return new DataResponseDto(result.size(), result);
     }
     @PostMapping("/community/post/{postId}")//댓글 저장 api
-    public CreatePostResponse saveComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreateCommentReqeust request, @PathVariable("postId") Long postId) {
+    public CreatePostResponse saveComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreateCommentRequestDto request, @PathVariable("postId") Long postId) {
         Comment createdComment = Comment.builder()
                 .body(request.getBody())
                 .build();
@@ -220,39 +210,19 @@ public class CommunityController {
         return new CreatePostResponse(savedComment.getId(), "댓글 작성 성공");
     }
     @PatchMapping("/community/comment/{commentId}") //예외처리~~~
-    public CreateResponeseMessage updateComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody CreateCommentReqeust request, @PathVariable("commentId") Long commentId){
-        Comment comment = commentRepository.findById(commentId).get();//예외처리
+    public CreateResponseMessage updateComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody CreateCommentRequestDto request, @PathVariable("commentId") Long commentId){
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        if(user.getId() == comment.getAuthor().getId()){
-            Comment updatedComment = commentService.updateComment(comment, request.body);
-            return new CreateResponeseMessage((long)200, "업데이트 성공");
-        }
-        else return new CreateResponeseMessage((long)403, "본인의 댓글이 아닙니다.");
+        return commentService.updateComment(commentId,user.getId(),request);
     }
     @DeleteMapping("/community/comment/{commentId}") //예외처리~~~
-    public CreateResponeseMessage deleteComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("commentId") Long commentId){
-        Comment comment = commentRepository.findById(commentId).get();//예외처리
+    public CreateResponseMessage deleteComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("commentId") Long commentId){
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        if(user.getId() == comment.getAuthor().getId()) {
-            Comment deletedComment = commentService.deleteComment(comment);
-            if (deletedComment.getIsDeleted() == true)
-                return new CreateResponeseMessage((long) 200, "삭제 성공");
-            else return new CreateResponeseMessage((long) 404, "이미 삭제된 댓글입니다.");
-        }
-        else return new CreateResponeseMessage((long)403, "본인의 댓글이 아닙니다.");
+        return commentService.deleteComment(commentId,user.getId());
     }
-    @Getter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    static class CreateCommentReqeust {
-        private String body;
-
-    }
-
     @PostMapping("/community/comment/{commentId}/like") //댓글좋아용(이미 있으면 삭제, 없으면 저장)
-    public CreateResponeseMessage likeComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("commentId") Long commentId){
+    public CreateResponseMessage likeComment(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("commentId") Long commentId){
         Comment comment = commentRepository.findById(commentId).get();//역시 예외처리는 예외코드로
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);//   유저는 헤더파일에서 뽑아오기
@@ -262,13 +232,13 @@ public class CommunityController {
         }
         else likeService.deleteCommentLike(user,comment);
 
-        return new CreateResponeseMessage((long)200, "좋아요 성공");
+        return new CreateResponseMessage((long)200, "좋아요 성공");
     }
 
 
     //------------------------------------대댓글------------------------
     @PostMapping("/community/comment/{commentId}")//대댓글 저장 api
-    public CreatePostResponse saveReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreateCommentReqeust request, @PathVariable("commentId") Long commentId) {
+    public CreatePostResponse saveReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreateCommentRequestDto request, @PathVariable("commentId") Long commentId) {
         Reply createdReply = Reply.builder()
                 .body(request.getBody())
                 .build();
@@ -280,31 +250,20 @@ public class CommunityController {
         return new CreatePostResponse(savedReply.getId(),"대댓글 작성 성공");
     }
     @PatchMapping("/community/reply/{replyId}") //예외처리~~~
-    public CreateResponeseMessage updateReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody CreateCommentReqeust request, @PathVariable("replyId") Long replyId){
-        Reply reply = replyRepository.findById(replyId).get();//예외처리
+    public CreateResponseMessage updateReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody CreateCommentRequestDto request, @PathVariable("replyId") Long replyId){
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        if(user.getId() == reply.getAuthor().getId()) {
-            Reply updatedReply = replyService.updateReply(reply, request.body);
-            return new CreateResponeseMessage((long) 200, "업데이트 성공");//예외처리..
-        }
-        else return new CreateResponeseMessage((long)403, "본인의 댓글이 아닙니다.");
+        return replyService.updateReply(replyId,user.getId(),request);
     }
     @DeleteMapping("/community/reply/{replyId}") //예외처리~~~
-    public CreateResponeseMessage updateReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("replyId") Long replyId){
-        Reply reply = replyRepository.findById(replyId).get();//예외처리
+    public CreateResponseMessage updateReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("replyId") Long replyId){
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
-        if(user.getId() != reply.getAuthor().getId())
-            return new CreateResponeseMessage((long)403, "본인의 댓글이 아닙니다.");
-        Reply deletedReply= replyService.deleteReply(reply);
-        if (deletedReply.getIsDeleted() == true)
-            return new CreateResponeseMessage((long)200, "업데이트 성공");
-        else return new CreateResponeseMessage((long)404, "이미 삭제된 댓글입니다.");
+        return replyService.deleteReply(replyId,user.getId());
     }
 
     @PostMapping("/community/reply/{replyId}/like") // 게시글좋아용(이미 있으면 삭제, 없으면 저장)
-    public CreateResponeseMessage likeReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("replyId") Long replyId){
+    public CreateResponseMessage likeReply(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("replyId") Long replyId){
         Reply reply= replyRepository.findById(replyId).get();//역시 예외처리는 예외코드로
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email); //   유저는 헤더파일에서 뽑아오기
@@ -313,20 +272,8 @@ public class CommunityController {
             likeService.createReplyLike(user,reply);
         }
         else likeService.deleteReplyLike(user,reply);
-        return new CreateResponeseMessage((long)200, "좋아요 성공");
+        return new CreateResponseMessage((long)200, "좋아요 성공");
     }
 
-
-    @Data
-    static class CreateResponeseMessage {
-        private Long responseCode;
-        private String message;
-
-        public CreateResponeseMessage(Long responseCode, String message) {
-            this.responseCode = responseCode;
-            this.message = message;
-        }
-
-    }
 }
 
