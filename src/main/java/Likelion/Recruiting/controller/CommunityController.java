@@ -49,7 +49,7 @@ public class CommunityController {
     @GetMapping("/community/posts/{mainCategory}/{subCategory}")//카테고리에따른 게시글 가져오는 api
     public PageResponseDto<PostSimpleDto> getSimplePosts(
                                           @AuthenticationPrincipal CustomOauthUserImpl customOauthUser,
-                                          @PageableDefault(page = 0,size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable,
+                                          @PageableDefault(page = 1,size=5, sort="createdTime" ,direction = Sort.Direction.DESC)Pageable pageable,
                                           @PathVariable("mainCategory") String mainCategory,
                                           @PathVariable("subCategory") String subCategory) {
         User user = customOauthUser.getUser();
