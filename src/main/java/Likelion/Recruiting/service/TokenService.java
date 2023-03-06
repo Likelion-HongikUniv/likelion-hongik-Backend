@@ -23,8 +23,14 @@ public class TokenService {
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    @Transactional
-    public NavbarDto takeJwtAndRt(Long uid){
+
+    public User getUser(String token){
+        String email = jwtTokenProvider.getUserEmail(token);
+        User user = userRepository.findByEmail(email).get();
+
+        return user;
+    }
+    public NavbarDto login(Long uid){
         // 해당 유저 찾기
         User user = userRepository.findById(uid).get();
 
@@ -34,18 +40,6 @@ public class TokenService {
         // JWT 만들기
         String token = jwtTokenProvider.createToken(email, role);
 
-        // Refresh Token 만들기
-        String RT = jwtTokenProvider.createRT(email, role);
-
-        // RT를 저장하기 위헤 객체로 만들기
-        RefreshToken refreshToken = RefreshToken.builder()
-                .user_id(user.getId())
-                .refreshToken(RT)
-                .build();
-
-        // RT DB에 저장하기
-        refreshTokenRepository.save(refreshToken);
-        String rtId = refreshToken.getId().toString();
         return NavbarDto.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -53,8 +47,6 @@ public class TokenService {
                 .isJoined(user.isJoind())
                 .role(user.getRole())
                 .JWT(token)
-//                .RT(rtId)
-                .RT(RT)
                 .build();
     }
 
@@ -70,6 +62,29 @@ public class TokenService {
         String token = jwtTokenProvider.createToken(email, role);
 
         return new JWTDto(token);
+    }
+
+    @Transactional
+    public String makeRt(Long uid){
+        // 해당 유저 찾기
+        User user = userRepository.findById(uid).get();
+
+        String email = user.getEmail();
+        Role role = user.getRole();
+
+        // Refresh Token 만들기
+        String RT = jwtTokenProvider.createRT(email, role);
+
+        // RT를 저장하기 위헤 객체로 만들기
+        RefreshToken refreshToken = RefreshToken.builder()
+                .user_id(user.getId())
+                .refreshToken(RT)
+                .build();
+
+        // RT DB에 저장하기
+        refreshTokenRepository.save(refreshToken);
+
+        return RT;
     }
 
     @Transactional

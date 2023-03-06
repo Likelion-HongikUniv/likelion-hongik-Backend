@@ -35,4 +35,10 @@ public class CustomExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDto);
     }
 
+    @ExceptionHandler(customException.class)
+    public ResponseEntity<ErrorDto> error(customException ex){
+        ErrorDto errorDto = new ErrorDto(ex.getErrorCode().getErrorCode(), ex.getErrorCode().getErrorMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(errorDto);
+    }
+
 }

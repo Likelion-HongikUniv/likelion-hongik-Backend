@@ -6,6 +6,7 @@ import Likelion.Recruiting.exception.ErrorCode;
 import Likelion.Recruiting.model.User;
 
 import Likelion.Recruiting.model.dto.*;
+import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.service.CommentService;
 import Likelion.Recruiting.service.LikeService;
 import Likelion.Recruiting.service.PostService;
@@ -85,11 +86,20 @@ public class MypageController {
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
 
-        return new ProfileDto(
-                user.getNickname(),
-                user.getMajor(),
-                user.getStudentId(),
-                user.getPart());
+        if(user.getRole() == Role.GUEST){
+            return new ProfileDto(
+                    "아기사자",
+                    "멋쟁이 사자처럼학과",
+                    null,
+                    null);
+        }
+        else{
+            return new ProfileDto(
+                    user.getNickname(),
+                    user.getMajor(),
+                    user.getStudentId(),
+                    user.getPart());
+        }
     }
 
     @PutMapping("/mypage/edit")

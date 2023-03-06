@@ -98,6 +98,8 @@ public class SecurityConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .exposedHeaders("X-AUTH-TOKEN")
 //                .allowCredentials(true)
+                .allowedOrigins("http://localhost:3000")
+//                .allowedMethods("GET", "POST")
                 .allowedOriginPatterns("*");
 //        WebMvcConfigurer.super.addCorsMappings(registry);
     }

@@ -128,7 +128,18 @@ public class UserService {
         }
         else{
             System.out.println("false guest");
-            throw new UserException(ErrorCode.NOT_USER.getErrorCode(), ErrorCode.NOT_USER.getErrorMessage());
+            return UserAllDto.builder()
+                    .userId(user.getId())
+                    .username(user.getName())
+                    .nickname(("아기사자"))
+                    .profileImageSrc(user.getProfileImage())
+                    .role(user.getRole())
+                    .major(null)
+                    .part(null)
+                    .studentId(null)
+                    .team(null)
+                    .build();
+//            throw new UserException(ErrorCode.NOT_USER.getErrorCode(), ErrorCode.NOT_USER.getErrorMessage());
         }
 
     }

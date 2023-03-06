@@ -35,10 +35,11 @@ public class JwtTokenProvider {
     private String SECRET_KEY;
 
     // JWT 토큰 유효시간 설정
+//    private Long tokenValidTime = 10 * 1000L; // 10초
     private Long tokenValidTime = 60 * 60 * 1000L; // 1시간
     // Refresh Token 유효시간 설정
-    private Long RTValidTime = 10 * 1000L; // 1초
-//    private Long RTValidTime = 14 * 24 * 60 * 60 * 1000L; // 2주
+//    private Long RTValidTime = 10 * 1000L; // 1초
+    private Long RTValidTime = 14 * 24 * 60 * 60 * 1000L; // 2주
 
     //secretkey를 미리 인코딩 해줌.
     @PostConstruct
@@ -96,6 +97,11 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
     }
 
+//---------------------- RT 토큰에서 인증정보 조회 ---------------------- //
+    public String getUserEmail(String token){
+        // token에서 복호화한 email을 가진 user객체를 customOauthUser 형태로 뽑아오기
+        return getUserPk(token);
+    }
 
 //---------------------- token에서 user email 추출하기 ---------------------- //
     private String getUserPk(String token) {
