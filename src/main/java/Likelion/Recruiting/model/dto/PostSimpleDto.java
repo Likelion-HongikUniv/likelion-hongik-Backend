@@ -2,6 +2,7 @@ package Likelion.Recruiting.model.dto;
 
 
 import Likelion.Recruiting.model.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,6 +19,7 @@ public class PostSimpleDto {
     private Boolean isLiked;
     private Long likeCount;
     private Long commentCount;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdTime;
 
     public PostSimpleDto(Post post, User user) {

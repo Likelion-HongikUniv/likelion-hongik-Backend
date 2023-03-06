@@ -1,6 +1,7 @@
 package Likelion.Recruiting.service;
 
 
+import Likelion.Recruiting.controller.CommunityController;
 import Likelion.Recruiting.model.*;
 import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.MainCategory;
@@ -35,14 +36,24 @@ public class PostService {
         return createdPost;
     }
     @Transactional
-    public Post updatePost(Post post, PostUpdateDto postUpdateDto){
-        post.update(postUpdateDto);
-        return postRepository.save(post);
+    public CreateResponseMessage updatePost(Long postId,Long userId, PostUpdateDto postUpdateDto){
+        Post post = postRepository.findById(postId).get();
+        if(userId == post.getAuthor().getId()){
+            post.update(postUpdateDto);
+            postRepository.save(post);
+            return new CreateResponseMessage((long)200, "업데이트 성공");
+        }
+        else return new CreateResponseMessage((long)403, "본인의 게시글이 아닙니다.");
+
     }
     @Transactional
-    public void deletePost(Post post){
-        Post deletePost = postRepository.findById(post.getId()).get();
-        postRepository.delete(deletePost);
+    public CreateResponseMessage deletePost(Long postId,Long userId){
+        Post post = postRepository.findById(postId).get();
+        if(userId == post.getAuthor().getId()) {
+            postRepository.delete(post);
+            return new CreateResponseMessage((long) 200, "업데이트 성공");
+        }
+        else return new CreateResponseMessage((long)403, "본인의 게시글이 아닙니다.");
     }
 
     public Post findPost(Long postId){

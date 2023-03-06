@@ -5,6 +5,7 @@ package Likelion.Recruiting.model;
 import Likelion.Recruiting.model.dto.PostUpdateDto;
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,6 +42,7 @@ public class Post {
     @Enumerated(EnumType.STRING)
     private SubCategory subCategory;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private final LocalDateTime createdTime= LocalDateTime.now();
 
     @OneToMany(

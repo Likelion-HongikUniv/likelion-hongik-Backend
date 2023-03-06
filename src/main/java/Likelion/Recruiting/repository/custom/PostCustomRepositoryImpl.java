@@ -1,10 +1,10 @@
 package Likelion.Recruiting.repository.custom;
 
 import Likelion.Recruiting.model.Post;
-import Likelion.Recruiting.model.QUser;
+
 import Likelion.Recruiting.model.enums.MainCategory;
 import Likelion.Recruiting.model.enums.SubCategory;
-import com.querydsl.jpa.impl.JPAQuery;
+
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 import static Likelion.Recruiting.model.QPost.post;
-import static Likelion.Recruiting.model.QUser.user;
+
 
 @RequiredArgsConstructor
 public class PostCustomRepositoryImpl implements PostCustomRepository{
@@ -34,7 +34,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository{
                                         .or(post.body.contains(search))))
                         .offset(pageable.getOffset())
                         .orderBy(post.id.desc())
-                        .limit(pageable.getPageSize() + 1)
+                        .limit(pageable.getPageSize())
                         .fetch();
 
         long count = queryFactory
@@ -62,7 +62,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository{
                                         .or(post.body.contains(search))))
                         .offset(pageable.getOffset())
                         .orderBy(post.id.desc())
-                        .limit(pageable.getPageSize() + 1)
+                        .limit(pageable.getPageSize())
                         .fetch();
 
         long count = queryFactory

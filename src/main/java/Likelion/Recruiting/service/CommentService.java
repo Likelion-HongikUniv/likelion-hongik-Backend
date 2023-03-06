@@ -1,6 +1,8 @@
 package Likelion.Recruiting.service;
 
 import Likelion.Recruiting.model.*;
+import Likelion.Recruiting.model.dto.CreateCommentRequestDto;
+import Likelion.Recruiting.model.dto.CreateResponseMessage;
 import Likelion.Recruiting.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +27,27 @@ public class CommentService {
     }
 
     @Transactional
-    public Comment updateComment(Comment comment, String body){
-        comment.update(body);
-        return comment;
+    public CreateResponseMessage updateComment(Long commentId, Long userId, CreateCommentRequestDto reqeust){
+        Comment comment = commentRepository.findById(commentId).get();
+        if(userId == comment.getAuthor().getId()){
+            comment.update(reqeust.getBody());
+            commentRepository.save(comment);
+            return new CreateResponseMessage((long)200, "업데이트 성공");
+        }
+        else return new CreateResponseMessage((long)403, "본인의 댓글이 아닙니다.");
+
     }
 
     @Transactional
-    public Comment deleteComment (Comment comment){
-        comment.delete(); // 진짜 삭제가 아니라 불값만 변경 ==>> 객체는 있으나 프론트에서 표기만 ~~
-        return comment;
+    public CreateResponseMessage deleteComment (Long commentId, Long userId){
+        Comment comment = commentRepository.findById(commentId).get();
+        if(userId == comment.getAuthor().getId()) {
+            comment.delete();
+            if (comment.getIsDeleted() == true)
+                return new CreateResponseMessage((long) 200, "삭제 성공");
+            else return new CreateResponseMessage((long) 404, "이미 삭제된 댓글입니다.");
+        }
+        else return new CreateResponseMessage((long)403, "본인의 댓글이 아닙니다.");
     }
 
     public List<Comment> findUser_Comment(User user) {
