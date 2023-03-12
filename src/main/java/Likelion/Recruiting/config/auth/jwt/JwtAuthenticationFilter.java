@@ -81,7 +81,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter { // 사용자
 
         // refresh_token이 헤더에 들어있다면
         if(jwtTokenProvider.resolveRT((HttpServletRequest) request) != null) {
-            System.out.println("oh yeah!");
             String refresh_token = jwtTokenProvider.resolveRT((HttpServletRequest) request);
             // 토큰이 유효한지 검사한다.
             if (jwtTokenProvider.validateRT(refresh_token) == "ok") { // refresh_token이 유효하다면 authentication에 유저 정보(이메일 등) 넣기

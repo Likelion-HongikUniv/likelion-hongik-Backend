@@ -1,0 +1,11 @@
+package Likelion.Recruiting.config.auth;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class logouthandler {
+
+
+}

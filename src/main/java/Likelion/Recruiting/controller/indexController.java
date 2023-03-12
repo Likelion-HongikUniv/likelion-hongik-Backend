@@ -6,8 +6,10 @@ import Likelion.Recruiting.exception.ErrorCode;
 import Likelion.Recruiting.model.dto.*;
 import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.model.User;
+import Likelion.Recruiting.service.TokenService;
 import Likelion.Recruiting.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 public class indexController {
 
     private final UserService userService;
+    private final TokenService tokenService;
 
     @GetMapping("/")
 
@@ -38,11 +41,15 @@ public class indexController {
     }
 
 
-    @GetMapping("/loginForm")
-    public String loginForm(){
-//        System.out.println("여기는 로그인 폼이지롱~");
-        return "loginForm";
-    }
+   @GetMapping("/logout")
+   public ResponseDto logout(@CookieValue("refreshToken") String cookie){
+        tokenService.deleteRt(cookie);
+        return ResponseDto.builder()
+                .code(200)
+                .httpStatus(HttpStatus.OK)
+                .message("로그아웃되었습니다.")
+                .build();
+   }
 
     @ResponseBody
     @PostMapping("/accounts/detail_info/")

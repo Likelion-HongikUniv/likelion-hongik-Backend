@@ -68,6 +68,13 @@ public class SecurityConfig implements WebMvcConfigurer {
                  .formLogin()
                  .and()
 
+//                 .logout()
+//                 .logoutUrl("/logout")
+//                 .deleteCookies("JSESSIONID", "refreshToken")
+////                 .addLogoutHandler()
+//                 .permitAll()
+//                 .and()
+
                 .oauth2Login()
                 .successHandler(customAuthSuccessHandler) // 꼭 추가해주세요!
                 .userInfoEndpoint()
