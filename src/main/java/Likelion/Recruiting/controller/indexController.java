@@ -10,15 +10,18 @@ import Likelion.Recruiting.service.TokenService;
 import Likelion.Recruiting.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+
 @CrossOrigin("*")
 @RequiredArgsConstructor
-@Controller
+@RestController
 public class indexController {
 
     private final UserService userService;
@@ -41,9 +44,19 @@ public class indexController {
     }
 
 
-   @GetMapping("/logout")
-   public ResponseDto logout(@CookieValue("refreshToken") String cookie){
+   @GetMapping("/out")
+//   public void logout(@CookieValue("refreshToken") String cookie){
+   public ResponseDto logout(HttpServletResponse response, @CookieValue("refreshToken") String cookie){
+        System.out.println("dd");
         tokenService.deleteRt(cookie);
+        System.out.println("로그아웃 완료");
+        ResponseCookie res_cookie = ResponseCookie.from("refreshToken", null)
+               .path("/") // 해당 쿠키를 도메인 전체에서 사용하고 싶다면 9번 라인같이 "/"를 Path로 준다.
+               .secure(true)
+               .sameSite("None")
+               .httpOnly(true)
+               .build();
+        response.setHeader("Set-Cookie", res_cookie.toString());
         return ResponseDto.builder()
                 .code(200)
                 .httpStatus(HttpStatus.OK)

@@ -69,8 +69,8 @@ public class SecurityConfig implements WebMvcConfigurer {
                  .and()
 
 //                 .logout()
-//                 .logoutUrl("/logout")
-//                 .deleteCookies("JSESSIONID", "refreshToken")
+//                 .logoutUrl("/out")
+////                 .deleteCookies("JSESSIONID", "refreshToken")
 ////                 .addLogoutHandler()
 //                 .permitAll()
 //                 .and()
