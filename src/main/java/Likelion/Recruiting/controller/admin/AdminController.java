@@ -2,7 +2,6 @@ package Likelion.Recruiting.controller.admin;
 
 import Likelion.Recruiting.model.*;
 import Likelion.Recruiting.model.dto.UserAllDto;
-import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.service.admin.AdminCommentService;
 import Likelion.Recruiting.service.admin.AdminPostService;
 import Likelion.Recruiting.service.admin.AdminUserService;
@@ -58,6 +57,7 @@ public class AdminController {
                 .major(user.getMajor())
                 .part(user.getPart())
                 .studentId(user.getStudentId())
+                .role((user.getRole()))
                 .build();
 
         model.addAttribute("form", form);
@@ -74,6 +74,7 @@ public class AdminController {
                 ,form.getNickname()
                 ,form.getMajor()
                 ,form.getPart()
+                ,form.getRole()
                 ,form.getStudentId());
 
         return "redirect:/admin/users";
