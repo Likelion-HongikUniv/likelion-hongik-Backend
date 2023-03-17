@@ -4,6 +4,7 @@ import Likelion.Recruiting.model.Comment;
 import Likelion.Recruiting.model.Post;
 import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.model.UserForm;
+import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.service.admin.CommentService;
 import Likelion.Recruiting.service.admin.PostService;
 import Likelion.Recruiting.service.admin.UserService;
@@ -59,6 +60,7 @@ public class AdminController {
         form.setMajor(user.getMajor());
         form.setStudentId(user.getStudentId());
         form.setPart(user.getPart());
+        form.setRole((user.getRole()));
 
         model.addAttribute("form", form);
 
@@ -75,6 +77,7 @@ public class AdminController {
                 ,form.getMajor()
                 ,form.getNickname()
                 ,form.getPart()
+                ,form.getRole()
                 ,form.getStudentId());
 
         return "redirect:/admin/users";
