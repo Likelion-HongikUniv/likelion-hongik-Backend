@@ -47,9 +47,7 @@ public class indexController {
    @GetMapping("/out")
 //   public void logout(@CookieValue("refreshToken") String cookie){
    public ResponseDto logout(HttpServletResponse response, @CookieValue("refreshToken") String cookie){
-        System.out.println("dd");
         tokenService.deleteRt(cookie);
-        System.out.println("로그아웃 완료");
         ResponseCookie res_cookie = ResponseCookie.from("refreshToken", null)
                .path("/") // 해당 쿠키를 도메인 전체에서 사용하고 싶다면 9번 라인같이 "/"를 Path로 준다.
                .secure(true)
