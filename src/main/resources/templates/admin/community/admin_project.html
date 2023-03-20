@@ -37,7 +37,7 @@
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">프로젝트 게시판 조회</h6>
                         <a href="#" th:href="@{/admin/community/project/posts/{team_id}(team_id =${team_id})}" class="btn btn-danger" role="button"  style="float:right;" onclick="return confirm('정말로 삭제하시겠습니까?')" >게시물 전체 삭제</a>
-                        <a href="javascript:openPop()" class="btn btn-primary" role="button"  style="float:right; margin-left: 5px; margin-right: 5px " >팀 이름 변경</a>
+                        <a href="javascript:openPop2()" class="btn btn-primary" role="button"  style="float:right; margin-left: 5px; margin-right: 5px " >팀 이름 변경</a>
                         <a href="#" th:href="@{/admin/community/project/team/{team_id}(team_id =${team_id})}" class="btn btn-primary" role="button"  style=" float:right; margin-left: 5px " onclick="return confirm('정말로 삭제하시겠습니까?')" >팀 삭제</a>
 
                     </div>
@@ -51,19 +51,24 @@
                                         <th>작성자</th>
                                         <th>파트</th>
                                         <th>게시 날짜</th>
+                                        <th>보기</th>
                                         <th>삭제</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="project : ${projects}">
-                                    <td th:if= "${#strings.length(project.getTitle())>15}"th:text="${#strings.substring(project.getTitle(),0,15)}"></td>
-                                    <td th:if= "${#strings.length(project.getTitle())<=15}"th:text="${project.getTitle()}"></td>
-                                    <td th:if= "${#strings.length(project.getTitle())>25}"th:text="${#strings.substring(project.getBody(),0,25)}"></td>
-                                    <td th:if= "${#strings.length(project.getTitle())<=25}"th:text="${project.getBody()}"></td>
-                                    <td th:text="${project.getWriter()}"></td>
-                                    <td th:text="${project.getPart()}"></td>
-                                    <td th:text="${project.getDate().get().toLocalDate()}"></td>
-                                    <td> <a th:href="@{/admin/community/project/{team_id}/{post_id}(team_id = ${team_id},post_id = ${project.getPost_id()})}" class="btn btn-danger" role="button" >삭제</a>
+                                <tr th:each="post : ${projects}">
+
+                                    <td th:if= "${post.getTitle()!=null and #strings.length(post.getTitle())>15   }" th:text="${#strings.substring(post.getTitle(), 0, 15)}"></td>
+                                    <td th:if= "${post.getTitle()!=null and #strings.length(post.getTitle())<=15}"th:text="${post.getTitle()}"></td>
+                                    <td th:if="${post.getTitle()==null}" th:text="none"></td>
+                                    <td th:if= "${post.getBody()!=null and #strings.length(post.getBody())>20}"th:text="${#strings.substring(post.getBody(), 0, 20)}"></td>
+                                    <td th:if= "${post.getBody()!=null and #strings.length(post.getBody())<=20}"th:text="${post.getBody()}"></td>
+                                    <td th:if="${post.getBody()==null}" th:text="none"></td>
+                                    <td th:text="${#strings.defaultString(post.getWriter(),' ')}"></td>
+                                    <td th:text="${#strings.defaultString(post.getPart(),' ')}"></td>
+                                    <td th:text="${#strings.defaultString(post.getDate().toLocalDate(),' ')}"></td>
+                                    <td><a th:title="${#strings.defaultString(post.getTitle(),' ')}" th:body="${#strings.defaultString(post.getBody(),' ')}" th:writer="${#strings.defaultString(post.getWriter(),' ')}"  th:date="${#strings.defaultString(post.getDate().toLocalDate(),' ')}" th:onclick="openPop(this.getAttribute('title'),this.getAttribute('body'),this.getAttribute('writer'),this.getAttribute('date'))" class="btn btn-primary" role="button"> 보기 </a></td>
+                                    <td> <a th:href="@{/admin/community/project/one/{team_id}/{post_id}(team_id=${team_id},post_id = ${post.getPost_id()})}" class="btn btn-danger" role="button" onclick="return confirm('정말로 삭제 하시겠습니까?')">삭제</a>
                                     </td>
 
                                 </tr>
@@ -94,14 +99,30 @@
     <i class="fas fa-angle-up"></i>
 </a>
 
-              <!--팝업창 영역!!-->
+<!--게시물 보기 팝업창 영역!!-->
 <div class="popup_layer" id="popup_layer" style="display: none;">
     <div class="popup_box">
-        <div style="height: 10px; width: 375px; float: top;">
-            <a href="javascript:closePop();" role="button" style="margin-left: 6px; color: #293c74; font-size: 20px">x</a>
-        </div>
-        <!--팝업 컨텐츠 영역-->
+        <a href="javascript:closePop();" role="button" style="float: top; float:right; margin-right:10px; color: #293c74; font-size: 20px">x</a>
         <div class="popup_cont">
+            <h4>
+                <div id = "popup-title"></div>
+            </h4>
+            <div id="popup-writer"></div>
+            <div id = "popup-date"></div>
+            <hr>
+            <div id="popup-body"></div>
+        </div>
+    </div>
+</div>
+
+
+    <!--이름 변경 팝업창 영역!!-->
+<div class="popup_layer2" id="popup_layer2" style="display: none;">
+    <div class="popup_box2">
+        <a href="javascript:closePop2();" role="button" style="float: top; float:right; margin-right:10px; color: #293c74; font-size: 20px">x</a>
+
+       <!--팝업 컨텐츠 영역-->
+        <div class="popup_cont2">
             <h4> 팀 이름 변경</h4>
             <hr>
             <form th:action="@{/admin/community/project/team_name/{team_id}(team_id=${team_id})}" method="post">
@@ -109,64 +130,80 @@
                 <input type="text" name="team_name" style="margin-top:5px; color: #3d3e47; width:90%"><br>
                 <input type="submit" role="button" value="변경" style="margin-top:12px;color: #5a5c69;border-color: transparent;border-radius:10% ">
             </form>
-
         </div>
-        <!--팝업 버튼 영역-->
-<!--        <div class="popup_btn" style="float: bottom; margin-top: 200px;">-->
-<!--            <a href="javascript:closePop();">닫기</a>-->
-<!--        </div>-->
     </div>
 </div>
 
-<!--&lt;!&ndash; Logout Modal&ndash;&gt;-->
-<!--<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"-->
-<!--     aria-hidden="true">-->
-<!--    <div class="modal-dialog" role="document">-->
-<!--        <div class="modal-content">-->
-<!--            <div class="modal-header">-->
-<!--                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>-->
-<!--                <button class="close" type="button" data-dismiss="modal" aria-label="Close">-->
-<!--                    <span aria-hidden="true">×</span>-->
-<!--                </button>-->
-<!--            </div>-->
-<!--            <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>-->
-<!--            <div class="modal-footer">-->
-<!--                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>-->
-<!--                <a class="btn btn-primary" href="login.html">Logout</a>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
+
+    <!--팀 이름 변경 css,js-->
 <style>
-    .popup_layer {position:fixed;top:0;left:0;z-index: 10000; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); }
+    .popup_layer2 {position:fixed;top:0;left:0;z-index: 10000; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); }
     /*팝업 박스*/
-    .popup_box{position: relative;top:50%;left:50%; overflow: auto; height: 350px; width:375px;transform:translate(-50%, -50%);z-index:1002;box-sizing:border-box;background:#fff;box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-webkit-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);}
+    .popup_box2{position: relative;top:50%;left:50%; overflow: auto; height: 350px; width:375px;transform:translate(-50%, -50%);z-index:1002;box-sizing:border-box;background:#fff;box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-webkit-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);}
     /*컨텐츠 영역*/
-    .popup_box .popup_cont {padding:50px;line-height:1.4rem;font-size:14px; }
-    .popup_box .popup_cont h2 {padding:15px 0;color:#333;margin:0;}
-    .popup_box .popup_cont p{ border-top: 1px solid #666;padding-top: 30px;}
+    .popup_box2 .popup_cont2 {padding:50px;line-height:1.4rem;font-size:14px; }
+    .popup_box2 .popup_cont2 h {padding:15px 0;color:#333;margin:0;}
+    .popup_box2 .popup_cont2 p{ border-top: 1px solid #666;padding-top: 30px;}
     /*버튼영역*/
-    .popup_box .popup_btn {display:table;table-layout: fixed;width:100%;height:20px;background:#ECECEC;word-break: break-word;}
-    .popup_box .popup_btn a {position: relative; display: table-cell; height:30px;  font-size:17px;text-align:center;vertical-align:middle;text-decoration:none; background:#ECECEC;}
-    .popup_box .popup_btn a:before{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg);}
-    .popup_box .popup_btn a:after{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg);}
-    .popup_box .popup_btn a.close_day {background:#5d5d5d;}
-    .popup_box .popup_btn a.close_day:before, .popup_box .popup_btn a.close_day:after{display:none;}
+    .popup_box2 .popup_btn2 {display:table;table-layout: fixed;width:100%;height:20px;background:#ECECEC;word-break: break-word;}
+    .popup_box2 .popup_btn2 a {position: relative; display: table-cell; height:30px;  font-size:17px;text-align:center;vertical-align:middle;text-decoration:none; background:#ECECEC;}
+    .popup_box2 .popup_btn2 a:before{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg);}
+    .popup_box2 .popup_btn2 a:after{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg);}
+    .popup_box2 .popup_btn2 a.close_day {background:#5d5d5d;}
+    .popup_box2 .popup_btn2 a.close_day:before, .popup_box2 .popup_btn2 a.close_day:after{display:none;}
     /*오버레이 뒷배경*/
-    .popup_overlay {position:fixed;top:0px;right:0;left:0;bottom:0;z-index:1001;;background:rgba(0,0,0,0.5);}
+    .popup_overlay2 {position:fixed;top:0px;right:0;left:0;bottom:0;z-index:1001;;background:rgba(0,0,0,0.5);}
 </style>
 
 <script>
-    function openPop() {
-        document.getElementById("popup_layer").style.display = "block";
+
+    function openPop2() {
+        document.getElementById("popup_layer2").style.display = "block";
 
     }
 
     //팝업 닫기
-    function closePop() {
-        document.getElementById("popup_layer").style.display = "none";
+    function closePop2() {
+        document.getElementById("popup_layer2").style.display = "none";
     }
+
 </script>
+
+             <!--게시물 상세보기 css,js-->
+    <style>
+        .popup_layer {position:fixed;top:0;left:0;z-index: 10000; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); }
+        /*팝업 박스*/
+        .popup_box{position: relative;top:50%;left:50%; overflow: auto; height: 650px; width:500px;transform:translate(-50%, -50%);z-index:1002;box-sizing:border-box;background:#fff;box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-webkit-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);}
+        /*컨텐츠 영역*/
+        .popup_box .popup_cont {padding:50px;line-height:1.4rem;font-size:14px; color: #2f3037; }
+        .popup_box .popup_cont h2 {padding:15px 0;color:#333;margin:0;}
+        .popup_box .popup_cont p{ border-top: 1px solid #666;padding-top: 30px;}
+        /*버튼영역*/
+        .popup_box .popup_btn {display:table;table-layout: fixed;width:100%;height:20px;background:#ECECEC;word-break: break-word;}
+        .popup_box .popup_btn a {position: relative; display: table-cell; height:30px;  font-size:17px;text-align:center;vertical-align:middle;text-decoration:none; background:#ECECEC;}
+        .popup_box .popup_btn a:before{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg);}
+        .popup_box .popup_btn a:after{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg);}
+        .popup_box .popup_btn a.close_day {background:#5d5d5d;}
+        .popup_box .popup_btn a.close_day:before, .popup_box .popup_btn a.close_day:after{display:none;}
+        /*오버레이 뒷배경*/
+        .popup_overlay {position:fixed;top:0px;right:0;left:0;bottom:0;z-index:1001;;background:rgba(0,0,0,0.5);}
+    </style>
+
+    <script>
+        function openPop(title,body,writer,date) {
+            const element = document.getElementById("popup_layer");
+            document.getElementById("popup-title").innerText = title;
+            document.getElementById("popup-writer").innerText=writer;
+            document.getElementById("popup-date").innerText=date;
+            document.getElementById("popup-body").innerText = body;
+            element.style.display="block";
+        }
+
+        //팝업 닫기
+        function closePop() {
+            document.getElementById("popup_layer").style.display = "none";
+        }
+    </script>
 
 <!-- Bootstrap core JavaScript-->
 
@@ -186,8 +223,6 @@
 
 <!-- Page level custom scripts -->
 <script src="/js/demo/datatables-demo.js"></script>
-
-
 
 </body>
 

@@ -2,6 +2,7 @@ package Likelion.Recruiting.service.admin;
 
 import Likelion.Recruiting.model.User;
 import Likelion.Recruiting.model.dto.UserAllDto;
+import Likelion.Recruiting.model.enums.Role;
 import Likelion.Recruiting.repository.admin.AdminUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class AdminUserService {
             String nickname,
             String major,
             String part,
+            Role role,
             String studentId) {
 
         User findUser = adminUserRepository.findOne(userId);
@@ -31,6 +33,7 @@ public class AdminUserService {
         findUser.setNickname(nickname);
         findUser.setMajor(major);
         findUser.setPart(part);
+        findUser.setRole(role);
         findUser.setStudentId(studentId);
     }
 

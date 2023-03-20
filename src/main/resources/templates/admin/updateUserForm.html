@@ -51,6 +51,21 @@
                                 <label th:for="part">파트</label>
                                 <input type="text" th:field="*{part}" class="form-control" placeholder="파트를 입력하세요" />
                             </div>
+<!--
+                            <div class="form-group">
+                                <label th:for="role">접근권한</label>
+                                <input type="text" th:field="*{role}" class="form-control" placeholder="GUEST/USER/ADMIN" />
+                            </div>
+-->
+                            <div class="form-group">
+                                <label th:for="role">권한 : </label>
+                                <select class="form-control" th:field="*{role}" name="role" >
+                                    <option th:value="'GUEST'">GUEST</option>
+                                    <option th:value="'USER'">USER</option>
+                                    <option th:value="'ADMIN'">ADMIN</option>
+                                </select>
+                            </div>
+
 
                             <button type="submit" class="btn btn-primary float-right" >Submit</button>
 

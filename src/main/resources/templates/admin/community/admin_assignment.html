@@ -46,18 +46,22 @@
                                             <th>게시물</th>
                                             <th>작성자</th>
                                             <th>게시 날짜</th>
+                                            <th>보기</th>
                                             <th>삭제</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr th:each="ass : ${assignment}">
-                                            <td th:if= "${#strings.length(ass.getTitle())>20}" th:text="${#strings.substring(ass.getTitle(), 0, 20)}"></td>
-                                            <td th:if= "${#strings.length(ass.getTitle())<=20}"th:text="${ass.getTitle()}"></td>
-                                            <td th:if= "${#strings.length(ass.getBody())>35}"th:text="${#strings.substring(ass.getBody(), 0, 35)}"></td>
-                                            <td th:if= "${#strings.length(ass.getBody())<=35}"th:text="${ass.getBody()}"></td>
-                                            <td th:text="${ass.getWriter()}"></td>
-                                            <td th:text="${ass.getDate().get().toLocalDate()}"></td>
-                                            <td> <a th:href="@{/admin/community/assignment/one/{id}/{type}(id = ${ass.getPost_id()}, type=${type})}" class="btn btn-danger" role="button" onclick="return confirm('정말로 삭제 하시겠습니까?')">삭제</a>
+                                        <tr th:each="post : ${assignment}">
+                                            <td th:if= "${post.getTitle()!=null and #strings.length(post.getTitle())>15}" th:text="${#strings.substring(post.getTitle(), 0, 15)}"></td>
+                                            <td th:if= "${post.getTitle()!=null and #strings.length(post.getTitle())<=15}"th:text="${post.getTitle()}"></td>
+                                            <td th:if= "${post.getTitle()==null}" th:text="none"></td>
+                                            <td th:if= "${post.getBody()!=null and #strings.length(post.getBody())>20}"th:text="${#strings.substring(post.getBody(), 0, 20)}"></td>
+                                            <td th:if= "${post.getBody()!=null and #strings.length(post.getBody())<=20}"th:text="${post.getBody()}"></td>
+                                            <td th:if= "${post.getBody()==null}" th:text="none"></td>
+                                            <td th:text="${#strings.defaultString(post.getWriter(),' ')}"></td>
+                                            <td th:text="${#strings.defaultString(post.getDate().toLocalDate(),' ')}"></td>
+                                            <td><a th:title="${#strings.defaultString(post.getTitle(),' ')}" th:body="${#strings.defaultString(post.getBody(),' ')}" th:writer="${#strings.defaultString(post.getWriter(),' ')}"  th:date="${#strings.defaultString(post.getDate().toLocalDate(),' ')}" th:onclick="openPop(this.getAttribute('title'),this.getAttribute('body'),this.getAttribute('writer'),this.getAttribute('date'))" class="btn btn-primary" role="button"> 보기 </a></td>
+                                            <td> <a th:href="@{/admin/community/assignment/one/{post_id}/{part}(post_id=${post.getPost_id()},part = ${type})}" class="btn btn-danger" role="button" onclick="return confirm('정말로 삭제 하시겠습니까?')">삭제</a>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -83,6 +87,22 @@
     </div>
     <!-- End of Page Wrapper -->
 
+<!--게시물 보기 팝업창 영역!!-->
+<div class="popup_layer" id="popup_layer" style="display: none;">
+    <div class="popup_box">
+        <a href="javascript:closePop();" role="button" style="float: top; float:right; margin-right:10px; color: #293c74; font-size: 20px">x</a>
+        <div class="popup_cont">
+            <h4>
+                <div id = "popup-title"></div>
+            </h4>
+            <div id="popup-writer"></div>
+            <div id = "popup-date"></div>
+            <hr>
+            <div id="popup-body"></div>
+        </div>
+    </div>
+</div>
+
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -107,6 +127,43 @@
             </div>
         </div>
     </div>
+
+<style>
+    .popup_layer {position:fixed;top:0;left:0;z-index: 10000; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.4); }
+    /*팝업 박스*/
+    .popup_box{position: relative;top:50%;left:50%; overflow: auto; height: 650px; width:500px;transform:translate(-50%, -50%);z-index:1002;box-sizing:border-box;background:#fff;box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-webkit-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);-moz-box-shadow: 2px 5px 10px 0px rgba(0,0,0,0.35);}
+    /*컨텐츠 영역*/
+    .popup_box .popup_cont {padding:50px;line-height:1.4rem;font-size:14px; color: #2f3037; }
+    .popup_box .popup_cont h2 {padding:15px 0;color:#333;margin:0;}
+    .popup_box .popup_cont p{ border-top: 1px solid #666;padding-top: 30px;}
+    /*버튼영역*/
+    .popup_box .popup_btn {display:table;table-layout: fixed;width:100%;height:20px;background:#ECECEC;word-break: break-word;}
+    .popup_box .popup_btn a {position: relative; display: table-cell; height:30px;  font-size:17px;text-align:center;vertical-align:middle;text-decoration:none; background:#ECECEC;}
+    .popup_box .popup_btn a:before{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(-45deg); -webkit-transform: rotate(-45deg); -ms-transform: rotate(-45deg); -o-transform: rotate(-45deg); transform: rotate(-45deg);}
+    .popup_box .popup_btn a:after{content:'';display:block;position:absolute;top:26px;right:29px;width:1px;height:21px;background:#fff;-moz-transform: rotate(45deg); -webkit-transform: rotate(45deg); -ms-transform: rotate(45deg); -o-transform: rotate(45deg); transform: rotate(45deg);}
+    .popup_box .popup_btn a.close_day {background:#5d5d5d;}
+    .popup_box .popup_btn a.close_day:before, .popup_box .popup_btn a.close_day:after{display:none;}
+    /*오버레이 뒷배경*/
+    .popup_overlay {position:fixed;top:0px;right:0;left:0;bottom:0;z-index:1001;;background:rgba(0,0,0,0.5);}
+</style>
+
+<script>
+    function openPop(title,body,writer,date) {
+
+        const element = document.getElementById("popup_layer");
+        document.getElementById("popup-title").innerText = title;
+        document.getElementById("popup-writer").innerText=writer;
+        document.getElementById("popup-date").innerText=date;
+        document.getElementById("popup-body").innerText = body;
+        element.style.display="block";
+
+    }
+
+    //팝업 닫기
+    function closePop() {
+        document.getElementById("popup_layer").style.display = "none";
+    }
+</script>
 
     <!-- Bootstrap core JavaScript-->
     <script src="/vendor/jquery/jquery.min.js"></script>

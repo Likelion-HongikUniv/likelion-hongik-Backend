@@ -1,5 +1,6 @@
 package Likelion.Recruiting.model;
 
+import Likelion.Recruiting.model.enums.Role;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +23,7 @@ public class UserForm {
 
     private String phoneNum;
 
-    private String role;
+    private Role role;
 
     private Team team;
 
