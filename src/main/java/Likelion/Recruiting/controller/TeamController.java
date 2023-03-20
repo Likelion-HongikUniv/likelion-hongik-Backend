@@ -24,7 +24,7 @@ public class TeamController {
     private final TeamService teamService;
 
     @GetMapping("/team/members")//팀 멤버불러오기
-    public TeamMemberResponseDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
+    public TeamMemberResponseDto getTeamMember(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser) {
         Team team = teamService.findTeam(customOauthUser.getUser().getId());
         return userService.getTeamMembers(team.getId());
     }

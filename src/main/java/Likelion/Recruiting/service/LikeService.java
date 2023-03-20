@@ -60,7 +60,7 @@ public class LikeService {
         Page<MypagePostDto> postDto = posts.map(p -> MypagePostDto.builder()
                 .postId(p.getId())
                 .title(p.getTitle())
-                .author(p.getAuthor().getName())
+                .author(p.getAuthor().getNickname())
                 .authorImage(p.getAuthor().getProfileImage())
                 .time(p.getCreatedTime().format(DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")))
                 .body(p.getBody())

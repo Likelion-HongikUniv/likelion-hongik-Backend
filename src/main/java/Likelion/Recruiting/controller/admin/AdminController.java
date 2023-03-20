@@ -25,7 +25,6 @@ public class AdminController {
         this.adminUserService = adminUserService;
         this.adminPostService = adminPostService;
         this.adminCommentService = adminCommentService;
-
     }
 
     @RequestMapping("/admin")

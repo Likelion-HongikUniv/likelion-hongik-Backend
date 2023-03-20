@@ -20,7 +20,7 @@ public enum ErrorCode {
     NOT_VALIDATE_RT(1012, "refresh_token이 올바르지 않습니다."),
 //    BOARD_NOT_FOUND(1007, "게시글을 찾을 수 없습니다.");
 //-----------------------------------------------------------
-    NO_TEAM(400,"회원팀의 팀이 존재하지 않습니다.");
+    NO_TEAM(400,"회원님의 팀이 존재하지 않습니다.");
     private int errorCode;
     private String errorMessage;
 
