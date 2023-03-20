@@ -23,6 +23,7 @@ public class CommunityProjectController {
         String team_name = communityProjectService.getTeamName(team_id);
         model.addAttribute("projects", projects);
         model.addAttribute("team_name",team_name);
+        model.addAttribute("team_id",team_id);
         return "admin/community/admin_project";
     }
 
@@ -33,7 +34,7 @@ public class CommunityProjectController {
 
         return  "redirect:/admin/community/project/projects/"+team_id;
     }
-    // 모든 프로젝트 게시물 전체 삭제하기 or team을 삭제하기?!!!?!?!
+    // 팀 이름 변경하기
     @PostMapping("admin/community/project/team_name/{team_id}")
     public String changeTeamName(@PathVariable Long team_id, @RequestParam String team_name){
 
@@ -41,10 +42,11 @@ public class CommunityProjectController {
         return "redirect:/admin/community/project/projects/"+team_id;
     }
 
+    // 팀 관련 게시글 삭제하고, 팀 삭제하기, user의 team은 null로 변경.
     @GetMapping("admin/community/project/team/{team_id}")
     public String deleteTeam(@PathVariable Long team_id){
-
-        communityProjectService.deleteTeam(team_id);
+        communityProjectService.deleteAllTeamProject(team_id); //team 관련 게시글 모두 삭제
+        communityProjectService.deleteTeam(team_id); // user의 팀 속성 먼저 null로 바꾸고, team 객체에서 team 삭제.
         return "redirect:/admin";
     }
 
@@ -55,22 +57,4 @@ public class CommunityProjectController {
         return "redirect:/admin/community/project/projects/"+team_id;
     }
 
-    //    //팀 별 백엔드 프로젝트 게시물 조회
-//    @GetMapping("admin/community/project/backend/")
-//    public String getBackendProjectPost(@PathVariable String team_id){
-//        CommunityProjectService.Project project = communityProjectService.getProjectByTeamAndPart(team_id, "backend");
-//        return "";
-//    }
-//    //팀 별 프론트엔드 프로젝트 게시물 조회
-//    @GetMapping("admin/community/project/frontend/")
-//    public String getFrontendProjectPost(@PathVariable String team_id){
-//        CommunityProjectService.Project project = communityProjectService.getProjectByTeamAndPart(team_id, "frontend");
-//        return "";
-//    }
-//    //팀 별 기획 디자인 프로젝트 게시물 조회
-//    @GetMapping("admin/community/project/design/")
-//    public String getDesignProjectPost(@PathVariable String team_id){
-//        CommunityProjectService.Project project = communityProjectService.getProjectByTeamAndPart(team_id, "design");
-//        return "";
-//    }
 }

@@ -99,6 +99,11 @@ public class CommunityRepository  {
     }
     @Transactional
     public void deleteTeam(Long team_id) {
+        em.createQuery("update User u set u.team = null where u.team.id=:team_id")
+                .setParameter("team_id",team_id)
+                .executeUpdate();
+        em.clear(); //영속성 컨텍스트 비움!
+
         Team team = (Team) em.createQuery("select t from Team t where t.id=:team_id")
                 .setParameter("team_id",team_id)
                 .getSingleResult();
