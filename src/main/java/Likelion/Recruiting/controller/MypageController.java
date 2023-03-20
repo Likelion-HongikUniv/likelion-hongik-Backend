@@ -146,7 +146,7 @@ public class MypageController {
         // 유저의 email 뽑아내기
         String email = customOauthUser.getUser().getEmail();
 
-        Long user_id = userService.findUser(email).getNickname();
+        Long user_id = userService.findUser(email).getId();
 
         Page<MypagePostDto> posts = likeService.getLikedPost(user_id, pageable);
 
