@@ -15,7 +15,7 @@ public class PostSimpleDto {
     private String title;
     private UserSimpleDto author;
     private String body;
-    private String thumbnailImage;
+    private String thumbNailImage;
     private Boolean isLiked;
     private Long likeCount;
     private Long commentCount;
@@ -27,7 +27,7 @@ public class PostSimpleDto {
         this.title = post.getTitle();
         this.author = new UserSimpleDto(post.getAuthor().getId(),post.getAuthor().getNickname(),post.getAuthor().getProfileImage(), user);
         this.body = post.getBody();
-        this.thumbnailImage = post.getThumbnailImage();
+        this.thumbNailImage = post.getThumbnailImage();
         this.isLiked = false;
         for(PostLike postLike:post.getLikeUsers()){
             if(postLike.getUser().getId() == user.getId()) {
