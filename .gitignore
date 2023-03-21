@@ -37,6 +37,5 @@ out/
 ### VS Code ###
 .vscode/
 
-### my_secrets ###
-*.yml
-application.yml
+### .DS_STORE ###
+.DS_STORE
