@@ -78,8 +78,10 @@ public class Post {
             this.title = postUpdateDto.getTitle();
         if(postUpdateDto.getBody() != null)
             this.body = postUpdateDto.getBody();
-        if(postUpdateDto.getThumbnailImage() != null)
-            this.thumbnailImage = postUpdateDto.getThumbnailImage();
+        if(postUpdateDto.getThumbnailImage() == null)
+            this.thumbnailImage = null;
+        else if(!postUpdateDto.getThumbnailImage().equals(this.getThumbnailImage()))
+                this.thumbnailImage = postUpdateDto.getThumbnailImage();
     }
 
     public void changeMainCategory(MainCategory mainCategory){

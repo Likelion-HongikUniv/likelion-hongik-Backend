@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class PostDetailDto {
     private Long postId;
     private UserSimpleDto author;
+    private String thumbnailImage;
     private String title;
     private String body;
     private String createdTime;
@@ -27,6 +28,7 @@ public class PostDetailDto {
         this.postId =post.getId();
         this.author = new UserSimpleDto(post.getAuthor().getId(),post.getAuthor().getNickname(),post.getAuthor().getProfileImage(), user);
         this.title = post.getTitle();
+        this.thumbnailImage = post.getThumbnailImage();
         this.body = post.getBody();
         this.createdTime = post.getCreatedTime().toString();
         this.isLiked = false;
