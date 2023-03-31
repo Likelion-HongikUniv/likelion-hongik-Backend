@@ -34,7 +34,7 @@ public class ReplyService {
     @Transactional
     public CreateResponseMessage updateReply(Long replyId, Long userId, CreateCommentRequestDto reqeust){
         Reply reply = replyRepository.findById(replyId).get();
-        if(userId == reply.getAuthor().getId()){
+        if(userId.equals(reply.getAuthor().getId())){
             reply.update(reqeust.getBody());
             replyRepository.save(reply);
             return new CreateResponseMessage((long)200, "업데이트 성공");
@@ -46,7 +46,7 @@ public class ReplyService {
     @Transactional
     public CreateResponseMessage deleteReply (Long replyId, Long userId){
         Reply reply = replyRepository.findById(replyId).get();
-        if(userId == reply.getAuthor().getId()) {
+        if(userId.equals(reply.getAuthor().getId())) {
             reply.delete();
             if (reply.getIsDeleted() == true)
                 return new CreateResponseMessage((long) 200, "삭제 성공");

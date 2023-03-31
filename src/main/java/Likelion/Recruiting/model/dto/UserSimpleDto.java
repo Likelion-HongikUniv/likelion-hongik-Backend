@@ -16,11 +16,11 @@ public class UserSimpleDto {
         this.authorId = id;
         this.nickname = nickname;
         this.profileImage = profileImage;
-        if(user.getId() == this.authorId)
+        if(user.getId().equals(this.authorId)) {
             this.isAuthor = true;
+        }
         else this.isAuthor = false;
     }
-
 
 
 }

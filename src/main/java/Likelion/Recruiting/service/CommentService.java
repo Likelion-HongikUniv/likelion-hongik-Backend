@@ -41,7 +41,7 @@ public class CommentService {
     @Transactional
     public CreateResponseMessage deleteComment (Long commentId, Long userId){
         Comment comment = commentRepository.findById(commentId).get();
-        if(userId == comment.getAuthor().getId()) {
+        if(userId.equals(comment.getAuthor().getId())) {
             comment.delete();
             if (comment.getIsDeleted() == true)
                 return new CreateResponseMessage((long) 200, "삭제 성공");

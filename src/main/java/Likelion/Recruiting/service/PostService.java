@@ -38,7 +38,7 @@ public class PostService {
     @Transactional
     public CreateResponseMessage updatePost(Long postId,Long userId, PostUpdateDto postUpdateDto){
         Post post = postRepository.findById(postId).get();
-        if(userId == post.getAuthor().getId()){
+        if(userId.equals(post.getAuthor().getId())){
             post.update(postUpdateDto);
             postRepository.save(post);
             return new CreateResponseMessage((long)200, "업데이트 성공");
@@ -49,7 +49,7 @@ public class PostService {
     @Transactional
     public CreateResponseMessage deletePost(Long postId,Long userId){
         Post post = postRepository.findById(postId).get();
-        if(userId == post.getAuthor().getId()) {
+        if(userId.equals(post.getAuthor().getId())) {
             postRepository.delete(post);
             return new CreateResponseMessage((long) 200, "업데이트 성공");
         }

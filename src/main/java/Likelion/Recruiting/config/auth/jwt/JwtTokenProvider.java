@@ -144,7 +144,6 @@ public class JwtTokenProvider {
             return "ok";
         } catch (ExpiredJwtException e){ // RT 기한 만료
             System.out.println("rt 1e = " + e.getMessage());
-
             return "expired";
         } catch (SignatureException e){
             System.out.println("rt 2e = " + e.getClass());
