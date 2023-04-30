@@ -1,13 +1,40 @@
 package Likelion.Recruiting.controller;
 
 
-import Likelion.Recruiting.config.auth.CustomOauthUserImpl;
-import Likelion.Recruiting.model.*;
-import Likelion.Recruiting.model.dto.*;
-import Likelion.Recruiting.model.enums.MainCategory;
-import Likelion.Recruiting.model.enums.SubCategory;
-import Likelion.Recruiting.repository.*;
-import Likelion.Recruiting.service.*;
+import Likelion.Recruiting.common.config.auth.CustomOauthUserImpl;
+import Likelion.Recruiting.common.dto.CreateResponseMessage;
+import Likelion.Recruiting.common.dto.DataResponseDto;
+import Likelion.Recruiting.common.dto.PageResponseDto;
+import Likelion.Recruiting.domain.comment.dto.CommentDto;
+import Likelion.Recruiting.domain.comment.dto.CreateCommentRequestDto;
+import Likelion.Recruiting.domain.comment.entity.Comment;
+import Likelion.Recruiting.domain.comment.entity.CommentLike;
+import Likelion.Recruiting.domain.comment.repository.CommentLikeRepository;
+import Likelion.Recruiting.domain.comment.repository.CommentRepository;
+import Likelion.Recruiting.domain.comment.service.CommentLikeService;
+import Likelion.Recruiting.domain.comment.service.CommentService;
+import Likelion.Recruiting.domain.post.dto.PostDetailDto;
+import Likelion.Recruiting.domain.post.dto.PostSimpleDto;
+import Likelion.Recruiting.domain.post.dto.PostUpdateDto;
+import Likelion.Recruiting.domain.post.entity.Post;
+import Likelion.Recruiting.domain.post.entity.PostLike;
+import Likelion.Recruiting.domain.post.repository.PostLikeRepository;
+import Likelion.Recruiting.domain.post.repository.PostRepository;
+import Likelion.Recruiting.domain.post.service.PostLikeService;
+import Likelion.Recruiting.domain.post.service.PostService;
+import Likelion.Recruiting.domain.reply.entity.Reply;
+import Likelion.Recruiting.domain.reply.entity.ReplyLike;
+import Likelion.Recruiting.domain.reply.repository.ReplyLikeRepository;
+import Likelion.Recruiting.domain.reply.repository.ReplyRepository;
+import Likelion.Recruiting.domain.reply.service.ReplyLikeService;
+import Likelion.Recruiting.domain.reply.service.ReplyService;
+import Likelion.Recruiting.domain.team.entity.Team;
+import Likelion.Recruiting.domain.team.service.TeamService;
+import Likelion.Recruiting.domain.user.entity.User;
+import Likelion.Recruiting.domain.post.entity.enums.MainCategory;
+import Likelion.Recruiting.domain.post.entity.enums.SubCategory;
+import Likelion.Recruiting.domain.user.repository.UserRepository;
+import Likelion.Recruiting.domain.user.service.UserService;
 
 
 import lombok.*;
@@ -29,7 +56,9 @@ public class CommunityController {
 
     private final CommentService commentService;
     private final ReplyService replyService;
-    private final LikeService likeService;
+    private final PostLikeService postLikeService;
+    private final CommentLikeService commentLikeService;
+    private final ReplyLikeService replyLikeService;
     private final UserService userService;
     private final TeamService teamService;
     private final PostRepository postRepository;
@@ -117,14 +146,14 @@ public class CommunityController {
     //----------------------------------------------------------------------------------------------------------------------------
 
     @GetMapping("/community/post/{postId}")//게시글 상세보기
-    public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@PathVariable("postId") Long postId) {
+    public PostDetailDto getPostDetail(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @PathVariable("postId") Long postId) {
         PostDetailDto result = postService.postDetailInfo(postId,customOauthUser.getUser());
         return result;
     }
     //---------------------------------------------------------------
     //게시글 수정
     @PatchMapping("/community/post/{postId}")
-    public CreateResponseMessage updatePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser,@RequestBody PostUpdateDto postUpdateDto, @PathVariable("postId") Long postId){
+    public CreateResponseMessage updatePost(@AuthenticationPrincipal CustomOauthUserImpl customOauthUser, @RequestBody PostUpdateDto postUpdateDto, @PathVariable("postId") Long postId){
         String email = customOauthUser.getUser().getEmail();
         User user = userService.findUser(email);
         return postService.updatePost(postId,user.getId(),postUpdateDto);
@@ -158,9 +187,9 @@ public class CommunityController {
         User user = userService.findUser(email);
         PostLike postLike = postLikeRepository.findOneByUserAndPost(user,post);
         if (postLike == null){
-            likeService.createPostLike(user,post);
+            postLikeService.createPostLike(user,post);
         }
-        else likeService.deletePostLike(user,post);
+        else postLikeService.deletePostLike(user,post);
 
         return new CreateResponseMessage((long)200, "좋아요 성공");
     }
@@ -228,9 +257,9 @@ public class CommunityController {
         User user = userService.findUser(email);//   유저는 헤더파일에서 뽑아오기
         CommentLike commentLike = commentLikeRepository.findOneByUserAndComment(user,comment);
         if (commentLike == null){
-            likeService.createCommentLike(user,comment);
+            commentLikeService.createCommentLike(user,comment);
         }
-        else likeService.deleteCommentLike(user,comment);
+        else commentLikeService.deleteCommentLike(user,comment);
 
         return new CreateResponseMessage((long)200, "좋아요 성공");
     }
@@ -269,9 +298,9 @@ public class CommunityController {
         User user = userService.findUser(email); //   유저는 헤더파일에서 뽑아오기
         ReplyLike replyLike = replyLikeRepository.findOneByUserAndReply(user,reply);
         if (replyLike == null){
-            likeService.createReplyLike(user,reply);
+            replyLikeService.createReplyLike(user,reply);
         }
-        else likeService.deleteReplyLike(user,reply);
+        else replyLikeService.deleteReplyLike(user,reply);
         return new CreateResponseMessage((long)200, "좋아요 성공");
     }
 
