@@ -13,7 +13,8 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-import static Likelion.Recruiting.model.QPost.post;
+import static Likelion.Recruiting.domain.post.entity.QPost.post;
+
 
 
 @RequiredArgsConstructor

@@ -1,0 +1,22 @@
+version: "3"
+services:
+
+  spring-app:
+    container_name: spring-app
+    image: tmfrk0426/recruit:latest
+    env_file:
+      - "./.env"
+    hostname : spring-app
+    expose:
+      - "8080"
+    restart: always
+
+  nginx:
+    depends_on:
+      - spring-app
+    restart: always
+    build:
+      dockerfile: Dockerfile
+      context: ./nginx
+    ports:
+      - "80:80"

@@ -14,9 +14,10 @@ app:
       refresh-cookie-key: ${ AUTH_TOKEN_REFRESH_COOKIE_KEY}
   oauth2:
     authorizedRedirectUri: "https://likelionhongik.com/oauth2/redirect"
-#    tokenExpirationMsec: 86400
 
 spring:
+  profiles:
+    active: dev
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${MYSQL_HOST}:3306/Mutsa_Recruiting_Database?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
